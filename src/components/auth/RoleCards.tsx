@@ -4,13 +4,14 @@ import { Store, User, Users } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { useState, useTransition } from 'react'
+import { setRole } from '@/lib/auth/setRole'
 import { refreshSessionAfterClaimChange } from '@/lib/auth/signIn'
 import { cn } from '@/lib/utils/cn'
 import { ROLE_HOME, ROLES, type Role } from '@/types/user'
-import { setRole } from './actions'
 
 const ROLE_ICON = { agent: Users, merchant: Store, consumer: User } as const
 
+/** 온보딩 페이지와 메인의 역할 선택 모달이 같이 쓴다. */
 export function RoleCards({ locale }: { locale: string }) {
   const t = useTranslations('onboarding')
   const router = useRouter()
@@ -40,7 +41,7 @@ export function RoleCards({ locale }: { locale: string }) {
   }
 
   return (
-    <div className="mt-8 flex flex-col gap-3">
+    <div className="flex flex-col gap-3">
       {ROLES.map((role) => {
         const Icon = ROLE_ICON[role]
         const active = chosen === role

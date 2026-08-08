@@ -1,6 +1,6 @@
 'use server'
 
-import { requireSession } from '@/lib/auth/session'
+import { getSession, requireSession } from '@/lib/auth/session'
 import { getAdminAuth, getAdminDb } from '@/lib/firebase/admin'
 import { isRole, type Role } from '@/types/user'
 
@@ -43,4 +43,13 @@ export async function setRole(role: Role): Promise<SetRoleResult> {
     console.error('[onboarding] setRole failed:', (error as Error).message)
     return { ok: false, code: 'FAILED' }
   }
+}
+
+/**
+ * 로그인 직후 모달이 "역할 선택으로 갈지, 내 화면으로 갈지" 를 정하려면 필요하다.
+ * 세션 쿠키를 서버에서 검증해서 읽는다 — 클라이언트가 말하는 역할은 믿지 않는다 (CLAUDE.md §3-2).
+ */
+export async function getMyRole(): Promise<Role | null> {
+  const session = await getSession()
+  return session?.role ?? null
 }

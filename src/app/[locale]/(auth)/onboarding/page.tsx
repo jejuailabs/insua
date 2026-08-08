@@ -2,7 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { getSession } from '@/lib/auth/session'
 import { redirect } from '@/lib/i18n/navigation'
 import { ROLE_HOME } from '@/types/user'
-import { RoleCards } from './RoleCards'
+import { RoleCards } from '@/components/auth/RoleCards'
 
 export default async function OnboardingPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
@@ -19,7 +19,9 @@ export default async function OnboardingPage({ params }: { params: Promise<{ loc
     <main className="mx-auto flex min-h-dvh max-w-md flex-col justify-center px-4 py-10">
       <h1 className="text-title text-content">{t('title')}</h1>
       <p className="mt-2 text-caption text-content-muted">{t('subtitle')}</p>
-      <RoleCards locale={locale} />
+      <div className="mt-8">
+        <RoleCards locale={locale} />
+      </div>
     </main>
   )
 }

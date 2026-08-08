@@ -44,16 +44,29 @@
       "network": "The connection dropped. Check your network and try again.",
       "forbidden": "You do not have access to this screen.",
       "needsOnboarding": "Choose what you will use this for first."
-    }
+    },
+    "loginCta": "Sign in",
+    "openApp": "Go to my app"
   },
   "onboarding": {
     "title": "What will you use this for?",
     "subtitle": "You cannot change this yourself later. Ask an operator if you need it changed.",
-    "agent": { "title": "I manage clients", "desc": "Insurance planners and sales" },
-    "merchant": { "title": "I run a shop", "desc": "Restaurants, cafés, farms, salons" },
-    "consumer": { "title": "I want local news", "desc": "Residents and visitors" },
+    "agent": {
+      "title": "I manage clients",
+      "desc": "Insurance planners and sales"
+    },
+    "merchant": {
+      "title": "I run a shop",
+      "desc": "Restaurants, cafés, farms, salons"
+    },
+    "consumer": {
+      "title": "I want local news",
+      "desc": "Residents and visitors"
+    },
     "submitting": "Setting up",
-    "error": { "alreadySet": "Your role is already set. Ask an operator to change it." }
+    "error": {
+      "alreadySet": "Your role is already set. Ask an operator to change it."
+    }
   },
   "theme": {
     "toggleLabel": "Brightness",
@@ -68,7 +81,12 @@
       "badang": "Badang"
     }
   },
-  "tier": { "S": "Tier S", "A": "Tier A", "B": "Tier B", "C": "Tier C" },
+  "tier": {
+    "S": "Tier S",
+    "A": "Tier A",
+    "B": "Tier B",
+    "C": "Tier C"
+  },
   "crm": {
     "title": "CRM",
     "filterAll": "All {count}",
@@ -81,7 +99,10 @@
     "calendar": "Calendar",
     "note": "Notes",
     "consultLog": "Consultations",
-    "empty": { "title": "No clients yet", "action": "Add your first client" },
+    "empty": {
+      "title": "No clients yet",
+      "action": "Add your first client"
+    },
     "dueSoon": "{count} clients are due for contact"
   },
   "merchant": {
@@ -176,7 +197,9 @@
       "farm": "Just harvested in Jeju",
       "retail": "Picks from this shop",
       "etc": "Picks from this shop"
-    }
+    },
+    "discountShort": "off",
+    "gift": "Perk"
   },
   "admin": {
     "title": "Admin",
