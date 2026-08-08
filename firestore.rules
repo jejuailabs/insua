@@ -1,0 +1,118 @@
+rules_version = '2';
+
+// docs/02 §13. 3중 방어의 3층 (docs/03 §4.3).
+// 서버가 Admin SDK 로 우회하더라도, 클라이언트 직접 접근은 여기서 최종 판정된다.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn()  { return request.auth != null; }
+    function uid()       { return request.auth.uid; }
+    function isAdmin()   { return signedIn() && request.auth.token.admin == true; }
+    function role()      { return signedIn() ? request.auth.token.role : null; }
+
+    // 클라이언트가 건드리면 안 되는 필드. 서버(Admin SDK)만 바꾼다.
+    function keepsPrivilegedFields() {
+      return !request.resource.data.diff(resource.data).affectedKeys()
+               .hasAny(['role', 'isAdmin', 'agentId', 'uid', 'createdAt']);
+    }
+
+    match /users/{userId} {
+      allow read:   if uid() == userId || isAdmin();
+      // 최초 문서 생성도 서버가 한다. 클라이언트가 role/isAdmin 을 심어 만들 여지를 없앤다.
+      allow create: if uid() == userId
+                    && request.resource.data.role == null
+                    && request.resource.data.isAdmin == false;
+      allow update: if (uid() == userId && keepsPrivilegedFields()) || isAdmin();
+      allow delete: if isAdmin();
+
+      // 찜한 가게 (docs/08 §8) — 본인만.
+      match /saved/{storeId} {
+        allow read, write: if uid() == userId;
+      }
+    }
+
+    match /contacts/{contactId} {
+      // 남의 고객은 존재조차 보이지 않는다 (docs/06 §10).
+      allow read, update, delete: if isAdmin()
+        || (signedIn() && resource.data.ownerAgentId == uid());
+      allow create: if signedIn() && role() == 'agent'
+        && request.resource.data.ownerAgentId == uid();
+
+      match /interactions/{interactionId} {
+        allow read, write: if isAdmin()
+          || (signedIn()
+              && get(/databases/$(database)/documents/contacts/$(contactId))
+                   .data.ownerAgentId == uid());
+      }
+    }
+
+    match /stores/{storeId} {
+      allow read: if (resource.data.isPublic == true && resource.data.status == 'published')
+                  || isAdmin()
+                  || (signedIn() && resource.data.ownerUid == uid())
+                  || (signedIn() && resource.data.createdByAgentId == uid());
+      allow create: if signedIn() && (role() == 'agent' || role() == 'merchant');
+      allow update, delete: if isAdmin()
+        || (signedIn() && resource.data.ownerUid == uid())
+        || (signedIn() && resource.data.createdByAgentId == uid());
+
+      match /{sub=**} {
+        allow read: if get(/databases/$(database)/documents/stores/$(storeId)).data.isPublic == true
+                    || isAdmin();
+        allow write: if isAdmin()
+          || (signedIn()
+              && get(/databases/$(database)/documents/stores/$(storeId)).data.ownerUid == uid());
+      }
+    }
+
+    match /posts/{postId} {
+      allow read: if (resource.data.visibility == 'public' && resource.data.status == 'active')
+                  || isAdmin()
+                  || (signedIn() && resource.data.authorUid == uid());
+      allow create: if signedIn() && request.resource.data.authorUid == uid();
+      allow update: if isAdmin() || (signedIn() && resource.data.authorUid == uid());
+      allow delete: if isAdmin();
+    }
+
+    // ★ authorUid 필드가 들어 있으므로 클라이언트 직접 read 를 완전히 막는다 (docs/02 §5).
+    //   목록 조회는 서버(/api/anonymous/list)가 Admin SDK 로 필드를 걸러 내려준다.
+    match /anonymousPosts/{postId} {
+      allow read:   if false;
+      allow create: if signedIn();
+      allow update, delete: if false;
+    }
+
+    match /listings/{listingId} {
+      allow read:   if resource.data.status == 'active' || isAdmin();
+      allow create: if signedIn() && request.resource.data.submittedByUid == uid();
+      allow update, delete: if isAdmin()
+        || (signedIn() && resource.data.submittedByUid == uid());
+    }
+
+    match /supportPrograms/{id} { allow read: if true; allow write: if isAdmin(); }
+    match /groupBuys/{id}       { allow read: if true; allow write: if isAdmin(); }
+
+    match /coupons/{id} {
+      allow read:  if true;
+      allow write: if isAdmin() || (signedIn() && role() == 'merchant');
+    }
+
+    match /couponIssues/{id} {
+      allow read:   if isAdmin() || (signedIn() && resource.data.userUid == uid());
+      allow create: if signedIn() && request.resource.data.userUid == uid();
+      allow update: if isAdmin() || (signedIn() && role() == 'merchant');
+      allow delete: if isAdmin();
+    }
+
+    match /reports/{id} {
+      allow create: if signedIn() && request.resource.data.reporterUid == uid();
+      allow read, update, delete: if isAdmin();
+    }
+
+    // 감사 로그는 읽기만. 쓰기는 서버(Admin SDK)만 (docs/09 §2.9).
+    // 관리자조차 클라이언트에서 지울 수 없어야 감사 기록의 의미가 있다.
+    match /auditLogs/{id} { allow read: if isAdmin(); allow write: if false; }
+
+    match /{document=**} { allow read, write: if false; }
+  }
+}

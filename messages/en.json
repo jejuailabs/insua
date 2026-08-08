@@ -12,7 +12,8 @@
     "close": "Close",
     "retry": "Try again",
     "loading": "Loading",
-    "language": "Language"
+    "language": "Language",
+    "comingSoon": "Not ready yet"
   },
   "nav": {
     "home": "Home",
@@ -35,6 +36,9 @@
   "auth": {
     "signInWithGoogle": "Continue with Google",
     "signOut": "Sign out",
+    "title": "Sign in",
+    "subtitle": "Start with your Google account. There is no separate sign-up.",
+    "signingIn": "Signing in",
     "error": {
       "popupBlocked": "The popup was blocked. Trying again will redirect this page instead.",
       "network": "The connection dropped. Check your network and try again.",
@@ -44,9 +48,12 @@
   },
   "onboarding": {
     "title": "What will you use this for?",
+    "subtitle": "You cannot change this yourself later. Ask an operator if you need it changed.",
     "agent": { "title": "I manage clients", "desc": "Insurance planners and sales" },
     "merchant": { "title": "I run a shop", "desc": "Restaurants, cafés, farms, salons" },
-    "consumer": { "title": "I want local news", "desc": "Residents and visitors" }
+    "consumer": { "title": "I want local news", "desc": "Residents and visitors" },
+    "submitting": "Setting up",
+    "error": { "alreadySet": "Your role is already set. Ask an operator to change it." }
   },
   "theme": {
     "toggleLabel": "Brightness",

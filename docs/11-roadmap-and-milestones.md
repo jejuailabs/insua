@@ -106,10 +106,48 @@
 
 **DoD**
 
-- [ ] 구글 로그인 → 온보딩 → 역할별 홈으로 자동 이동
-- [ ] 로그아웃 후 보호 경로 접근 시 로그인으로 리다이렉트
-- [ ] 클라이언트에서 `users.role` 직접 수정 시도가 Rules에서 거부된다
-- [ ] 에뮬레이터에서 Rules 테스트가 통과한다
+- [~] 구글 로그인 → 온보딩 → 역할별 홈으로 자동 이동
+      — 코드는 완성. **실제 구글 로그인은 미검증**(Firebase 콘솔 설정이 선행돼야 함, 아래 참조)
+- [x] 로그아웃 후 보호 경로 접근 시 로그인으로 리다이렉트
+      — `/ko/crm` `/en/crm` `/ja/feed` 전부 `/{locale}/login?next=…` 로 307. locale 유지 확인
+- [x] 클라이언트에서 `users.role` 직접 수정 시도가 Rules에서 거부된다
+- [x] 에뮬레이터에서 Rules 테스트가 통과한다 — **22건 전부 통과** (`pnpm test:rules`)
+
+**Rules 테스트로 실제 검증한 것** (`scripts/test-rules.mts`)
+
+| 항목 | 결과 |
+|---|---|
+| 다른 설계사가 남의 고객·상담로그를 읽기/수정 | 거부 |
+| 소상공인이 `contacts` 생성 (role 게이트) | 거부 |
+| 설계사가 남을 `ownerAgentId` 로 지정해 생성 | 거부 |
+| 클라이언트가 `role` / `isAdmin` / `agentId` 수정 | 거부 |
+| 본인이 `palette` 같은 일반 필드 수정 | 허용 |
+| 익명글 직접 read — **관리자 포함** | 거부 (서버 경유만) |
+| 관리자가 감사 로그 삭제 | 거부 |
+| 비로그인이 공개 매장 read / 비공개 매장 read | 허용 / 거부 |
+
+**M2에서 확정된 것 / 주의**
+
+- `proxy.ts` 는 **쿠키 존재 여부만** 본다(Edge 라 Admin SDK 불가). 진짜 판정은
+  `requireRolePage()`(서버 컴포넌트) + Security Rules 다. 미들웨어 통과 = 인증됨이 아니다.
+- 인증 리다이렉트는 **요청한 locale 을 유지**한다. `docs/03` §5 예시는 항상 기본 locale 로
+  보내는데, 그러면 영어 사용자가 한국어 로그인 화면으로 튕긴다.
+- 쿠키 이름 상수는 `lib/auth/session.shared.ts` 로 뺐다. `session.ts` 는 `server-only` 를
+  끌고 와서 Edge 인 proxy 에서 import 할 수 없다.
+- `setRole` 은 트랜잭션이다. 읽고-쓰는 사이 중복 요청이 끼면 역할이 덮어써질 수 있다.
+- 역할 설정 직후 **`getIdToken(true)` 로 토큰을 강제 갱신**하고 세션 쿠키를 재발급한다.
+  안 하면 클레임이 반영 안 된 세션 때문에 온보딩으로 되돌아온다.
+- `login?next=` 는 서버에서 정규화한다. `//evil.com` 같은 오픈 리다이렉트를 막는다.
+- 에뮬레이터는 **프로젝트 로컬 `firebase-tools@13`** 으로 돌린다.
+  전역 CLI(14.x)는 **Java 21+** 를 요구하는데 이 머신에는 Java 17 만 있다.
+  JDK 를 올리면 `pnpm emu` 를 전역 CLI 로 되돌려도 된다.
+
+> **⚠️ 실제 구글 로그인을 보려면 Firebase 콘솔 작업이 선행돼야 한다.** 코드로 못 하는 부분이다.
+>
+> 1. Authentication → Sign-in method → **Google 공급자 활성화**
+> 2. Authentication → Settings → 승인된 도메인에 `localhost` 와 `insua.vercel.app` 추가
+> 3. Vercel 환경변수에 `.env.local.example` 의 키 전부 등록
+>    (`FIREBASE_PRIVATE_KEY` 는 Sensitive). **M2 코드부터는 없으면 프로덕션이 깨진다.**
 
 ---
 
@@ -267,7 +305,7 @@
 | -------- | ---- | ------ | ---- |
 | M0       | ✅   | 2026-08-08 | Next 16.3 / Tailwind v4. 강조색 대비 이슈 M1로 이월 |
 | M1       | ✅   | 2026-08-08 | 대비 176건 실측 전부 통과. `--accent-strong` / `--tier-*-on` 추가. zh·ja 원어민 검수 미완 |
-| M2       | ⬜   |        |      |
+| M2       | 🟡   | 2026-08-08 | Rules 22건 통과, 라우트 가드 확인. **구글 로그인 실검증은 Firebase 콘솔 설정 대기** |
 | M3       | ⬜   |        |      |
 | M4       | ⬜   |        |      |
 | M5       | ⬜   |        |      |

@@ -12,7 +12,8 @@
     "close": "閉じる",
     "retry": "再試行",
     "loading": "読み込み中",
-    "language": "言語"
+    "language": "言語",
+    "comingSoon": "準備中です"
   },
   "nav": {
     "home": "ホーム",
@@ -35,6 +36,9 @@
   "auth": {
     "signInWithGoogle": "Google で続ける",
     "signOut": "ログアウト",
+    "title": "ログイン",
+    "subtitle": "Google アカウントで始めます。別途の会員登録はありません。",
+    "signingIn": "ログインしています",
     "error": {
       "popupBlocked": "ポップアップがブロックされました。もう一度試すとページ遷移で進みます。",
       "network": "接続が切れました。ネットワークを確認して再試行してください。",
@@ -44,9 +48,12 @@
   },
   "onboarding": {
     "title": "どのようにお使いですか？",
+    "subtitle": "選んだあとはご自身で変更できません。変更が必要な場合は運営にお問い合わせください。",
     "agent": { "title": "顧客を管理します", "desc": "保険プランナー・営業" },
     "merchant": { "title": "お店を営んでいます", "desc": "飲食店・カフェ・農場・美容室" },
-    "consumer": { "title": "街の情報が知りたい", "desc": "住民・観光客" }
+    "consumer": { "title": "街の情報が知りたい", "desc": "住民・観光客" },
+    "submitting": "設定しています",
+    "error": { "alreadySet": "すでに役割が設定されています。変更は運営にお問い合わせください。" }
   },
   "theme": {
     "toggleLabel": "画面の明るさ",

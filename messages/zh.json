@@ -12,7 +12,8 @@
     "close": "关闭",
     "retry": "重试",
     "loading": "加载中",
-    "language": "语言"
+    "language": "语言",
+    "comingSoon": "正在准备中"
   },
   "nav": {
     "home": "首页",
@@ -35,6 +36,9 @@
   "auth": {
     "signInWithGoogle": "使用 Google 继续",
     "signOut": "退出登录",
+    "title": "登录",
+    "subtitle": "使用 Google 账号开始，无需单独注册。",
+    "signingIn": "正在登录",
     "error": {
       "popupBlocked": "弹窗被拦截。再次尝试将改为页面跳转。",
       "network": "连接已断开。请检查网络后重试。",
@@ -44,9 +48,12 @@
   },
   "onboarding": {
     "title": "您打算用来做什么？",
+    "subtitle": "选择后无法自行更改。如需变更请联系运营人员。",
     "agent": { "title": "我管理客户", "desc": "保险规划师·销售" },
     "merchant": { "title": "我经营店铺", "desc": "餐厅·咖啡馆·农场·美发店" },
-    "consumer": { "title": "我想了解本地资讯", "desc": "居民·游客" }
+    "consumer": { "title": "我想了解本地资讯", "desc": "居民·游客" },
+    "submitting": "正在设置",
+    "error": { "alreadySet": "角色已设定。如需变更请联系运营人员。" }
   },
   "theme": {
     "toggleLabel": "屏幕亮度",
