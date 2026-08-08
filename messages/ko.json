@@ -13,7 +13,9 @@
     "retry": "다시 시도",
     "loading": "불러오는 중",
     "language": "언어",
-    "comingSoon": "준비 중입니다"
+    "comingSoon": "준비 중입니다",
+    "previous": "이전",
+    "next": "다음"
   },
   "nav": {
     "home": "홈",

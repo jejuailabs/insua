@@ -13,7 +13,9 @@
     "retry": "Try again",
     "loading": "Loading",
     "language": "Language",
-    "comingSoon": "Not ready yet"
+    "comingSoon": "Not ready yet",
+    "previous": "Previous",
+    "next": "Next"
   },
   "nav": {
     "home": "Home",

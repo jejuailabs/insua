@@ -13,7 +13,9 @@
     "retry": "再試行",
     "loading": "読み込み中",
     "language": "言語",
-    "comingSoon": "準備中です"
+    "comingSoon": "準備中です",
+    "previous": "前へ",
+    "next": "次へ"
   },
   "nav": {
     "home": "ホーム",

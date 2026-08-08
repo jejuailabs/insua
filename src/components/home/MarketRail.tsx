@@ -17,7 +17,8 @@ export async function MarketRail({ items }: { items: MarketItem[] }) {
         </span>
       </div>
 
-      <ul className="-mx-4 mt-3 flex gap-3 overflow-x-auto px-4">
+      {/* 스크롤바는 감춘다 — 데스크톱에서 카드 밑에 회색 막대가 생겨 개발 화면처럼 보인다. */}
+      <ul className="-mx-4 mt-3 flex snap-x [scrollbar-width:none] gap-3 overflow-x-auto px-4 [&::-webkit-scrollbar]:hidden">
         {items.map((item) => (
           <li
             key={item.id}
