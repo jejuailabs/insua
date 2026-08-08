@@ -70,21 +70,25 @@
 
 > zh / ja 번역은 구조를 채운 것이고 **원어민 검수를 받지 않았다.** 실서비스 전에 검수 필요.
 
-**선행 배포 (M1 시점)**
+**배포 (이미 되어 있었음)**
 
-M8을 기다리지 않고 Vercel 프로덕션에 올렸다: https://insua-chi.vercel.app
-프로젝트는 `funjejus-projects/insua`, 현재 `vercel deploy --prod` 로 수동 배포한다.
-M1 코드는 Firebase 를 아직 읽지 않으므로 **환경변수 없이 빌드된다.**
+프로덕션 https://insua.vercel.app — `jejuai` 계정의 `insua` 프로젝트가 `jejuailabs/insua` 와
+연동돼 있어 **`main` 푸시가 곧 배포**다. M1 커밋도 이 경로로 자동 반영됐다.
 
-남은 배포 작업 (M2 착수 전에 필요한 것부터):
+> 여기서 사고가 하나 있었다. 로컬 `vercel` CLI 가 다른 계정(`funjejus-projects`)으로
+> 로그인돼 있는 걸 확인하지 않고 `vercel link` + `vercel deploy --prod` 를 실행해서
+> **엉뚱한 스코프에 중복 프로젝트를 만들었다.** 이미 배포 파이프라인이 있는데 모르고 새로 판 것이다.
+> 중복 프로젝트는 삭제했고 로컬 `.vercel` 링크도 제거했다.
+> 교훈: **배포·계정·권한은 확인하거나 물어보고 나서 손댄다. 추측해서 만들지 않는다.**
 
-- [ ] **Vercel ↔ GitHub 연결** — Vercel 계정(`funjejus-projects`)이 `jejuailabs/insua` 에
-      쓰기 권한이 없어 자동연결이 400 으로 실패했다. 두 계정을 맞추거나 Vercel 대시보드에서
-      직접 연결해야 `main` 푸시 자동배포가 걸린다.
-- [ ] **Vercel 환경변수 등록** — `.env.local.example` 의 키 전부. M2 부터 없으면 빌드가 깨진다.
+남은 배포 작업 (M2 착수 전, 콘솔에서 해야 함):
+
+- [ ] **Vercel 환경변수 등록** — `.env.local.example` 의 키 전부.
+      M1 코드는 Firebase 를 읽지 않아 지금은 없어도 빌드되지만, **M2 부터는 없으면 깨진다.**
       `FIREBASE_PRIVATE_KEY` 는 Sensitive 로 등록할 것.
-- [ ] **Firebase 승인된 도메인에 배포 URL 추가** — 안 하면 프로덕션에서 구글 로그인이 막힌다.
-- [ ] 배포 URL 을 `NEXT_PUBLIC_APP_URL` 에 반영.
+- [ ] **Firebase 승인된 도메인에 `insua.vercel.app` 추가** — 안 하면 프로덕션에서 구글 로그인이 막힌다.
+- [ ] **Firebase 콘솔에서 Google 로그인 공급자 활성화.**
+- [ ] `NEXT_PUBLIC_APP_URL` 을 `https://insua.vercel.app` 으로 설정.
 
 ---
 

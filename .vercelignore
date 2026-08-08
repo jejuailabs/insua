@@ -1,9 +1,0 @@
-# 로컬 환경변수는 절대 업로드하지 않는다. 배포 환경의 값은
-# Vercel Project Settings → Environment Variables 에서만 주입한다 (docs/01 §4).
-.env
-.env.*
-!.env.local.example
-
-node_modules
-.next
-.firebase

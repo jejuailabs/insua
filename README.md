@@ -49,16 +49,18 @@ Tailwind v4라서 `tailwind.config.ts` 가 없다. 디자인 토큰은 아래 �
 
 ## 배포
 
-프로덕션: https://insua-chi.vercel.app
+프로덕션: https://insua.vercel.app
 
-Vercel 프로젝트는 `funjejus-projects/insua`. 현재는 **CLI 수동 배포**다.
+Vercel 프로젝트는 **`jejuai` 계정의 `insua`**, GitHub 저장소 `jejuailabs/insua` 와 연동돼 있다.
+`main` 에 푸시하면 자동 배포된다. **CLI 로 수동 배포하지 말 것.**
 
 ```bash
-vercel deploy --prod
+git push origin main   # 이게 배포다
 ```
 
-> GitHub 저장소(`jejuailabs/insua`)와 Vercel 계정의 소유 조직이 달라서 Git 자동배포 연결이
-> 아직 안 돼 있다. 연결하면 `main` 푸시마다 자동 배포된다. → 아래 "남은 배포 작업"
+> ⚠️ 로컬 `vercel` CLI 는 다른 계정(`naggu1999-2767` / `funjejus-projects`)으로 로그인돼 있다.
+> 그 상태로 `vercel deploy` 를 하면 엉뚱한 스코프에 **중복 프로젝트가 생긴다.**
+> CLI 를 써야 한다면 먼저 `vercel whoami` 로 계정을 확인할 것.
 
 ## 지금 어디까지 왔나
 
