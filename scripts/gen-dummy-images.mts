@@ -137,14 +137,32 @@ const products: Group = {
       'a bubbling Korean abalone hot pot in a black stone bowl with side dishes around it',
     ],
     ['seaweed-soup', 'a bowl of Korean seaweed soup with sea urchin, served on a wooden tray'],
-    ['momguk', 'a bowl of Jeju momguk, Korean pork and seaweed soup in a rustic earthenware bowl on a wooden tray'],
+    [
+      'momguk',
+      'a bowl of Jeju momguk, Korean pork and seaweed soup in a rustic earthenware bowl on a wooden tray',
+    ],
     ['oreum-brew', 'a tall glass of iced black coffee with clear ice on a wooden cafe counter'],
-    ['vanilla-latte', 'a vanilla bean latte in a glass mug with visible vanilla specks, side view on a saucer'],
+    [
+      'vanilla-latte',
+      'a vanilla bean latte in a glass mug with visible vanilla specks, side view on a saucer',
+    ],
     ['salt-bread', 'golden Korean salt bread rolls glistening with butter on a wooden board'],
-    ['pork-neck', 'raw marbled pork neck slices arranged on a dark stone plate for Korean barbecue'],
-    ['doenjang-stew', 'a small bubbling Korean soybean paste stew in a stone pot with tofu and zucchini'],
-    ['ethiopia-beans', 'an open burlap sack of light roasted coffee beans with a wooden scoop, blank unlabeled sack'],
-    ['hair-treatment', 'a minimal unlabeled white squeeze tube of hair treatment on a pale stone surface beside a wooden comb, blank tube with no text'],
+    [
+      'pork-neck',
+      'raw marbled pork neck slices arranged on a dark stone plate for Korean barbecue',
+    ],
+    [
+      'doenjang-stew',
+      'a small bubbling Korean soybean paste stew in a stone pot with tofu and zucchini',
+    ],
+    [
+      'ethiopia-beans',
+      'an open burlap sack of light roasted coffee beans with a wooden scoop, blank unlabeled sack',
+    ],
+    [
+      'hair-treatment',
+      'a minimal unlabeled white squeeze tube of hair treatment on a pale stone surface beside a wooden comb, blank tube with no text',
+    ],
     ['black-pork', 'raw marinated Jeju black pork belly slices arranged on a black grill plate'],
     [
       'shampoo',

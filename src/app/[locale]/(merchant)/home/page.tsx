@@ -18,9 +18,11 @@ import Image from 'next/image'
 import { BottomTabBar } from '@/components/layout/BottomTabBar'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { requireRolePage } from '@/lib/auth/guards'
+import { Link } from '@/lib/i18n/navigation'
+import { countRecentAuthors, listAnonymousPosts } from '@/lib/merchant/anonymous'
 import { ANONYMOUS_ROOM, GROUP_BUYS, REALTY_LISTINGS, SUPPORT_PROGRAMS } from '@/lib/mock/merchant'
 
-/** 소상공인 커뮤니티 홈 (docs/07 A, ref-02). 목데이터 단계 — 실데이터는 M5 후반. */
+/** 소상공인 커뮤니티 홈 (docs/07 A, ref-02). 익명방은 실데이터, 나머지 섹션은 M5 후반. */
 export default async function MerchantHomePage({
   params,
 }: {
@@ -29,6 +31,11 @@ export default async function MerchantHomePage({
   const { locale } = await params
   setRequestLocale(locale)
   await requireRolePage(locale, ['merchant'])
+
+  // 익명방 미리보기 — 실글이 있으면 실글, 없으면 목데이터로 빈 카드를 피한다.
+  const [realPosts, realCount] = await Promise.all([listAnonymousPosts(3), countRecentAuthors()])
+  const posts = realPosts.length ? realPosts : ANONYMOUS_ROOM.posts
+  const liveCount = realPosts.length ? realCount : ANONYMOUS_ROOM.liveCount
 
   const t = await getTranslations()
 
@@ -60,17 +67,20 @@ export default async function MerchantHomePage({
               <h2 className="text-subtitle">{t('anonymous.roomName')}</h2>
               <p className="mt-0.5 text-caption opacity-85">{t('anonymous.desc')}</p>
               <p className="mt-1 text-caption opacity-85">
-                {t('anonymous.liveCount', { count: ANONYMOUS_ROOM.liveCount })}
+                {t('anonymous.liveCount', { count: liveCount })}
               </p>
             </div>
-            <span className="flex shrink-0 items-center gap-1 rounded-pill bg-black/20 px-3 py-1.5 text-label">
+            <Link
+              href="/anonymous"
+              className="flex shrink-0 items-center gap-1 rounded-pill bg-black/20 px-3 py-1.5 text-label"
+            >
               {t('anonymous.enter')}
               <ChevronRight size={14} aria-hidden />
-            </span>
+            </Link>
           </div>
 
           <ul className="mt-3 flex flex-col gap-1.5">
-            {ANONYMOUS_ROOM.posts.map((post) => (
+            {posts.map((post) => (
               <li key={post.id} className="rounded-inner bg-white/10 px-3 py-2.5">
                 <div className="flex items-center justify-between gap-3">
                   <p className="min-w-0 truncate text-label">{post.title}</p>
@@ -89,12 +99,12 @@ export default async function MerchantHomePage({
             ))}
           </ul>
 
-          <button
-            type="button"
+          <Link
+            href="/anonymous"
             className="mt-3 flex min-h-11 w-full items-center justify-center rounded-pill bg-black/25 text-label"
           >
             {t('merchant.enterAnonymous')}
-          </button>
+          </Link>
 
           <p className="mt-3 text-micro opacity-75">{t('anonymous.notice')}</p>
         </section>
@@ -210,11 +220,11 @@ export default async function MerchantHomePage({
   )
 }
 
-/** 퀵액션 6칸. 대상 화면은 이번 스코프 밖이라 타일만 둔다 (docs/07 A-3). */
+/** 퀵액션 6칸 (docs/07 A-3). 익명방만 실화면이 있고 나머지는 홈 내 섹션으로 스크롤 대신 표시만. */
 async function QuickActions() {
   const t = await getTranslations()
   const items = [
-    { icon: MessagesSquare, label: t('merchant.quick.anonymous') },
+    { icon: MessagesSquare, label: t('merchant.quick.anonymous'), href: '/anonymous' },
     { icon: HomeIcon, label: t('merchant.quick.realty') },
     { icon: Landmark, label: t('merchant.quick.support') },
     { icon: ShoppingCart, label: t('merchant.quick.groupbuy') },
@@ -225,15 +235,17 @@ async function QuickActions() {
   // ref-02 는 모바일에서도 6칸 한 줄이다.
   return (
     <ul className="mt-4 grid grid-cols-6 gap-1.5">
-      {items.map(({ icon: Icon, label }) => (
-        <li
-          key={label}
-          className="flex flex-col items-center justify-center gap-1 rounded-inner border border-line bg-surface-2 px-0.5 py-2.5"
-        >
-          <Icon size={18} aria-hidden className="text-content" />
-          <span className="w-full truncate text-center text-micro text-content-muted">{label}</span>
-        </li>
-      ))}
+      {items.map(({ icon: Icon, label, href }) => {
+        const tile = (
+          <span className="flex flex-col items-center justify-center gap-1 rounded-inner border border-line bg-surface-2 px-0.5 py-2.5">
+            <Icon size={18} aria-hidden className="text-content" />
+            <span className="w-full truncate text-center text-micro text-content-muted">
+              {label}
+            </span>
+          </span>
+        )
+        return <li key={label}>{href ? <Link href={href}>{tile}</Link> : tile}</li>
+      })}
     </ul>
   )
 }

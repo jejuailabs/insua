@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils/cn'
-import type { Tier } from '@/lib/mock/crm'
+import type { Tier } from '@/lib/crm/types'
 
 /** 등급 배지 (docs/04 §5.3). 배경 = 등급색, 글자 = 등급별 -on 색으로 대비를 맞춘다. */
 const TIER_CLASS: Record<Tier, string> = {

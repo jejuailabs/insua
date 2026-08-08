@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Heart, Star } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useCallback, useRef, useState } from 'react'
@@ -20,10 +20,18 @@ import { cn } from '@/lib/utils/cn'
 export function HeroCarousel({
   heroes,
   onIndexChange,
+  savedIds,
+  onToggleSave,
+  onCouponClick,
 }: {
   heroes: Hero[]
   /** 활성 카드가 바뀔 때 — 피드가 하단 상품 섹션을 업종에 맞춰 갈아끼운다 (ref-04). */
   onIndexChange?: (index: number) => void
+  /** 찜된 매장 id 목록 (docs/08 §8). 없으면 하트를 그리지 않는다. */
+  savedIds?: string[]
+  onToggleSave?: (heroId: string) => void
+  /** 할인 타일 탭 → 쿠폰 시트 (docs/08 §7). */
+  onCouponClick?: (hero: Hero, rate: number) => void
 }) {
   const t = useTranslations()
   const [index, setIndexRaw] = useState(0)
@@ -112,8 +120,28 @@ export function HeroCarousel({
               <span className="tabular absolute top-3 left-3 rounded-chip bg-black/50 px-2 py-1 text-micro text-white">
                 {String(i + 1).padStart(2, '0')}
               </span>
-              <span className="absolute top-3 right-3 rounded-pill bg-black/50 px-3 py-1 text-micro text-white">
-                {t(`consumer.category.${hero.category}`)}
+              <span className="absolute top-3 right-3 flex items-center gap-1.5">
+                <span className="rounded-pill bg-black/50 px-3 py-1 text-micro text-white">
+                  {t(`consumer.category.${hero.category}`)}
+                </span>
+                {onToggleSave && (
+                  <button
+                    type="button"
+                    aria-label={t('nav.saved')}
+                    aria-pressed={savedIds?.includes(hero.id) ?? false}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      onToggleSave(hero.id)
+                    }}
+                    className="grid h-8 w-8 place-items-center rounded-pill bg-black/50 text-white transition-transform active:scale-90"
+                  >
+                    <Heart
+                      size={15}
+                      aria-hidden
+                      className={savedIds?.includes(hero.id) ? 'fill-current' : undefined}
+                    />
+                  </button>
+                )}
               </span>
 
               <div className="absolute inset-x-0 bottom-0 p-4">
@@ -129,7 +157,15 @@ export function HeroCarousel({
 
                 <ul className="mt-3 flex gap-1.5">
                   {hero.perks.map((perk) => (
-                    <PerkChip key={perkKey(perk)} perk={perk} />
+                    <PerkChip
+                      key={perkKey(perk)}
+                      perk={perk}
+                      onClick={
+                        perk.kind === 'discount' && onCouponClick
+                          ? () => onCouponClick(hero, perk.rate)
+                          : undefined
+                      }
+                    />
                   ))}
                 </ul>
               </div>
@@ -195,7 +231,7 @@ function perkValue(perk: Perk): string {
   }
 }
 
-function PerkChip({ perk }: { perk: Perk }) {
+function PerkChip({ perk, onClick }: { perk: Perk; onClick?: () => void }) {
   const t = useTranslations('consumer')
   const label =
     perk.kind === 'discount'
@@ -206,10 +242,34 @@ function PerkChip({ perk }: { perk: Perk }) {
           ? t('signature')
           : t('gift')
 
-  return (
-    <li className="flex min-w-0 flex-1 flex-col items-center gap-0.5 rounded-chip bg-black/45 px-2 py-2 text-center">
+  const inner = (
+    <>
       <span className="w-full truncate text-label text-white">{perkValue(perk)}</span>
       <span className="w-full truncate text-micro text-white/70">{label}</span>
+    </>
+  )
+
+  if (onClick) {
+    // 할인 타일은 쿠폰 시트 입구다 (docs/08 §7).
+    return (
+      <li className="min-w-0 flex-1">
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation()
+            onClick()
+          }}
+          className="flex w-full flex-col items-center gap-0.5 rounded-chip bg-black/45 px-2 py-2 text-center ring-1 ring-white/25"
+        >
+          {inner}
+        </button>
+      </li>
+    )
+  }
+
+  return (
+    <li className="flex min-w-0 flex-1 flex-col items-center gap-0.5 rounded-chip bg-black/45 px-2 py-2 text-center">
+      {inner}
     </li>
   )
 }
