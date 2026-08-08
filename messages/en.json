@@ -105,7 +105,9 @@
       "title": "No clients yet",
       "action": "Add your first client"
     },
-    "dueSoon": "{count} clients are due for contact"
+    "dueSoon": "{count} clients are due for contact",
+    "overdueDays": "{n}d overdue",
+    "sortDue": "Due first"
   },
   "merchant": {
     "spaceName": "A space just for local owners",
@@ -127,6 +129,14 @@
       "photo": "Photo",
       "voice": "Voice",
       "anonymous": "Post anonymously"
+    },
+    "quick": {
+      "anonymous": "Anonymous",
+      "realty": "Realty",
+      "support": "Support & Loans",
+      "groupbuy": "Group buy",
+      "aitools": "AI Tools",
+      "share": "Share"
     }
   },
   "anonymous": {

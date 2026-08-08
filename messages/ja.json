@@ -105,7 +105,9 @@
       "title": "まだ登録された顧客がいません",
       "action": "最初の顧客を登録する"
     },
-    "dueSoon": "{count}名の連絡時期になりました"
+    "dueSoon": "{count}名の連絡時期になりました",
+    "overdueDays": "{n}日超過",
+    "sortDue": "連絡期限順"
   },
   "merchant": {
     "spaceName": "個人店主だけの空間",
@@ -127,6 +129,14 @@
       "photo": "写真",
       "voice": "音声",
       "anonymous": "匿名ルームに投稿"
+    },
+    "quick": {
+      "anonymous": "匿名ルーム",
+      "realty": "不動産",
+      "support": "政府支援·融資",
+      "groupbuy": "共同購入",
+      "aitools": "AI Tools",
+      "share": "情報共有"
     }
   },
   "anonymous": {

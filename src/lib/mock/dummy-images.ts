@@ -74,3 +74,14 @@ export const products = {
 } as const
 
 export type ProductsKey = keyof typeof products
+
+export const realty = {
+  storefront1:
+    'https://firebasestorage.googleapis.com/v0/b/insua-44b86.firebasestorage.app/o/dummy%2Frealty%2Fstorefront-1.webp?alt=media&token=2c94bc76-e19e-48b8-a313-4770161bb0df',
+  storefront2:
+    'https://firebasestorage.googleapis.com/v0/b/insua-44b86.firebasestorage.app/o/dummy%2Frealty%2Fstorefront-2.webp?alt=media&token=ea1d69b2-568a-4359-9744-2d14e543ea23',
+  storefront3:
+    'https://firebasestorage.googleapis.com/v0/b/insua-44b86.firebasestorage.app/o/dummy%2Frealty%2Fstorefront-3.webp?alt=media&token=694eeb32-3f04-4e1c-98eb-b33b29259971',
+} as const
+
+export type RealtyKey = keyof typeof realty

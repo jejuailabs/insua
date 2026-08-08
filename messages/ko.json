@@ -105,7 +105,9 @@
       "title": "아직 등록된 고객이 없습니다",
       "action": "첫 고객 등록하기"
     },
-    "dueSoon": "{count}명이 연락할 때가 됐습니다"
+    "dueSoon": "{count}명이 연락할 때가 됐습니다",
+    "overdueDays": "{n}일 지남",
+    "sortDue": "연락 임박순"
   },
   "merchant": {
     "spaceName": "소상공인들만의 공간",
@@ -127,6 +129,14 @@
       "photo": "사진",
       "voice": "음성",
       "anonymous": "익명방에 글쓰기"
+    },
+    "quick": {
+      "anonymous": "익명방",
+      "realty": "부동산",
+      "support": "정부지원·대출",
+      "groupbuy": "공동구매",
+      "aitools": "AI Tools",
+      "share": "정보공유"
     }
   },
   "anonymous": {

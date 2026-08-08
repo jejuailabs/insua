@@ -23,7 +23,7 @@ import { getStorage } from 'firebase-admin/storage'
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const SRC_ROOT = join(ROOT, '.dummy-images')
 const MANIFEST = join(ROOT, 'src', 'lib', 'mock', 'dummy-images.ts')
-const GROUPS = ['avatars', 'merchants', 'products'] as const
+const GROUPS = ['avatars', 'merchants', 'products', 'realty'] as const
 const PREFIX = 'dummy'
 
 function env(): Record<string, string> {
@@ -62,7 +62,8 @@ function downloadUrl(bucketName: string, path: string, token: string) {
 }
 
 function camel(name: string) {
-  return name.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())
+  // 숫자 뒤 하이픈(storefront-1)도 식별자가 되도록 하이픈은 전부 삼킨다.
+  return name.replace(/-([a-z0-9])/g, (_, c: string) => c.toUpperCase())
 }
 
 async function main() {

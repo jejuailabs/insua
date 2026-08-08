@@ -153,10 +153,34 @@ const products: Group = {
   })),
 }
 
+/** 부동산 매매·임대 카드 (docs/07 A-5) — 가로 카드 */
+const realty: Group = {
+  dir: 'realty',
+  items: [
+    [
+      'storefront-1',
+      'an empty small commercial storefront for lease on a quiet Jeju street corner, glass frontage, warm afternoon light',
+    ],
+    [
+      'storefront-2',
+      'a two-story commercial building exterior with empty retail space on the ground floor, coastal Korean town street',
+    ],
+    [
+      'storefront-3',
+      'a small vacant cafe space exterior with large windows on a tree-lined local street',
+    ],
+  ].map(([file, prompt]) => ({
+    file: `${file}.webp`,
+    size: '1536x1024' as Size,
+    prompt: `Real-estate listing photo: ${prompt}. Straight-on exterior view, no people, no signage text. ${LOOK}`,
+  })),
+}
+
 const GROUPS: Record<string, Group> = {
   avatars,
   merchants,
   products,
+  realty,
 }
 
 // ── 실행 ──────────────────────────────────────────────────────────

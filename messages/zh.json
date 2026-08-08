@@ -105,7 +105,9 @@
       "title": "还没有登记的客户",
       "action": "添加第一位客户"
     },
-    "dueSoon": "有 {count} 位客户到了联系时间"
+    "dueSoon": "有 {count} 位客户到了联系时间",
+    "overdueDays": "已过 {n} 天",
+    "sortDue": "按联系时间"
   },
   "merchant": {
     "spaceName": "小微店主的专属空间",
@@ -127,6 +129,14 @@
       "photo": "照片",
       "voice": "语音",
       "anonymous": "在匿名区发帖"
+    },
+    "quick": {
+      "anonymous": "匿名房",
+      "realty": "房产",
+      "support": "政府支持·贷款",
+      "groupbuy": "团购",
+      "aitools": "AI 工具",
+      "share": "信息共享"
     }
   },
   "anonymous": {
