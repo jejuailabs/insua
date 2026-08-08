@@ -37,5 +37,9 @@
     "tailwindcss": "^4",
     "typescript": "^5"
   },
-  "packageManager": "pnpm@10.33.2"
+  "packageManager": "pnpm@10.33.2",
+  "engines": {
+    "//": "scripts/check-i18n.mts 를 Node 의 타입 스트리핑으로 바로 실행한다. 22.18 미만에서는 실패한다.",
+    "node": "22.x"
+  }
 }
