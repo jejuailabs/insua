@@ -1,0 +1,188 @@
+{
+  "meta": {
+    "description": "AI 本地商业平台"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "more": "更多",
+    "search": "搜索",
+    "close": "关闭",
+    "retry": "重试",
+    "loading": "加载中",
+    "language": "语言"
+  },
+  "nav": {
+    "home": "首页",
+    "crm": "CRM",
+    "interactions": "咨询记录",
+    "schedule": "日程",
+    "messages": "消息",
+    "stats": "统计",
+    "settings": "设置",
+    "feed": "首页",
+    "heroes": "本地英雄",
+    "market": "市集",
+    "events": "活动",
+    "saved": "收藏的店",
+    "myPage": "我的",
+    "notifications": "通知",
+    "write": "发布",
+    "myInfo": "我的信息"
+  },
+  "auth": {
+    "signInWithGoogle": "使用 Google 继续",
+    "signOut": "退出登录",
+    "error": {
+      "popupBlocked": "弹窗被拦截。再次尝试将改为页面跳转。",
+      "network": "连接已断开。请检查网络后重试。",
+      "forbidden": "您没有访问此页面的权限。",
+      "needsOnboarding": "请先选择您的使用目的。"
+    }
+  },
+  "onboarding": {
+    "title": "您打算用来做什么？",
+    "agent": { "title": "我管理客户", "desc": "保险规划师·销售" },
+    "merchant": { "title": "我经营店铺", "desc": "餐厅·咖啡馆·农场·美发店" },
+    "consumer": { "title": "我想了解本地资讯", "desc": "居民·游客" }
+  },
+  "theme": {
+    "toggleLabel": "屏幕亮度",
+    "light": "浅色",
+    "dark": "深色",
+    "system": "跟随系统",
+    "palette": "配色主题",
+    "paletteName": {
+      "basalt": "玄武岩",
+      "gyul": "柑橘",
+      "gotjawal": "原始林",
+      "badang": "大海"
+    }
+  },
+  "tier": { "S": "S级", "A": "A级", "B": "B级", "C": "C级" },
+  "crm": {
+    "title": "CRM",
+    "filterAll": "全部 {count}",
+    "filterTier": "{tier} {count}",
+    "sort": "排序",
+    "bulkSms": "群发短信",
+    "mapView": "地图查看",
+    "recordConsult": "咨询录音",
+    "newContact": "新增客户",
+    "calendar": "日历",
+    "note": "备注",
+    "consultLog": "咨询记录",
+    "empty": { "title": "还没有登记的客户", "action": "添加第一位客户" },
+    "dueSoon": "有 {count} 位客户到了联系时间"
+  },
+  "merchant": {
+    "spaceName": "小微店主的专属空间",
+    "greeting": "老板，今天也辛苦了！",
+    "greetingSub": "一起分享、互相帮助的空间",
+    "myStore": "我的店铺",
+    "editModules": "编辑板块",
+    "signatureMenu": "招牌菜单",
+    "popularMenu": "人气菜单",
+    "representativeMenu": "代表菜单",
+    "signatureService": "招牌服务",
+    "mainProduce": "主要作物",
+    "popularItems": "热门商品",
+    "storeIntro": "店铺介绍",
+    "viewMap": "查看地图",
+    "composerHint": "留下消息或照片吧！",
+    "composer": {
+      "text": "文字",
+      "photo": "照片",
+      "voice": "语音",
+      "anonymous": "在匿名区发帖"
+    }
+  },
+  "anonymous": {
+    "roomName": "当老板真不容易",
+    "desc": "匿名倾诉烦恼、互相鼓励的空间",
+    "liveCount": "现在有 {count} 人在聊",
+    "enter": "进入",
+    "notice": "店名、地址和人物信息会自动屏蔽。收到举报后运营团队会进行核实。"
+  },
+  "realty": {
+    "section": "商铺买卖·租赁信息",
+    "sectionSub": "拥有自己店铺的梦想，一起来找",
+    "rent": "租赁",
+    "sale": "买卖",
+    "deposit": "押金",
+    "monthly": "月租",
+    "pyeong": "{n}坪",
+    "floor": "{n}层"
+  },
+  "support": {
+    "section": "政府扶持·专项贷款信息",
+    "sectionSub": "查看面向小微商户的各类扶持",
+    "grant": "扶持",
+    "loan": "贷款",
+    "education": "培训",
+    "maxAmount": "最高 {amount}",
+    "rate": "年利率 {rate}%",
+    "alwaysOpen": "常年受理",
+    "sourceNotice": "实际条件请以相关机构公告为准。",
+    "viewSource": "查看公告原文"
+  },
+  "groupBuy": {
+    "section": "团购 · 济州优惠",
+    "sectionSub": "老板们一起买更便宜",
+    "discountUpTo": "最高 {rate}% 折扣",
+    "participants": "参与 {count} 人",
+    "deadline": "距截止还有 {days} 天"
+  },
+  "aiTools": {
+    "section": "AI Tools",
+    "menuPoster": "菜单图片",
+    "themeSong": "主题曲制作",
+    "virtualStudio": "虚拟工作室",
+    "virtualStudioSub": "服装 · 美发 · 美甲 · 宠物",
+    "freeWithAgent": "有专属规划师即可免费使用。",
+    "paidWithoutAgent": "指定专属规划师后即可免费。"
+  },
+  "consumer": {
+    "brand": "LOCAL HERO",
+    "todayFresh": "今日济州新鲜直供",
+    "radius": "半径 {km}km",
+    "discount": "{rate}% 折扣",
+    "signature": "招牌",
+    "hours": "营业时间",
+    "reservationRequired": "需预约",
+    "category": {
+      "restaurant": "餐厅",
+      "cafe": "咖啡馆",
+      "bakery": "烘焙店",
+      "salon": "美发店",
+      "farm": "农户",
+      "retail": "零售",
+      "etc": "其他"
+    },
+    "productSection": {
+      "restaurant": "今日济州新鲜直供",
+      "cafe": "新鲜烘焙的咖啡豆与甜点",
+      "bakery": "今天现烤的面包与甜点",
+      "salon": "头发与头皮护理产品",
+      "farm": "济州刚采摘的新鲜食材",
+      "retail": "本店推荐商品",
+      "etc": "本店推荐商品"
+    }
+  },
+  "admin": {
+    "title": "管理员",
+    "banner": "您正以管理员权限查看",
+    "users": "会员",
+    "content": "内容",
+    "reports": "举报",
+    "supportPrograms": "扶持信息",
+    "auditLogs": "审计日志"
+  },
+  "format": {
+    "currency": "₩{amount}",
+    "rating": "{rating} ({count})",
+    "reviewCount": "评价 {count}"
+  }
+}

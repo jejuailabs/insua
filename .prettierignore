@@ -1,0 +1,14 @@
+node_modules
+.next
+out
+build
+pnpm-lock.yaml
+public/fonts
+
+# pretendard 패키지에서 생성한 파일. 손으로 포맷하지 않는다.
+src/styles/pretendard.css
+
+# 스펙 문서는 사람이 쓴 산문이다. Prettier 의 표 정렬은 한글(전각) 폭을 계산하지 못해
+# 오히려 열이 어긋난다. 포맷터를 대지 않는다.
+*.md
+docs/**/*.md

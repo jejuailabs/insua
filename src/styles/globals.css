@@ -1,0 +1,140 @@
+@import 'tailwindcss';
+@import './pretendard.css';
+@import './tokens.css';
+
+/* next-themes 가 <html> 에 .dark 를 붙인다 (docs/04 §6.2).
+ * Tailwind v4 기본값은 prefers-color-scheme 이므로 클래스 기반으로 바꾼다. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── 유틸리티를 만들어내는 토큰 ──
+ * Tailwind v4 는 CSS-first 설정이라 tailwind.config.ts 가 없다.
+ * 아래 @theme 블록이 docs/04 §2.3 의 tailwind.config 를 대체한다.
+ * non-inline @theme 은 값을 :root 에 그대로 내보내므로 var(--radius-card) 도 계속 쓸 수 있다. */
+@theme {
+  --font-sans:
+    'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+    'Malgun Gothic', system-ui, sans-serif;
+
+  /* 모서리 (docs/04 §4) → rounded-card / rounded-inner / rounded-chip / rounded-pill */
+  --radius-card: 20px;
+  --radius-inner: 14px;
+  --radius-chip: 10px;
+  --radius-pill: 999px;
+
+  /* 타이포 스케일 (docs/04 §3) → text-display / text-title / ... / text-micro
+   * 크기·행간·웨이트·자간이 한 유틸리티에 묶인다. 임의값(text-[13px]) 금지의 전제 (docs/12 §3). */
+  --text-display: 28px;
+  --text-display--line-height: 34px;
+  --text-display--font-weight: 800;
+  --text-display--letter-spacing: -0.03em;
+
+  --text-title: 20px;
+  --text-title--line-height: 28px;
+  --text-title--font-weight: 700;
+  --text-title--letter-spacing: -0.02em;
+
+  --text-subtitle: 16px;
+  --text-subtitle--line-height: 24px;
+  --text-subtitle--font-weight: 600;
+  --text-subtitle--letter-spacing: -0.01em;
+
+  --text-body: 15px;
+  --text-body--line-height: 23px;
+  --text-body--font-weight: 400;
+  --text-body--letter-spacing: -0.01em;
+
+  --text-label: 13px;
+  --text-label--line-height: 18px;
+  --text-label--font-weight: 600;
+  --text-label--letter-spacing: 0;
+
+  --text-caption: 12px;
+  --text-caption--line-height: 16px;
+  --text-caption--font-weight: 500;
+  --text-caption--letter-spacing: 0;
+
+  --text-micro: 11px;
+  --text-micro--line-height: 14px;
+  --text-micro--font-weight: 600;
+  --text-micro--letter-spacing: 0.02em;
+}
+
+/* 색은 테마·팔레트에 따라 런타임에 바뀌므로 inline 으로 선언한다.
+ * inline 이 아니면 Tailwind 가 값을 복사해 굳혀버려 테마 전환이 먹지 않는다. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-raised: var(--surface-raised);
+
+  --color-content: var(--text);
+  --color-content-muted: var(--text-muted);
+  --color-content-faint: var(--text-faint);
+
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-ring: var(--accent-ring);
+  --color-accent-on: var(--text-on-accent);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+
+  --color-tier-s: var(--tier-s);
+  --color-tier-a: var(--tier-a);
+  --color-tier-b: var(--tier-b);
+  --color-tier-c: var(--tier-c);
+
+  --color-tier-s-on: var(--tier-s-on);
+  --color-tier-a-on: var(--tier-a-on);
+  --color-tier-b-on: var(--tier-b-on);
+  --color-tier-c-on: var(--tier-c-on);
+
+  /* 라이트에서만 그림자, 다크에서는 none (docs/04 §6.4) */
+  --shadow-card: var(--card-shadow);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    letter-spacing: var(--text-body--letter-spacing);
+  }
+
+  /* 모든 인터랙티브 요소에 보이는 포커스 링 (docs/04 §8) */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* 가격·평수·평점 등 수치는 자릿수가 흔들리면 안 된다 (docs/04 §3).
+   * Tailwind 내장 `tabular-nums` 유틸리티와 동일하며, raw CSS 용으로 남겨둔다. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* prefers-reduced-motion 에서는 예외 없이 모든 모션을 끈다 (docs/04 §7).
+ * 유틸리티 레이어가 뒤에 오므로 이 접근성 리셋에서만 !important 를 허용한다 (docs/12 §3 예외). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,188 @@
+{
+  "meta": {
+    "description": "An AI platform for local business"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "more": "More",
+    "search": "Search",
+    "close": "Close",
+    "retry": "Try again",
+    "loading": "Loading",
+    "language": "Language"
+  },
+  "nav": {
+    "home": "Home",
+    "crm": "CRM",
+    "interactions": "Consultations",
+    "schedule": "Schedule",
+    "messages": "Messages",
+    "stats": "Stats",
+    "settings": "Settings",
+    "feed": "Home",
+    "heroes": "Heroes",
+    "market": "Market",
+    "events": "Events",
+    "saved": "Saved",
+    "myPage": "My page",
+    "notifications": "Alerts",
+    "write": "Post",
+    "myInfo": "Profile"
+  },
+  "auth": {
+    "signInWithGoogle": "Continue with Google",
+    "signOut": "Sign out",
+    "error": {
+      "popupBlocked": "The popup was blocked. Trying again will redirect this page instead.",
+      "network": "The connection dropped. Check your network and try again.",
+      "forbidden": "You do not have access to this screen.",
+      "needsOnboarding": "Choose what you will use this for first."
+    }
+  },
+  "onboarding": {
+    "title": "What will you use this for?",
+    "agent": { "title": "I manage clients", "desc": "Insurance planners and sales" },
+    "merchant": { "title": "I run a shop", "desc": "Restaurants, cafés, farms, salons" },
+    "consumer": { "title": "I want local news", "desc": "Residents and visitors" }
+  },
+  "theme": {
+    "toggleLabel": "Brightness",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "palette": "Color theme",
+    "paletteName": {
+      "basalt": "Basalt",
+      "gyul": "Tangerine",
+      "gotjawal": "Gotjawal",
+      "badang": "Badang"
+    }
+  },
+  "tier": { "S": "Tier S", "A": "Tier A", "B": "Tier B", "C": "Tier C" },
+  "crm": {
+    "title": "CRM",
+    "filterAll": "All {count}",
+    "filterTier": "{tier} {count}",
+    "sort": "Sort",
+    "bulkSms": "Bulk message",
+    "mapView": "Map view",
+    "recordConsult": "Record consultation",
+    "newContact": "Add client",
+    "calendar": "Calendar",
+    "note": "Notes",
+    "consultLog": "Consultations",
+    "empty": { "title": "No clients yet", "action": "Add your first client" },
+    "dueSoon": "{count} clients are due for contact"
+  },
+  "merchant": {
+    "spaceName": "A space just for local owners",
+    "greeting": "You worked hard today.",
+    "greetingSub": "A space where we share and help each other",
+    "myStore": "My store",
+    "editModules": "Edit sections",
+    "signatureMenu": "Signature menu",
+    "popularMenu": "Popular menu",
+    "representativeMenu": "Featured menu",
+    "signatureService": "Signature service",
+    "mainProduce": "Main produce",
+    "popularItems": "Popular items",
+    "storeIntro": "About this store",
+    "viewMap": "View map",
+    "composerHint": "Share some news or a photo.",
+    "composer": {
+      "text": "Text",
+      "photo": "Photo",
+      "voice": "Voice",
+      "anonymous": "Post anonymously"
+    }
+  },
+  "anonymous": {
+    "roomName": "Being a boss hurts",
+    "desc": "Share worries anonymously and support each other",
+    "liveCount": "{count} people talking now",
+    "enter": "Enter",
+    "notice": "Store names, addresses and personal details are masked automatically. Reports are reviewed by our team."
+  },
+  "realty": {
+    "section": "Commercial property",
+    "sectionSub": "Looking for a place of your own? Search together.",
+    "rent": "Lease",
+    "sale": "Sale",
+    "deposit": "Deposit",
+    "monthly": "Monthly",
+    "pyeong": "{n} pyeong",
+    "floor": "Floor {n}"
+  },
+  "support": {
+    "section": "Government support and loans",
+    "sectionSub": "Check the programs available to small business owners",
+    "grant": "Grant",
+    "loan": "Loan",
+    "education": "Training",
+    "maxAmount": "Up to {amount}",
+    "rate": "{rate}% per year",
+    "alwaysOpen": "Always open",
+    "sourceNotice": "Check the issuing agency's notice for the actual terms.",
+    "viewSource": "View the original notice"
+  },
+  "groupBuy": {
+    "section": "Group buying · Jeju deals",
+    "sectionSub": "Cheaper when we buy together",
+    "discountUpTo": "Up to {rate}% off",
+    "participants": "{count} joined",
+    "deadline": "{days} days left"
+  },
+  "aiTools": {
+    "section": "AI Tools",
+    "menuPoster": "Menu poster",
+    "themeSong": "Theme song",
+    "virtualStudio": "Virtual studio",
+    "virtualStudioSub": "Apparel · Hair · Nail · Pet",
+    "freeWithAgent": "Free to use if you have an assigned planner.",
+    "paidWithoutAgent": "Assign a planner to switch to free."
+  },
+  "consumer": {
+    "brand": "LOCAL HERO",
+    "todayFresh": "Fresh from Jeju today",
+    "radius": "{km}km radius",
+    "discount": "{rate}% off",
+    "signature": "Signature",
+    "hours": "Hours",
+    "reservationRequired": "Booking required",
+    "category": {
+      "restaurant": "Restaurant",
+      "cafe": "Café",
+      "bakery": "Bakery",
+      "salon": "Salon",
+      "farm": "Farmer",
+      "retail": "Retail",
+      "etc": "Other"
+    },
+    "productSection": {
+      "restaurant": "Fresh from Jeju today",
+      "cafe": "Freshly roasted beans & desserts",
+      "bakery": "Baked fresh today",
+      "salon": "Hair & scalp care products",
+      "farm": "Just harvested in Jeju",
+      "retail": "Picks from this shop",
+      "etc": "Picks from this shop"
+    }
+  },
+  "admin": {
+    "title": "Admin",
+    "banner": "You are viewing this with admin rights",
+    "users": "Users",
+    "content": "Content",
+    "reports": "Reports",
+    "supportPrograms": "Support programs",
+    "auditLogs": "Audit log"
+  },
+  "format": {
+    "currency": "₩{amount}",
+    "rating": "{rating} ({count})",
+    "reviewCount": "{count} reviews"
+  }
+}

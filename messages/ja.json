@@ -1,0 +1,188 @@
+{
+  "meta": {
+    "description": "AI ローカルビジネスプラットフォーム"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "edit": "編集",
+    "more": "もっと見る",
+    "search": "検索",
+    "close": "閉じる",
+    "retry": "再試行",
+    "loading": "読み込み中",
+    "language": "言語"
+  },
+  "nav": {
+    "home": "ホーム",
+    "crm": "CRM",
+    "interactions": "相談ログ",
+    "schedule": "予定",
+    "messages": "メッセージ",
+    "stats": "統計",
+    "settings": "設定",
+    "feed": "ホーム",
+    "heroes": "ヒーロー",
+    "market": "マーケット",
+    "events": "イベント",
+    "saved": "お気に入り",
+    "myPage": "マイページ",
+    "notifications": "お知らせ",
+    "write": "投稿",
+    "myInfo": "マイ情報"
+  },
+  "auth": {
+    "signInWithGoogle": "Google で続ける",
+    "signOut": "ログアウト",
+    "error": {
+      "popupBlocked": "ポップアップがブロックされました。もう一度試すとページ遷移で進みます。",
+      "network": "接続が切れました。ネットワークを確認して再試行してください。",
+      "forbidden": "この画面にアクセスする権限がありません。",
+      "needsOnboarding": "まず利用目的を選んでください。"
+    }
+  },
+  "onboarding": {
+    "title": "どのようにお使いですか？",
+    "agent": { "title": "顧客を管理します", "desc": "保険プランナー・営業" },
+    "merchant": { "title": "お店を営んでいます", "desc": "飲食店・カフェ・農場・美容室" },
+    "consumer": { "title": "街の情報が知りたい", "desc": "住民・観光客" }
+  },
+  "theme": {
+    "toggleLabel": "画面の明るさ",
+    "light": "ライト",
+    "dark": "ダーク",
+    "system": "システム",
+    "palette": "カラーテーマ",
+    "paletteName": {
+      "basalt": "玄武岩",
+      "gyul": "みかん",
+      "gotjawal": "ゴジャワル",
+      "badang": "海"
+    }
+  },
+  "tier": { "S": "Sランク", "A": "Aランク", "B": "Bランク", "C": "Cランク" },
+  "crm": {
+    "title": "CRM",
+    "filterAll": "全体 {count}",
+    "filterTier": "{tier} {count}",
+    "sort": "並び替え",
+    "bulkSms": "一斉メッセージ",
+    "mapView": "地図で見る",
+    "recordConsult": "相談録音",
+    "newContact": "新規登録",
+    "calendar": "カレンダー",
+    "note": "特記事項",
+    "consultLog": "相談ログ",
+    "empty": { "title": "まだ登録された顧客がいません", "action": "最初の顧客を登録する" },
+    "dueSoon": "{count}名の連絡時期になりました"
+  },
+  "merchant": {
+    "spaceName": "個人店主だけの空間",
+    "greeting": "店長さん、今日もお疲れさまでした！",
+    "greetingSub": "分かち合い、支え合う私たちの場所",
+    "myStore": "マイ店舗",
+    "editModules": "セクション編集",
+    "signatureMenu": "シグネチャーメニュー",
+    "popularMenu": "人気メニュー",
+    "representativeMenu": "看板メニュー",
+    "signatureService": "シグネチャー施術",
+    "mainProduce": "主な作物",
+    "popularItems": "人気商品",
+    "storeIntro": "店舗紹介",
+    "viewMap": "地図を見る",
+    "composerHint": "お知らせや写真を残しましょう！",
+    "composer": {
+      "text": "テキスト",
+      "photo": "写真",
+      "voice": "音声",
+      "anonymous": "匿名ルームに投稿"
+    }
+  },
+  "anonymous": {
+    "roomName": "店主はつらいよ",
+    "desc": "匿名で悩みを分かち合い、支え合う場所",
+    "liveCount": "いま{count}人が話しています",
+    "enter": "入る",
+    "notice": "店名・住所・個人情報は自動的に伏せられます。通報があれば運営が確認します。"
+  },
+  "realty": {
+    "section": "不動産 売買・賃貸情報",
+    "sectionSub": "自分の店を持つ夢、一緒に探しましょう",
+    "rent": "賃貸",
+    "sale": "売買",
+    "deposit": "保証金",
+    "monthly": "月額",
+    "pyeong": "{n}坪",
+    "floor": "{n}階"
+  },
+  "support": {
+    "section": "行政支援・特別融資情報",
+    "sectionSub": "個人事業主向けの支援を確認しましょう",
+    "grant": "支援",
+    "loan": "融資",
+    "education": "研修",
+    "maxAmount": "最大 {amount}",
+    "rate": "年 {rate}%",
+    "alwaysOpen": "通年受付",
+    "sourceNotice": "実際の条件は各機関の公告をご確認ください。",
+    "viewSource": "公告の原文を見る"
+  },
+  "groupBuy": {
+    "section": "共同購入 · 済州特典",
+    "sectionSub": "みんなで買えばもっと安く",
+    "discountUpTo": "最大 {rate}% 割引",
+    "participants": "参加 {count}名",
+    "deadline": "締切まであと{days}日"
+  },
+  "aiTools": {
+    "section": "AI Tools",
+    "menuPoster": "メニュー画像",
+    "themeSong": "テーマソング制作",
+    "virtualStudio": "バーチャルスタジオ",
+    "virtualStudioSub": "アパレル · ヘア · ネイル · ペット",
+    "freeWithAgent": "担当プランナーがいれば無料で使えます。",
+    "paidWithoutAgent": "担当プランナーを指定すると無料になります。"
+  },
+  "consumer": {
+    "brand": "LOCAL HERO",
+    "todayFresh": "今日の新鮮な済州直送",
+    "radius": "半径 {km}km",
+    "discount": "{rate}% 割引",
+    "signature": "シグネチャー",
+    "hours": "営業時間",
+    "reservationRequired": "予約必須",
+    "category": {
+      "restaurant": "飲食店",
+      "cafe": "カフェ",
+      "bakery": "ベーカリー",
+      "salon": "美容室",
+      "farm": "農家",
+      "retail": "小売",
+      "etc": "その他"
+    },
+    "productSection": {
+      "restaurant": "今日の新鮮な済州直送",
+      "cafe": "焙煎したての豆とデザート",
+      "bakery": "今日焼きたてのパンとデザート",
+      "salon": "ヘア & 頭皮ケア用品",
+      "farm": "済州で採れたての新鮮食材",
+      "retail": "この店のおすすめ",
+      "etc": "この店のおすすめ"
+    }
+  },
+  "admin": {
+    "title": "管理者",
+    "banner": "管理者権限で表示しています",
+    "users": "会員",
+    "content": "コンテンツ",
+    "reports": "通報",
+    "supportPrograms": "支援情報",
+    "auditLogs": "監査ログ"
+  },
+  "format": {
+    "currency": "₩{amount}",
+    "rating": "{rating} ({count})",
+    "reviewCount": "レビュー {count}"
+  }
+}

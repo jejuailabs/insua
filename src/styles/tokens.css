@@ -1,0 +1,223 @@
+/* src/styles/tokens.css
+ *
+ * docs/04-design-system.md §2 의 구현.
+ * 색 리터럴은 이 파일에만 존재한다. 컴포넌트에서 hex 를 쓰면 리뷰 반려 (docs/12 §3).
+ *
+ * 팔레트 4종 × light/dark = 8조합.
+ * light  : [data-palette='<id>']        (basalt 는 :root 가 겸함)
+ * dark   : .dark[data-palette='<id>']   (data-palette 미설정 시 bare .dark 가 basalt 로 폴백)
+ *
+ * ⚠️ 아래 hex 는 docs/assets/ref-01~04 이미지에서 읽어낸 근사치다.
+ *    실제 화면과 대조해 조정하고, 조정 내용은 docs/04 에 반영한다 (docs/12 §10-5).
+ */
+
+:root {
+  /* ── 상태색 — 팔레트·테마와 무관하게 고정 ── */
+  --success: #2fa36b;
+  --warning: #f2b441;
+  --danger: #e5484d;
+  --info: #3b82f6;
+
+  /* ── 등급색 — 절대 팔레트별로 바꾸지 않는다 (docs/04 §2.1) ──
+   * 설계사가 A/B/C 를 색으로 기억한다. 테마를 바꿨다고 색이 달라지면 학습된 인지가 깨진다. */
+  --tier-s: #2fa36b;
+  --tier-a: #e5484d;
+  --tier-b: #f2b441;
+  --tier-c: #4caf6d;
+
+  /* 등급 배지 위 텍스트색.
+   * docs/04 §5.2 는 원래 "흰색"이었으나 실측에서 4개 전부 4.5:1 미달이었다
+   * (S 3.20 / A 3.91 / B 1.85 / C 2.74). 특히 앰버 B등급은 사실상 읽히지 않는다.
+   * 등급색 자체는 학습된 인지라 못 바꾸므로, 같은 색상(hue)의 아주 어두운 톤을 텍스트로 쓴다.
+   * 무채색 검정보다 배지와 어울리면서 4.6:1 이상을 확보한다. */
+  --tier-s-on: #0d2e1e;
+  --tier-a-on: #30080a;
+  --tier-b-on: #644712;
+  --tier-c-on: #193923;
+
+  /* ── 간격 (docs/04 §4) ──
+   * Tailwind 기본 spacing 스케일과 값이 일치한다 (gap-4 = 1rem = 16px).
+   * 유틸리티로 표현 가능한 곳에서는 Tailwind 를 쓰고, 이 변수는 raw CSS 전용. */
+  --gap-1: 4px;
+  --gap-2: 8px;
+  --gap-3: 12px;
+  --gap-4: 16px;
+  --gap-5: 20px;
+  --gap-6: 24px;
+  --gap-8: 32px;
+
+  --page-x: 16px; /* 모바일 좌우 여백 */
+  --section-y: 24px; /* 섹션 사이 세로 간격 */
+
+  /* ── 모션 (docs/04 §7) ── */
+  --motion-base: 150ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  --motion-carousel: 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  --motion-sheet: 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* ── 그림자 — 라이트 모드에서만 쓴다. 다크에서는 --border 로 면을 구분한다 (docs/04 §4) ── */
+  --card-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.06);
+}
+
+.dark {
+  --card-shadow: none;
+}
+
+/* ════════════════════════════════════════════════════════════
+ * 팔레트 — LIGHT
+ * ════════════════════════════════════════════════════════════ */
+
+/* basalt (현무암) — 기본 팔레트 */
+:root,
+[data-palette='basalt'] {
+  --bg: #fbfaf8;
+  --surface: #ffffff;
+  --surface-2: #f4f2ef;
+  --surface-raised: #ffffff;
+  --text: #17140f;
+  --text-muted: #6b655c;
+  --text-faint: #a8a29a;
+  --border: #e7e3dc;
+  --border-strong: #d5cfc5;
+  --accent: #d4801f;
+  --accent-strong: #9b5e17; /* 흰 텍스트 5.26:1 / accent-soft 위 4.66:1 */
+  --accent-soft: rgb(212 128 31 / 0.12);
+  --accent-ring: rgb(212 128 31 / 0.18);
+  --text-on-accent: #ffffff;
+}
+
+/* gyul (감귤) */
+[data-palette='gyul'] {
+  --bg: #f7f1e7;
+  --surface: #fffdf9;
+  --surface-2: #f0e7da;
+  --surface-raised: #fffdf9;
+  --text: #2a1d12;
+  --text-muted: #7a6a58;
+  --text-faint: #b0a08c;
+  --border: #e4d8c6;
+  --border-strong: #cdbba1;
+  --accent: #e07a2f;
+  --accent-strong: #a75519; /* 흰 텍스트 5.29:1 / accent-soft 위 4.62:1 */
+  --accent-soft: rgb(224 122 47 / 0.12);
+  --accent-ring: rgb(224 122 47 / 0.18);
+  --text-on-accent: #ffffff;
+}
+
+/* gotjawal (곶자왈) */
+[data-palette='gotjawal'] {
+  --bg: #f3f8f3;
+  --surface: #ffffff;
+  --surface-2: #e8f2e9;
+  --surface-raised: #ffffff;
+  --text: #12211a;
+  --text-muted: #5c7064;
+  --text-faint: #9aab9f;
+  --border: #d8e6da;
+  --border-strong: #b4cdb9;
+  --accent: #2e9e63;
+  --accent-strong: #247a4d; /* 흰 텍스트 5.29:1 / accent-soft 위 4.64:1 */
+  --accent-soft: rgb(46 158 99 / 0.12);
+  --accent-ring: rgb(46 158 99 / 0.18);
+  --text-on-accent: #ffffff;
+}
+
+/* badang (바당) */
+[data-palette='badang'] {
+  --bg: #f5f5fb;
+  --surface: #ffffff;
+  --surface-2: #ececf7;
+  --surface-raised: #ffffff;
+  --text: #14152b;
+  --text-muted: #5f6280;
+  --text-faint: #9b9db5;
+  --border: #e0e0ef;
+  --border-strong: #c2c3e0;
+  --accent: #5b4bd6;
+  --accent-strong: #5b4bd6; /* 흰 텍스트 6.14:1 — 이 팔레트는 조정이 필요 없다 */
+  --accent-soft: rgb(91 75 214 / 0.1);
+  --accent-ring: rgb(91 75 214 / 0.18);
+  --text-on-accent: #ffffff;
+}
+
+/* ════════════════════════════════════════════════════════════
+ * 팔레트 — DARK
+ * bare `.dark` 는 basalt 폴백. 반드시 light 규칙들보다 뒤에 온다(동일 명시도 → 소스 순서).
+ * ════════════════════════════════════════════════════════════ */
+
+.dark,
+.dark[data-palette='basalt'] {
+  --bg: #0b0a09;
+  --surface: #16130f;
+  --surface-2: #201b15;
+  --surface-raised: #221d17;
+  --text: #f5f1ea;
+  --text-muted: #a79e92;
+  --text-faint: #6e655b;
+  --border: #2a241d;
+  --border-strong: #4a3f32;
+  --accent: #f0a03c;
+  --accent-soft: rgb(240 160 60 / 0.14);
+  --accent-ring: rgb(240 160 60 / 0.45);
+  --text-on-accent: #1a1200;
+}
+
+.dark[data-palette='gyul'] {
+  --bg: #1a100a;
+  --surface: #241609;
+  --surface-2: #33200f;
+  --surface-raised: #2c1b0d;
+  --text: #f6eadc;
+  --text-muted: #b49a80;
+  --text-faint: #7a6450;
+  --border: #3b2715;
+  --border-strong: #6a4622;
+  --accent: #f3a45a;
+  --accent-soft: rgb(243 164 90 / 0.14);
+  --accent-ring: rgb(243 164 90 / 0.45);
+  --text-on-accent: #1a1000;
+}
+
+.dark[data-palette='gotjawal'] {
+  --bg: #08120c;
+  --surface: #101e16;
+  --surface-2: #172b1e;
+  --surface-raised: #142418;
+  --text: #e9f3eb;
+  --text-muted: #8fa795;
+  --text-faint: #5d7264;
+  --border: #1e3527;
+  --border-strong: #2f5c40;
+  --accent: #4fd18b;
+  --accent-soft: rgb(79 209 139 / 0.14);
+  --accent-ring: rgb(79 209 139 / 0.4);
+  --text-on-accent: #05180d;
+}
+
+.dark[data-palette='badang'] {
+  --bg: #090b1a;
+  --surface: #121531;
+  --surface-2: #1b2044;
+  --surface-raised: #161a3a;
+  --text: #ecedf8;
+  --text-muted: #969ac0;
+  --text-faint: #64688c;
+  --border: #232852;
+  --border-strong: #3b4288;
+  --accent: #8b7cf6;
+  --accent-soft: rgb(139 124 246 / 0.16);
+  --accent-ring: rgb(139 124 246 / 0.45);
+  --text-on-accent: #0b0820;
+}
+
+/* 다크 모드에서는 강조색 위 텍스트가 어두운 색(--text-on-accent)이라 대비가 이미 8.6~9.5:1 이다.
+ * 채운 버튼용으로 따로 조정할 이유가 없으므로 --accent 를 그대로 쓴다.
+ * 반드시 위 light 규칙들보다 뒤에 와야 한다(동일 명시도 → 소스 순서). */
+.dark {
+  --accent-strong: var(--accent);
+}
+
+/* 예외: badang 다크만 --accent 가 accent-soft 틴트 위에서 4.30:1 로 모자란다.
+ * 활성 필터칩(accent-soft 배경 + 강조색 텍스트, docs/06 §4)이 실제로 쓰는 조합이라 살짝 밝힌다. */
+.dark[data-palette='badang'] {
+  --accent-strong: #9183f6;
+}
