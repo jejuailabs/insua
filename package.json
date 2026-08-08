@@ -48,6 +48,6 @@
   "packageManager": "pnpm@10.33.2",
   "engines": {
     "//": "scripts/check-i18n.mts 瑜?Node ??????ㅽ듃由ы븨?쇰줈 諛붾줈 ?ㅽ뻾?쒕떎. 22.18 誘몃쭔?먯꽌???ㅽ뙣?쒕떎.",
-    "node": "22.x"
+    "node": "24.x"
   }
 }
