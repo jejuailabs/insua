@@ -12,7 +12,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "emu": "firebase emulators:start --only auth,firestore,storage",
-    "test:rules": "node scripts/test-rules.mts"
+    "test:rules": "node scripts/test-rules.mts",
+    "dummy:gen": "node scripts/gen-dummy-images.mts",
+    "dummy:upload": "node scripts/upload-dummy-images.mts"
   },
   "dependencies": {
     "clsx": "^2.1.1",

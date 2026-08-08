@@ -42,6 +42,10 @@ firebase-debug.log*
 firestore-debug.log*
 ui-debug.log*
 
+# 더미 이미지 — 저장소/Vercel 번들에 넣지 않는다. Firebase Storage 에 올려서 URL 로 쓴다.
+# 원본은 로컬에만 두고, 배포에 필요한 건 src/lib/mock/dummy-images.ts 의 URL 뿐이다.
+/.dummy-images/
+
 # vercel
 .vercel
 

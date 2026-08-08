@@ -25,6 +25,21 @@ http://localhost:3000
 | `pnpm typecheck`    | `tsc --noEmit`                       |
 | `pnpm format`       | Prettier (문서 `*.md` 는 제외)       |
 | `pnpm emu`          | Firebase 에뮬레이터 — M2부터 동작    |
+| `pnpm dummy:gen`    | 더미 이미지 생성 (OpenAI) — 로컬 `.dummy-images/` |
+| `pnpm dummy:upload` | 더미 이미지 Storage 업로드 + URL 맵 갱신 |
+
+## 더미 이미지
+
+화면 개발용 플레이스홀더 사진은 **저장소에 두지 않는다.** Vercel 번들 용량을 먹기 때문이다.
+`.dummy-images/`(gitignore)에서 생성해 Firebase Storage `dummy/` 로 올리고,
+앱은 `src/lib/mock/dummy-images.ts` 의 URL 만 참조한다. 이 파일은 업로드 스크립트가 자동 생성한다.
+
+```bash
+pnpm dummy:gen && pnpm dummy:upload
+```
+
+자세한 건 생성 후 `.dummy-images/README.md`. 읽기는 다운로드 토큰 URL 이라
+`storage.rules` 는 손대지 않았다 — 토큰 없이 접근하면 403.
 
 ## 스택
 
