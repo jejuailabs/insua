@@ -15,7 +15,9 @@
     "language": "言語",
     "comingSoon": "準備中です",
     "previous": "前へ",
-    "next": "次へ"
+    "next": "次へ",
+    "minutesAgo": "{n}分前",
+    "hoursAgo": "{n}時間前"
   },
   "nav": {
     "home": "ホーム",
@@ -137,14 +139,29 @@
       "groupbuy": "共同購入",
       "aitools": "AI Tools",
       "share": "情報共有"
-    }
+    },
+    "viewDetail": "詳しく見る",
+    "anonWriting": "匿名で作成中",
+    "anonConfirm": "匿名で投稿しますか?",
+    "postAnon": "匿名で投稿",
+    "posted": "投稿しました",
+    "news": "お知らせ",
+    "call": "電話する",
+    "directions": "経路案内",
+    "share": "共有",
+    "shareCopied": "リンクをコピーしました",
+    "moveUp": "上へ",
+    "moveDown": "下へ",
+    "toggleVisibility": "表示切替",
+    "enterAnonymous": "匿名ルームに入る"
   },
   "anonymous": {
     "roomName": "店主はつらいよ",
     "desc": "匿名で悩みを分かち合い、支え合う場所",
     "liveCount": "いま{count}人が話しています",
     "enter": "入る",
-    "notice": "店名・住所・個人情報は自動的に伏せられます。通報があれば運営が確認します。"
+    "notice": "店名・住所・個人情報は自動的に伏せられます。通報があれば運営が確認します。",
+    "author": "匿名"
   },
   "realty": {
     "section": "不動産 売買・賃貸情報",

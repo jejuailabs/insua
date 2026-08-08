@@ -121,12 +121,25 @@ export default async function CrmPage({ params }: { params: Promise<{ locale: st
         </div>
 
         {/* 고객카드 — 연락 임박순 (docs/06 §4 기본 정렬) */}
-        <div className="mt-4 flex flex-col gap-3 pb-10">
+        <div className="mt-4 flex flex-col gap-3">
           {[...CONTACTS]
             .sort((a, b) => (b.overdueDays ?? 0) - (a.overdueDays ?? 0))
             .map((contact) => (
               <PersonCard key={contact.id} contact={contact} />
             ))}
+        </div>
+
+        {/* 페이지 인디케이터 (ref-03 하단 점) — 페이지네이션은 실데이터 단계에서 */}
+        <div className="flex items-center justify-center gap-1.5 py-6">
+          {Array.from({ length: 5 }, (_, i) => (
+            <span
+              key={i}
+              className={cn(
+                'h-1.5 rounded-pill',
+                i === 0 ? 'w-5 bg-accent-strong' : 'w-1.5 bg-line-strong',
+              )}
+            />
+          ))}
         </div>
       </main>
     </div>

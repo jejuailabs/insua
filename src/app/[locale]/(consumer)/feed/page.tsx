@@ -1,11 +1,9 @@
 import { Bell, CircleUser, Gift, Heart, Home, ShoppingBag, User } from 'lucide-react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
-import { HeroCarousel } from '@/components/home/HeroCarousel'
-import { ProductGrid } from '@/components/home/ProductGrid'
+import { FeedShowcase } from '@/components/home/FeedShowcase'
 import { SideRail, type RailItem } from '@/components/layout/SideRail'
-import { SectionHeader } from '@/components/ui/SectionHeader'
 import { requireRolePage } from '@/lib/auth/guards'
-import { HEROES, MARKET_ITEMS } from '@/lib/mock/home'
+import { HEROES } from '@/lib/mock/home'
 import { cn } from '@/lib/utils/cn'
 
 /** 소비자 LOCAL HERO 피드 (docs/08, ref-04). 목데이터 단계 — 반경 쿼리는 M6 후반. */
@@ -59,13 +57,8 @@ export default async function FeedPage({ params }: { params: Promise<{ locale: s
         </div>
 
         <div className="mt-4">
-          <HeroCarousel heroes={HEROES} />
+          <FeedShowcase heroes={HEROES} />
         </div>
-
-        <section className="mt-6">
-          <SectionHeader title={t('consumer.todayFresh')} />
-          <ProductGrid items={MARKET_ITEMS} />
-        </section>
       </main>
     </div>
   )

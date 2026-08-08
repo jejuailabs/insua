@@ -57,20 +57,36 @@ export const products = {
     'https://firebasestorage.googleapis.com/v0/b/insua-44b86.firebasestorage.app/o/dummy%2Fproducts%2Fcookie-set.webp?alt=media&token=5dc2ada1-59aa-4643-b10d-abf0f4a1e107',
   croissant:
     'https://firebasestorage.googleapis.com/v0/b/insua-44b86.firebasestorage.app/o/dummy%2Fproducts%2Fcroissant.webp?alt=media&token=cfd56cc5-2cbd-4245-be5b-f783abebe364',
+  doenjangStew:
+    'https://firebasestorage.googleapis.com/v0/b/insua-44b86.firebasestorage.app/o/dummy%2Fproducts%2Fdoenjang-stew.webp?alt=media&token=b259adc4-ea16-4ece-b13d-94680e6a1129',
+  ethiopiaBeans:
+    'https://firebasestorage.googleapis.com/v0/b/insua-44b86.firebasestorage.app/o/dummy%2Fproducts%2Fethiopia-beans.webp?alt=media&token=7106b9f2-079f-495b-a14e-b4b3b6f0bd40',
   hairOil:
     'https://firebasestorage.googleapis.com/v0/b/insua-44b86.firebasestorage.app/o/dummy%2Fproducts%2Fhair-oil.webp?alt=media&token=e6774597-e8e1-4bd3-b735-7e0f13c788eb',
+  hairTreatment:
+    'https://firebasestorage.googleapis.com/v0/b/insua-44b86.firebasestorage.app/o/dummy%2Fproducts%2Fhair-treatment.webp?alt=media&token=ba7eed89-4099-4ff4-b5a8-cb6350000a6a',
   jejuTangerine:
     'https://firebasestorage.googleapis.com/v0/b/insua-44b86.firebasestorage.app/o/dummy%2Fproducts%2Fjeju-tangerine.webp?alt=media&token=c4742df9-702d-47a1-a867-2b1a9fce3b90',
   latte:
     'https://firebasestorage.googleapis.com/v0/b/insua-44b86.firebasestorage.app/o/dummy%2Fproducts%2Flatte.webp?alt=media&token=765442e7-ec31-46a2-b7f8-0b8d25cc91fa',
+  momguk:
+    'https://firebasestorage.googleapis.com/v0/b/insua-44b86.firebasestorage.app/o/dummy%2Fproducts%2Fmomguk.webp?alt=media&token=a9d8029d-86c8-4215-9501-f5aa6ca004a3',
+  oreumBrew:
+    'https://firebasestorage.googleapis.com/v0/b/insua-44b86.firebasestorage.app/o/dummy%2Fproducts%2Foreum-brew.webp?alt=media&token=67962c99-a2f1-42b1-bf1d-5561381d0672',
+  porkNeck:
+    'https://firebasestorage.googleapis.com/v0/b/insua-44b86.firebasestorage.app/o/dummy%2Fproducts%2Fpork-neck.webp?alt=media&token=1238adc2-afdc-4d49-91b1-cd68c7464da9',
   potato:
     'https://firebasestorage.googleapis.com/v0/b/insua-44b86.firebasestorage.app/o/dummy%2Fproducts%2Fpotato.webp?alt=media&token=74237407-ebfa-4d09-9324-7671190386b5',
+  saltBread:
+    'https://firebasestorage.googleapis.com/v0/b/insua-44b86.firebasestorage.app/o/dummy%2Fproducts%2Fsalt-bread.webp?alt=media&token=a5295c10-9cb0-4b3c-8064-7de980bff132',
   seaweedSoup:
     'https://firebasestorage.googleapis.com/v0/b/insua-44b86.firebasestorage.app/o/dummy%2Fproducts%2Fseaweed-soup.webp?alt=media&token=61a397c4-a3f2-4a61-b4bd-acf4bcae6e86',
   shampoo:
     'https://firebasestorage.googleapis.com/v0/b/insua-44b86.firebasestorage.app/o/dummy%2Fproducts%2Fshampoo.webp?alt=media&token=ab8b23ab-cc1e-4684-b4a8-9ed9a19eb94b',
   sweetBread:
     'https://firebasestorage.googleapis.com/v0/b/insua-44b86.firebasestorage.app/o/dummy%2Fproducts%2Fsweet-bread.webp?alt=media&token=7bcba174-4efa-4630-a917-a7eea74eaafe',
+  vanillaLatte:
+    'https://firebasestorage.googleapis.com/v0/b/insua-44b86.firebasestorage.app/o/dummy%2Fproducts%2Fvanilla-latte.webp?alt=media&token=21cabf83-52c6-43e9-995e-9885bb9f014a',
 } as const
 
 export type ProductsKey = keyof typeof products

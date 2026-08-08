@@ -1,11 +1,10 @@
 import { Bell } from 'lucide-react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { AuthLauncher } from '@/components/auth/AuthLauncher'
-import { HeroCarousel } from '@/components/home/HeroCarousel'
-import { MarketRail } from '@/components/home/MarketRail'
+import { FeedShowcase } from '@/components/home/FeedShowcase'
 import { SettingsButton } from '@/components/layout/SettingsButton'
 import { getSession } from '@/lib/auth/session'
-import { HEROES, MARKET_ITEMS } from '@/lib/mock/home'
+import { HEROES } from '@/lib/mock/home'
 
 /**
  * 메인 (docs/08, ref-04).
@@ -38,10 +37,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         </header>
 
         <div className="mt-4">
-          <HeroCarousel heroes={HEROES} />
+          <FeedShowcase heroes={HEROES} />
         </div>
-
-        <MarketRail items={MARKET_ITEMS} />
       </main>
 
       <AuthLauncher signedIn={Boolean(session)} role={session?.role ?? null} />

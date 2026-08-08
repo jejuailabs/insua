@@ -15,7 +15,9 @@
     "language": "언어",
     "comingSoon": "준비 중입니다",
     "previous": "이전",
-    "next": "다음"
+    "next": "다음",
+    "minutesAgo": "{n}분 전",
+    "hoursAgo": "{n}시간 전"
   },
   "nav": {
     "home": "홈",
@@ -137,14 +139,29 @@
       "groupbuy": "공동구매",
       "aitools": "AI Tools",
       "share": "정보공유"
-    }
+    },
+    "viewDetail": "자세히 보기",
+    "anonWriting": "익명으로 작성 중",
+    "anonConfirm": "익명으로 게시할까요?",
+    "postAnon": "익명으로 게시",
+    "posted": "게시했습니다",
+    "news": "소식",
+    "call": "전화하기",
+    "directions": "길찾기",
+    "share": "공유",
+    "shareCopied": "링크를 복사했습니다",
+    "moveUp": "위로",
+    "moveDown": "아래로",
+    "toggleVisibility": "표시 전환",
+    "enterAnonymous": "익명방 입장하기"
   },
   "anonymous": {
     "roomName": "아프니까 사장이다",
     "desc": "익명으로 고민을 나누고 서로 위로받는 공간",
     "liveCount": "지금 {count}명이 이야기 중",
     "enter": "입장하기",
-    "notice": "업장명·주소·인물정보는 자동으로 가려집니다. 신고가 접수되면 운영진이 확인합니다."
+    "notice": "업장명·주소·인물정보는 자동으로 가려집니다. 신고가 접수되면 운영진이 확인합니다.",
+    "author": "익명"
   },
   "realty": {
     "section": "부동산 매매·임대 정보",

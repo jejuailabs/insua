@@ -71,18 +71,30 @@ export default async function MerchantHomePage({
 
           <ul className="mt-3 flex flex-col gap-1.5">
             {ANONYMOUS_ROOM.posts.map((post) => (
-              <li
-                key={post.id}
-                className="flex items-center justify-between gap-3 rounded-inner bg-white/10 px-3 py-2.5"
-              >
-                <p className="min-w-0 truncate text-label">{post.title}</p>
-                <span className="flex shrink-0 items-center gap-1 text-micro opacity-85">
-                  <MessagesSquare size={12} aria-hidden />
-                  {post.comments}
-                </span>
+              <li key={post.id} className="rounded-inner bg-white/10 px-3 py-2.5">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="min-w-0 truncate text-label">{post.title}</p>
+                  <span className="flex shrink-0 items-center gap-1 text-micro opacity-85">
+                    <MessagesSquare size={12} aria-hidden />
+                    {post.comments}
+                  </span>
+                </div>
+                <p className="mt-0.5 text-micro opacity-70">
+                  {t('anonymous.author')} ·{' '}
+                  {post.minutesAgo >= 60
+                    ? t('common.hoursAgo', { n: Math.floor(post.minutesAgo / 60) })
+                    : t('common.minutesAgo', { n: post.minutesAgo })}
+                </p>
               </li>
             ))}
           </ul>
+
+          <button
+            type="button"
+            className="mt-3 flex min-h-11 w-full items-center justify-center rounded-pill bg-black/25 text-label"
+          >
+            {t('merchant.enterAnonymous')}
+          </button>
 
           <p className="mt-3 text-micro opacity-75">{t('anonymous.notice')}</p>
         </section>
@@ -210,14 +222,15 @@ async function QuickActions() {
     { icon: Share2, label: t('merchant.quick.share') },
   ]
 
+  // ref-02 는 모바일에서도 6칸 한 줄이다.
   return (
-    <ul className="mt-4 grid grid-cols-3 gap-2">
+    <ul className="mt-4 grid grid-cols-6 gap-1.5">
       {items.map(({ icon: Icon, label }) => (
         <li
           key={label}
-          className="flex flex-col items-center justify-center gap-1.5 rounded-inner border border-line bg-surface-2 px-1 py-3"
+          className="flex flex-col items-center justify-center gap-1 rounded-inner border border-line bg-surface-2 px-0.5 py-2.5"
         >
-          <Icon size={20} aria-hidden className="text-content" />
+          <Icon size={18} aria-hidden className="text-content" />
           <span className="w-full truncate text-center text-micro text-content-muted">{label}</span>
         </li>
       ))}

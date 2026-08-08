@@ -15,7 +15,9 @@
     "language": "Language",
     "comingSoon": "Not ready yet",
     "previous": "Previous",
-    "next": "Next"
+    "next": "Next",
+    "minutesAgo": "{n}m ago",
+    "hoursAgo": "{n}h ago"
   },
   "nav": {
     "home": "Home",
@@ -137,14 +139,29 @@
       "groupbuy": "Group buy",
       "aitools": "AI Tools",
       "share": "Share"
-    }
+    },
+    "viewDetail": "View details",
+    "anonWriting": "Writing anonymously",
+    "anonConfirm": "Post anonymously?",
+    "postAnon": "Post anonymously",
+    "posted": "Posted",
+    "news": "Updates",
+    "call": "Call",
+    "directions": "Directions",
+    "share": "Share",
+    "shareCopied": "Link copied",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "toggleVisibility": "Toggle visibility",
+    "enterAnonymous": "Enter anonymous room"
   },
   "anonymous": {
     "roomName": "Being a boss hurts",
     "desc": "Share worries anonymously and support each other",
     "liveCount": "{count} people talking now",
     "enter": "Enter",
-    "notice": "Store names, addresses and personal details are masked automatically. Reports are reviewed by our team."
+    "notice": "Store names, addresses and personal details are masked automatically. Reports are reviewed by our team.",
+    "author": "Anonymous"
   },
   "realty": {
     "section": "Commercial property",

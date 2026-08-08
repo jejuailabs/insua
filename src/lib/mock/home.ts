@@ -127,48 +127,119 @@ export type MarketItem = {
   best?: boolean
 }
 
-export const MARKET_ITEMS: MarketItem[] = [
-  {
-    id: 'tangerine',
-    name: '제주 감귤 5kg',
-    sub: '새콤달콤 제주 감귤',
-    price: 19800,
-    image: products.jejuTangerine,
-    best: true,
-  },
-  {
-    id: 'carrot',
-    name: '당근 2kg',
-    sub: '아삭하고 신선한 당근',
-    price: 12500,
-    image: products.carrot,
-  },
-  {
-    id: 'broccoli',
-    name: '브로콜리 1kg',
-    sub: '싱싱한 브로콜리',
-    price: 8900,
-    image: products.broccoli,
-  },
-  {
-    id: 'potato',
-    name: '감자 3kg',
-    sub: '포슬포슬 제주 감자',
-    price: 9900,
-    image: products.potato,
-  },
-  {
-    id: 'coffee',
-    name: '콜롬비아 원두 200g',
-    sub: '갓 볶은 스페셜티',
-    price: 13800,
-    image: products.coffeeBeans,
-  },
-  {
-    id: 'cookie',
-    name: '수제 쿠키 세트',
-    sub: '매일 굽는 수제 쿠키',
-    price: 9900,
-    image: products.cookieSet,
-  },
-]
+const tangerine: MarketItem = {
+  id: 'tangerine',
+  name: '제주 감귤 5kg',
+  sub: '새콤달콤 제주 감귤',
+  price: 19800,
+  image: products.jejuTangerine,
+  best: true,
+}
+const carrot: MarketItem = {
+  id: 'carrot',
+  name: '당근 2kg',
+  sub: '아삭하고 신선한 당근',
+  price: 12500,
+  image: products.carrot,
+}
+
+/**
+ * 활성 히어로의 업종에 따라 하단 상품 섹션이 통째로 바뀐다 (ref-04, docs/08 §6).
+ * 섹션 제목은 `consumer.productSection.{category}` 키가 맡는다.
+ */
+export const CATEGORY_PRODUCTS: Record<HeroCategory, MarketItem[]> = {
+  restaurant: [
+    tangerine,
+    carrot,
+    {
+      id: 'broccoli',
+      name: '브로콜리 1kg',
+      sub: '싱싱한 브로콜리',
+      price: 8900,
+      image: products.broccoli,
+    },
+  ],
+  cafe: [
+    {
+      id: 'colombia',
+      name: '콜롬비아 원두 200g',
+      sub: '갓 볶은 스페셜티',
+      price: 13800,
+      image: products.coffeeBeans,
+    },
+    {
+      id: 'ethiopia',
+      name: '에티오피아 원두 200g',
+      sub: '산미 좋은 싱글오리진',
+      price: 14800,
+      image: products.ethiopiaBeans,
+    },
+    {
+      id: 'cookie',
+      name: '수제 쿠키 세트',
+      sub: '매일 굽는 수제 쿠키',
+      price: 9900,
+      image: products.cookieSet,
+    },
+  ],
+  bakery: [
+    {
+      id: 'croissant',
+      name: '버터 크루아상',
+      sub: '겹겹이 바삭한 버터 풍미',
+      price: 3800,
+      image: products.croissant,
+    },
+    {
+      id: 'sweet-bread',
+      name: '단팥빵',
+      sub: '직접 쑨 팥소 가득',
+      price: 2500,
+      image: products.sweetBread,
+    },
+    {
+      id: 'salt-bread',
+      name: '소금빵',
+      sub: '고소한 버터와 소금',
+      price: 2800,
+      image: products.saltBread,
+    },
+  ],
+  salon: [
+    {
+      id: 'shampoo',
+      name: '두피 샴푸 500ml',
+      sub: '순한 두피 케어',
+      price: 22000,
+      image: products.shampoo,
+    },
+    {
+      id: 'hair-oil',
+      name: '헤어 에센스 오일',
+      sub: '윤기 나는 머릿결',
+      price: 18000,
+      image: products.hairOil,
+    },
+    {
+      id: 'treatment',
+      name: '헤어 트리트먼트',
+      sub: '손상모 집중 케어',
+      price: 16000,
+      image: products.hairTreatment,
+    },
+  ],
+  farm: [
+    tangerine,
+    carrot,
+    {
+      id: 'potato',
+      name: '감자 3kg',
+      sub: '포슬포슬 제주 감자',
+      price: 9900,
+      image: products.potato,
+    },
+  ],
+}
+
+/** 기본(공개 랜딩) 상품 목록 — 첫 히어로 업종 기준. */
+export const MARKET_ITEMS: MarketItem[] = CATEGORY_PRODUCTS.restaurant

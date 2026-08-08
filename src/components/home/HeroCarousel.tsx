@@ -17,12 +17,33 @@ import { cn } from '@/lib/utils/cn'
  * 모션은 transform/opacity 로만 준다 — 레이아웃을 건드리면 프레임이 튄다.
  * prefers-reduced-motion 은 globals.css 가 전역으로 잘라낸다 (docs/04 §7).
  */
-export function HeroCarousel({ heroes }: { heroes: Hero[] }) {
+export function HeroCarousel({
+  heroes,
+  onIndexChange,
+}: {
+  heroes: Hero[]
+  /** 활성 카드가 바뀔 때 — 피드가 하단 상품 섹션을 업종에 맞춰 갈아끼운다 (ref-04). */
+  onIndexChange?: (index: number) => void
+}) {
   const t = useTranslations()
-  const [index, setIndex] = useState(0)
+  const [index, setIndexRaw] = useState(0)
   const count = heroes.length
 
-  const go = useCallback((delta: number) => setIndex((i) => (i + delta + count) % count), [count])
+  const setIndex = useCallback(
+    (next: number | ((i: number) => number)) => {
+      setIndexRaw((i) => {
+        const value = typeof next === 'function' ? next(i) : next
+        onIndexChange?.(value)
+        return value
+      })
+    },
+    [onIndexChange],
+  )
+
+  const go = useCallback(
+    (delta: number) => setIndex((i) => (i + delta + count) % count),
+    [count, setIndex],
+  )
 
   // 스와이프 — 포인터 이벤트 하나로 마우스 드래그와 터치를 같이 받는다.
   const dragStart = useRef<number | null>(null)
