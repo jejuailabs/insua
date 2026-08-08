@@ -1,6 +1,6 @@
 import 'server-only'
 
-import { adminAuth, adminDb } from '@/lib/firebase/admin'
+import { getAdminAuth, getAdminDb } from '@/lib/firebase/admin'
 
 /**
  * 최초 관리자 부트스트랩 (docs/03 §4.2).
@@ -19,8 +19,8 @@ export async function applyBootstrapAdmin(uid: string, email: string | undefined
 
   if (!allowed.includes(email.toLowerCase())) return false
 
-  const existing = (await adminAuth.getUser(uid)).customClaims ?? {}
-  await adminAuth.setCustomUserClaims(uid, { ...existing, admin: true })
-  await adminDb.collection('users').doc(uid).update({ isAdmin: true, updatedAt: new Date() })
+  const existing = (await getAdminAuth().getUser(uid)).customClaims ?? {}
+  await getAdminAuth().setCustomUserClaims(uid, { ...existing, admin: true })
+  await getAdminDb().collection('users').doc(uid).update({ isAdmin: true, updatedAt: new Date() })
   return true
 }

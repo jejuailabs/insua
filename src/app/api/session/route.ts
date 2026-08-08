@@ -4,7 +4,7 @@ export const runtime = 'nodejs'
 import { cookies } from 'next/headers'
 import { applyBootstrapAdmin } from '@/lib/auth/bootstrapAdmin'
 import { SESSION_COOKIE, SESSION_MAX_AGE_MS } from '@/lib/auth/session'
-import { adminAuth, adminDb } from '@/lib/firebase/admin'
+import { AdminNotConfiguredError, getAdminAuth, getAdminDb } from '@/lib/firebase/admin'
 import { routing } from '@/lib/i18n/routing'
 import { DEFAULT_PALETTE } from '@/lib/theme/palette'
 
@@ -23,9 +23,9 @@ export async function POST(request: Request) {
 
   try {
     // checkRevoked: true — 폐기된 토큰으로 세션을 새로 만들 수 없게 한다.
-    const decoded = await adminAuth.verifyIdToken(idToken, true)
+    const decoded = await getAdminAuth().verifyIdToken(idToken, true)
 
-    const ref = adminDb.collection('users').doc(decoded.uid)
+    const ref = getAdminDb().collection('users').doc(decoded.uid)
     const snap = await ref.get()
 
     if (!snap.exists) {
@@ -51,7 +51,7 @@ export async function POST(request: Request) {
       await applyBootstrapAdmin(decoded.uid, decoded.email)
     }
 
-    const sessionCookie = await adminAuth.createSessionCookie(idToken, {
+    const sessionCookie = await getAdminAuth().createSessionCookie(idToken, {
       expiresIn: SESSION_MAX_AGE_MS,
     })
 
@@ -65,6 +65,11 @@ export async function POST(request: Request) {
 
     return Response.json({ ok: true })
   } catch (error) {
+    // 서버 설정 누락과 인증 실패는 원인이 다르다. 상태 코드를 갈라야 운영에서 구분된다.
+    if (error instanceof AdminNotConfiguredError) {
+      console.error('[api/session] 서버 설정 누락:', error.message)
+      return Response.json({ error: 'SERVER_NOT_CONFIGURED' }, { status: 503 })
+    }
     // 원문 에러는 사용자에게 노출하지 않는다. 개인정보가 섞일 수 있다 (docs/12 §5).
     console.error('[api/session] POST failed:', (error as Error).name)
     return Response.json({ error: 'SESSION_CREATE_FAILED' }, { status: 401 })
