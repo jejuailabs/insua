@@ -47,6 +47,19 @@ Tailwind v4라서 `tailwind.config.ts` 가 없다. 디자인 토큰은 아래 �
 - `docs/00`~`docs/10` — 제품·아키텍처·데이터모델·인증·디자인·화면별 스펙
 - `docs/12-conventions.md` — 네이밍, 스타일, 커밋 규칙
 
+## 배포
+
+프로덕션: https://insua-chi.vercel.app
+
+Vercel 프로젝트는 `funjejus-projects/insua`. 현재는 **CLI 수동 배포**다.
+
+```bash
+vercel deploy --prod
+```
+
+> GitHub 저장소(`jejuailabs/insua`)와 Vercel 계정의 소유 조직이 달라서 Git 자동배포 연결이
+> 아직 안 돼 있다. 연결하면 `main` 푸시마다 자동 배포된다. → 아래 "남은 배포 작업"
+
 ## 지금 어디까지 왔나
 
 M0(부트스트랩) · M1(테마 + 다국어) 완료. 다음은 **M2 — Firebase Google 로그인 + 역할 온보딩**.

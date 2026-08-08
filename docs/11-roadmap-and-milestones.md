@@ -70,6 +70,22 @@
 
 > zh / ja 번역은 구조를 채운 것이고 **원어민 검수를 받지 않았다.** 실서비스 전에 검수 필요.
 
+**선행 배포 (M1 시점)**
+
+M8을 기다리지 않고 Vercel 프로덕션에 올렸다: https://insua-chi.vercel.app
+프로젝트는 `funjejus-projects/insua`, 현재 `vercel deploy --prod` 로 수동 배포한다.
+M1 코드는 Firebase 를 아직 읽지 않으므로 **환경변수 없이 빌드된다.**
+
+남은 배포 작업 (M2 착수 전에 필요한 것부터):
+
+- [ ] **Vercel ↔ GitHub 연결** — Vercel 계정(`funjejus-projects`)이 `jejuailabs/insua` 에
+      쓰기 권한이 없어 자동연결이 400 으로 실패했다. 두 계정을 맞추거나 Vercel 대시보드에서
+      직접 연결해야 `main` 푸시 자동배포가 걸린다.
+- [ ] **Vercel 환경변수 등록** — `.env.local.example` 의 키 전부. M2 부터 없으면 빌드가 깨진다.
+      `FIREBASE_PRIVATE_KEY` 는 Sensitive 로 등록할 것.
+- [ ] **Firebase 승인된 도메인에 배포 URL 추가** — 안 하면 프로덕션에서 구글 로그인이 막힌다.
+- [ ] 배포 URL 을 `NEXT_PUBLIC_APP_URL` 에 반영.
+
 ---
 
 ## M2 — Firebase + Google 로그인 + 역할
@@ -209,6 +225,7 @@
 3. 에러 바운더리, 404/500 페이지
 4. 로딩 스켈레톤 전면 적용
 5. Vercel 배포 + 환경변수 등록 + Firebase 승인된 도메인 추가
+   → **배포 자체는 M1 시점에 선행 완료**. 아래 "남은 배포 작업" 참조.
 6. Lighthouse 점검 (모바일 기준 Performance/Accessibility)
 7. README 작성
 
