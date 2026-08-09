@@ -317,7 +317,13 @@
     "contentEmpty": "暂无待审内容",
     "reportsEmpty": "暂无举报",
     "roleUpdated": "已更改",
-    "roleNone": "未指定"
+    "roleNone": "未指定",
+    "viewAs": "按角色查看",
+    "viewAsDesc": "以管理员权限查看各角色首页",
+    "viewAgent": "设计师页面",
+    "viewMerchant": "商户页面",
+    "viewConsumer": "消费者页面",
+    "backToConsole": "控制台"
   },
   "format": {
     "currency": "₩{amount}",

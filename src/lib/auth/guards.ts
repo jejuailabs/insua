@@ -18,6 +18,11 @@ export async function requireRolePage(locale: string, allowed: readonly Role[]):
   // `return` 을 붙이면 never 가 반환 타입에 흡수돼 좁히기 없이도 타입이 맞는다.
   if (!session) return redirect({ href: '/login', locale })
 
+  // 어드민은 모든 역할 화면을 열람할 수 있다 (docs/09 §1 — 화면별 보기).
+  // 화면 상단에 AdminPeekBanner 가 "관리자 권한으로 보고 있습니다"를 상시 표시한다.
+  // 데이터는 여전히 본인 uid 기준이라 남의 고객 목록 등이 열리지는 않는다 (docs/06 §10).
+  if (session.isAdmin) return session
+
   const role = session.role
   if (!role) return redirect({ href: '/onboarding', locale })
   // 남의 역할 화면에 들어오면 자기 홈으로 돌려보낸다.

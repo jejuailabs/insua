@@ -317,7 +317,13 @@
     "contentEmpty": "審査待ちコンテンツはありません",
     "reportsEmpty": "通報はありません",
     "roleUpdated": "変更しました",
-    "roleNone": "未指定"
+    "roleNone": "未指定",
+    "viewAs": "画面別に見る",
+    "viewAsDesc": "各ロールの初期画面を管理者権限で閲覧します",
+    "viewAgent": "プランナー画面",
+    "viewMerchant": "事業者画面",
+    "viewConsumer": "一般画面",
+    "backToConsole": "コンソールへ"
   },
   "format": {
     "currency": "₩{amount}",

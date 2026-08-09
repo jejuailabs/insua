@@ -1,4 +1,5 @@
 import { ChevronLeft, MessagesSquare } from 'lucide-react'
+import { AdminPeekBanner } from '@/components/admin/AdminPeekBanner'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { AnonymousComposer } from '@/components/merchant/AnonymousComposer'
 import { requireRolePage } from '@/lib/auth/guards'
@@ -17,6 +18,7 @@ export default async function AnonymousPage({ params }: { params: Promise<{ loca
   return (
     <>
       <main className="mx-auto max-w-md px-4 pt-2 pb-28">
+        <AdminPeekBanner />
         <header className="relative flex min-h-11 items-center">
           <Link
             href="/home"

@@ -1,4 +1,13 @@
-import { FileWarning, Landmark, ScrollText, ShieldAlert, Users } from 'lucide-react'
+import {
+  FileWarning,
+  Landmark,
+  ScrollText,
+  ShieldAlert,
+  Store,
+  User,
+  Users,
+  UsersRound,
+} from 'lucide-react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { UserTable } from '@/components/admin/UserTable'
 import { listAuditLogs, listUsers } from '@/lib/admin/data'
@@ -51,6 +60,30 @@ export default async function AdminPage({
       </p>
 
       <h1 className="mt-3 text-display text-content">{t('admin.title')}</h1>
+
+      {/* 화면별 보기 — 각 역할의 초기 화면을 관리자 권한으로 연다.
+          guards.requireRolePage 가 isAdmin 을 통과시키고, 역할 화면 상단의
+          AdminPeekBanner 가 열람 중임을 상시 표시한다 (docs/09 §1). */}
+      <section className="mt-4 rounded-card border border-line bg-surface p-4">
+        <h2 className="text-subtitle text-content">{t('admin.viewAs')}</h2>
+        <p className="mt-0.5 text-caption text-content-muted">{t('admin.viewAsDesc')}</p>
+        <div className="mt-3 grid grid-cols-3 gap-2">
+          {[
+            { icon: UsersRound, label: t('admin.viewAgent'), href: '/crm' },
+            { icon: Store, label: t('admin.viewMerchant'), href: '/home' },
+            { icon: User, label: t('admin.viewConsumer'), href: '/feed' },
+          ].map(({ icon: Icon, label, href }) => (
+            <Link
+              key={href}
+              href={href}
+              className="flex flex-col items-center gap-1.5 rounded-inner border border-line bg-surface-2 px-2 py-3.5 text-center hover:border-accent"
+            >
+              <Icon size={20} aria-hidden className="text-accent-strong" />
+              <span className="text-label text-content">{label}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       <nav className="mt-4 flex [scrollbar-width:none] gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden">
         {tabs.map(({ id, icon: Icon, label }) => (

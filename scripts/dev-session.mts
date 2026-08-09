@@ -34,8 +34,8 @@ function env(): Record<string, string> {
 
 async function main() {
   const role = process.argv[2]
-  if (!role || !['agent', 'merchant', 'consumer'].includes(role)) {
-    throw new Error('사용법: node scripts/dev-session.mts <agent|merchant|consumer>')
+  if (!role || !['agent', 'merchant', 'consumer', 'admin'].includes(role)) {
+    throw new Error('사용법: node scripts/dev-session.mts <agent|merchant|consumer|admin>')
   }
 
   const e = env()
@@ -57,7 +57,8 @@ async function main() {
   } catch {
     uid = (await auth.createUser({ email, displayName: `dev-${role}` })).uid
   }
-  await auth.setCustomUserClaims(uid, { role })
+  // admin 은 역할 없이 admin 클레임만 — 화면별 보기(guards 의 isAdmin 통과)를 검증하는 용도.
+  await auth.setCustomUserClaims(uid, role === 'admin' ? { admin: true } : { role })
 
   const customToken = await auth.createCustomToken(uid)
   const res = await fetch(

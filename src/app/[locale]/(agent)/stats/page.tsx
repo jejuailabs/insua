@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { AdminPeekBanner } from '@/components/admin/AdminPeekBanner'
 import { agentRail } from '@/components/crm/agentRail'
 import { SideRail } from '@/components/layout/SideRail'
 import { requireRolePage } from '@/lib/auth/guards'
@@ -43,6 +44,7 @@ export default async function StatsPage({ params }: { params: Promise<{ locale: 
     <div className="flex">
       <SideRail items={agentRail('stats')} />
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-4 pb-10">
+        <AdminPeekBanner />
         <h1 className="text-display text-content">{t('crm.stats.title')}</h1>
 
         <div className="mt-4 grid grid-cols-2 gap-3">

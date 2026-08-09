@@ -317,7 +317,13 @@
     "contentEmpty": "신고·검수 대기 콘텐츠가 없습니다",
     "reportsEmpty": "접수된 신고가 없습니다",
     "roleUpdated": "변경했습니다",
-    "roleNone": "미지정"
+    "roleNone": "미지정",
+    "viewAs": "화면별 보기",
+    "viewAsDesc": "각 역할의 초기 화면을 관리자 권한으로 열람합니다",
+    "viewAgent": "설계사 화면",
+    "viewMerchant": "소상공인 화면",
+    "viewConsumer": "일반인 화면",
+    "backToConsole": "콘솔로"
   },
   "format": {
     "currency": "{amount}원",

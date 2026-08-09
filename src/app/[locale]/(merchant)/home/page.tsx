@@ -15,6 +15,7 @@ import {
 } from 'lucide-react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import Image from 'next/image'
+import { AdminPeekBanner } from '@/components/admin/AdminPeekBanner'
 import { BottomTabBar } from '@/components/layout/BottomTabBar'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { requireRolePage } from '@/lib/auth/guards'
@@ -42,6 +43,7 @@ export default async function MerchantHomePage({
   return (
     <>
       <main className="mx-auto max-w-md px-4 pt-4 pb-32">
+        <AdminPeekBanner />
         <header className="flex items-center justify-between">
           <p className="text-subtitle text-content">{t('merchant.spaceName')}</p>
           <span className="flex items-center gap-1 text-content-muted">

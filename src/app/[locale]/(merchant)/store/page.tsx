@@ -1,4 +1,5 @@
 import { setRequestLocale } from 'next-intl/server'
+import { AdminPeekBanner } from '@/components/admin/AdminPeekBanner'
 import { StoreScreen } from '@/components/store/StoreScreen'
 import { requireRolePage } from '@/lib/auth/guards'
 import { STORES } from '@/lib/mock/store'
@@ -9,5 +10,10 @@ export default async function StorePage({ params }: { params: Promise<{ locale: 
   setRequestLocale(locale)
   await requireRolePage(locale, ['merchant'])
 
-  return <StoreScreen stores={STORES} />
+  return (
+    <>
+      <AdminPeekBanner />
+      <StoreScreen stores={STORES} />
+    </>
+  )
 }

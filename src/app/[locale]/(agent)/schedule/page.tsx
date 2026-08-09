@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { AdminPeekBanner } from '@/components/admin/AdminPeekBanner'
 import { agentRail } from '@/components/crm/agentRail'
 import { CalendarMonth } from '@/components/crm/CrmScreen'
 import { SideRail } from '@/components/layout/SideRail'
@@ -18,6 +19,7 @@ export default async function SchedulePage({ params }: { params: Promise<{ local
     <div className="flex">
       <SideRail items={agentRail('schedule')} />
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-4">
+        <AdminPeekBanner />
         <h1 className="text-display text-content">{t('nav.schedule')}</h1>
         <div className="mt-4 rounded-card border border-line bg-surface p-4">
           <CalendarMonth contacts={contacts} />

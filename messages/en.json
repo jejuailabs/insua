@@ -317,7 +317,13 @@
     "contentEmpty": "No content pending review",
     "reportsEmpty": "No reports",
     "roleUpdated": "Updated",
-    "roleNone": "None"
+    "roleNone": "None",
+    "viewAs": "View as role",
+    "viewAsDesc": "Open each role home screen as admin",
+    "viewAgent": "Agent screen",
+    "viewMerchant": "Merchant screen",
+    "viewConsumer": "Consumer screen",
+    "backToConsole": "Console"
   },
   "format": {
     "currency": "₩{amount}",

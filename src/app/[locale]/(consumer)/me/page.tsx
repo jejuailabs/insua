@@ -1,4 +1,5 @@
 import { CircleUser } from 'lucide-react'
+import { AdminPeekBanner } from '@/components/admin/AdminPeekBanner'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { AgentSection } from '@/components/consumer/AgentSection'
 import { consumerRail } from '@/components/home/consumerRail'
@@ -24,6 +25,7 @@ export default async function MePage({ params }: { params: Promise<{ locale: str
       <SideRail items={consumerRail('me', '/feed')} />
 
       <main className="mx-auto flex w-full max-w-md flex-1 flex-col gap-4 px-4 pt-4 pb-10">
+        <AdminPeekBanner />
         <h1 className="text-display text-content">{t('nav.myPage')}</h1>
 
         <section className="flex items-center gap-3 rounded-card border border-line bg-surface p-4">

@@ -1,4 +1,5 @@
 import { setRequestLocale } from 'next-intl/server'
+import { AdminPeekBanner } from '@/components/admin/AdminPeekBanner'
 import { agentRail } from '@/components/crm/agentRail'
 import { CrmScreen } from '@/components/crm/CrmScreen'
 import { SideRail } from '@/components/layout/SideRail'
@@ -17,6 +18,7 @@ export default async function CrmPage({ params }: { params: Promise<{ locale: st
     <div className="flex">
       <SideRail items={agentRail('crm')} />
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-4">
+        <AdminPeekBanner />
         <CrmScreen contacts={contacts} />
       </main>
     </div>

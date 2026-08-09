@@ -1,4 +1,5 @@
 import { Heart, Star } from 'lucide-react'
+import { AdminPeekBanner } from '@/components/admin/AdminPeekBanner'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import Image from 'next/image'
 import { consumerRail } from '@/components/home/consumerRail'
@@ -23,6 +24,7 @@ export default async function SavedPage({ params }: { params: Promise<{ locale: 
       <SideRail items={consumerRail('saved', '/feed')} />
 
       <main className="mx-auto w-full max-w-md flex-1 px-4 pt-4 pb-10">
+        <AdminPeekBanner />
         <h1 className="text-display text-content">{t('nav.saved')}</h1>
 
         {saved.length === 0 ? (
