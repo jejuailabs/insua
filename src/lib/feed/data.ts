@@ -32,7 +32,7 @@ function toPost(id: string, d: FirebaseFirestore.DocumentData, now: number): Fee
 }
 
 /** 공개 피드 — 최신순. orderBy 를 빼고 메모리 정렬한다 (복합 인덱스 불필요, MVP 규모). */
-export async function listFeedPosts(limit = 12): Promise<FeedPost[]> {
+export async function listFeedPosts(limit = 12, offset = 0): Promise<FeedPost[]> {
   const snap = await getAdminDb()
     .collection('posts')
     .where('visibility', '==', 'public')
@@ -43,7 +43,7 @@ export async function listFeedPosts(limit = 12): Promise<FeedPost[]> {
   return snap.docs
     .map((doc) => toPost(doc.id, doc.data(), now))
     .sort((a, b) => a.minutesAgo - b.minutesAgo)
-    .slice(0, limit)
+    .slice(offset, offset + limit)
 }
 
 /** 내가 올린 소식 — 내 매장 화면의 소식 섹션용. */

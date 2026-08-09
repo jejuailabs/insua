@@ -10,12 +10,7 @@ import { ProductGrid } from './ProductGrid'
 import { RadiusChips } from './RadiusChips'
 import { Modal } from '@/components/ui/Modal'
 import { issueCoupon, toggleSaveStore } from '@/lib/consumer/actions'
-import {
-  CATEGORY_PRODUCTS,
-  type Hero,
-  type HeroCategory,
-  type RestaurantSub,
-} from '@/lib/mock/home'
+import type { Hero, HeroCategory, MarketItem, RestaurantSub } from '@/lib/mock/home'
 import { cn } from '@/lib/utils/cn'
 
 /** 메인 카테고리 필터 5종 (사용자 확정 사양) — 앞 4개에 안 걸리면 전부 기타. */
@@ -50,10 +45,13 @@ function bucketOf(category: HeroCategory): FilterCategory {
  */
 export function FeedShowcase({
   heroes,
+  products,
   signedIn = false,
   initialSavedIds = [],
 }: {
   heroes: Hero[]
+  /** 히어로 카드 아래 고정 슬롯 — 서버가 랜덤 셔플해 내려준다 (사용자 확정 사양) */
+  products: MarketItem[]
   signedIn?: boolean
   initialSavedIds?: string[]
 }) {
@@ -77,9 +75,6 @@ export function FeedShowcase({
     return true
   })
   const shown = filtered.length ? filtered : []
-  const category = shown.length
-    ? shown[Math.min(index, shown.length - 1)]!.category
-    : heroes[0]!.category
 
   function pickFilter(next: FilterCategory | 'all') {
     setFilter(next)
@@ -252,13 +247,13 @@ export function FeedShowcase({
 
       <section className="mt-6 rounded-card border border-line bg-surface p-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-subtitle text-content">{t(`consumer.productSection.${category}`)}</h2>
+          <h2 className="text-subtitle text-content">{t('consumer.todayFresh')}</h2>
           <span className="flex items-center gap-0.5 text-caption text-content-muted">
             {t('common.more')}
             <ChevronRight size={14} aria-hidden />
           </span>
         </div>
-        <ProductGrid items={CATEGORY_PRODUCTS[category]} />
+        <ProductGrid items={products} />
       </section>
 
       <Modal

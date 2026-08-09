@@ -1,12 +1,13 @@
 import { Bell } from 'lucide-react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { AuthLauncher } from '@/components/auth/AuthLauncher'
-import { LiveFeed } from '@/components/feed/LiveFeed'
+import { FeedGrid } from '@/components/feed/FeedGrid'
 import { FeedShowcase } from '@/components/home/FeedShowcase'
 import { SettingsButton } from '@/components/layout/SettingsButton'
 import { SideRail } from '@/components/layout/SideRail'
 import { getSession } from '@/lib/auth/session'
 import { listFeedPosts } from '@/lib/feed/data'
+import { listRandomProducts } from '@/lib/market/data'
 import { getMyConsumerProfile } from '@/lib/consumer/actions'
 import { listHeroes } from '@/lib/stores/data'
 
@@ -31,17 +32,21 @@ export default async function HomePage({
 
   const session = await getSession()
   const { login } = await searchParams
-  const profile = session ? await getMyConsumerProfile() : null
-  const heroes = await listHeroes()
-  const feedPosts = await listFeedPosts()
-  const t = await getTranslations()
+  // 직렬 대기가 메인 TTFB 를 잡아먹는다 — 전부 병렬로 (사용자 성능 피드백)
+  const [profile, heroes, feedPosts, products, t] = await Promise.all([
+    session ? getMyConsumerProfile() : Promise.resolve(null),
+    listHeroes(),
+    listFeedPosts(12),
+    listRandomProducts(6),
+    getTranslations(),
+  ])
 
   return (
     <>
       <div className="flex">
         <SideRail variant="consumer" active="home" homeHref="/" />
 
-        <main className="mx-auto w-full max-w-md flex-1 px-4 pt-4 pb-28 lg:max-w-xl">
+        <main className="mx-auto w-full max-w-md flex-1 px-4 pt-4 pb-28 lg:max-w-4xl">
           <header className="flex items-start justify-between">
             <h1 className="text-title tracking-[-0.03em] text-accent-strong">LOCAL HERO</h1>
             <div className="flex items-center gap-1">
@@ -56,12 +61,13 @@ export default async function HomePage({
           <div className="mt-4">
             <FeedShowcase
               heroes={heroes}
+              products={products}
               signedIn={Boolean(session)}
               initialSavedIds={profile?.savedStoreIds ?? []}
             />
           </div>
 
-          <LiveFeed posts={feedPosts} />
+          <FeedGrid initialPosts={feedPosts} />
         </main>
       </div>
 

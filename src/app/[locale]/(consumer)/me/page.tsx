@@ -1,4 +1,4 @@
-import { CircleUser } from 'lucide-react'
+import { ChevronRight, CircleUser, Heart } from 'lucide-react'
 import { AdminPeekBanner } from '@/components/admin/AdminPeekBanner'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { AgentSection } from '@/components/consumer/AgentSection'
@@ -9,6 +9,7 @@ import { SignOutButton } from '@/components/layout/SignOutButton'
 import { PaletteSwitcher } from '@/components/theme/PaletteSwitcher'
 import { ThemeToggle } from '@/components/theme/ThemeToggle'
 import { requireRolePage } from '@/lib/auth/guards'
+import { Link } from '@/lib/i18n/navigation'
 import { getMyConsumerProfile } from '@/lib/consumer/actions'
 
 /** 마이페이지 (docs/08 §9) — 프로필·언어·테마·담당 설계사·로그아웃. */
@@ -37,6 +38,19 @@ export default async function MePage({ params }: { params: Promise<{ locale: str
             <p className="truncate text-subtitle text-content">{profile?.email}</p>
           </div>
         </section>
+
+        {/* 찜한가게 — 레일에서 마이페이지로 이동 (사용자 확정 사양) */}
+        <Link
+          href="/saved"
+          className="flex items-center gap-3 rounded-card border border-line bg-surface p-4"
+        >
+          <Heart size={18} aria-hidden className="text-accent-strong" />
+          <span className="flex-1 text-subtitle text-content">{t('nav.saved')}</span>
+          <span className="tabular text-caption text-content-muted">
+            {profile?.savedStoreIds.length ?? 0}
+          </span>
+          <ChevronRight size={16} aria-hidden className="text-content-muted" />
+        </Link>
 
         <AgentSection currentAgentId={profile?.agentId ?? null} />
 

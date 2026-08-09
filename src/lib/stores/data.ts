@@ -19,6 +19,7 @@ export type StoreDoc = Store & {
   sns: string
   aiGenerated: boolean
   subCategory?: string
+  createdAtMs: number
 }
 
 function toStore(id: string, d: FirebaseFirestore.DocumentData): StoreDoc {
@@ -42,6 +43,7 @@ function toStore(id: string, d: FirebaseFirestore.DocumentData): StoreDoc {
     contactId: (d.contactId as string | null) ?? null,
     aiGenerated: d.aiGenerated === true,
     subCategory: (d.subCategory as string) || undefined,
+    createdAtMs: d.createdAt?.toMillis?.() ?? 0,
   }
 }
 
@@ -77,7 +79,24 @@ export async function listHeroes(): Promise<Hero[]> {
         { kind: 'hours', open: s.hours.open, close: s.hours.close },
       ],
     }))
-  return [...realHeroes, ...HEROES].slice(0, 12)
+  // 노출 순서 (사용자 확정 사양): 위치기반 정렬은 좌표 데이터가 붙는 단계의 과제.
+  // 지금은 신규(5일 이내) 실매장을 최신순으로 앞세우고, 나머지는 요청마다 랜덤 셔플.
+  const FIVE_DAYS = 5 * 86_400_000
+  const now = Date.now()
+  const withMeta = realHeroes.map((hero, i) => ({ hero, createdAtMs: real[i]?.createdAtMs ?? 0 }))
+  const fresh = withMeta
+    .filter((x) => now - x.createdAtMs <= FIVE_DAYS)
+    .sort((a, b) => b.createdAtMs - a.createdAtMs)
+    .map((x) => x.hero)
+  const rest = [
+    ...withMeta.filter((x) => now - x.createdAtMs > FIVE_DAYS).map((x) => x.hero),
+    ...HEROES,
+  ]
+  for (let i = rest.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[rest[i]!, rest[j]!] = [rest[j]!, rest[i]!]
+  }
+  return [...fresh, ...rest].slice(0, 12)
 }
 
 /** 랜딩 페이지용 단건 조회 — 실매장 우선, 목데이터 폴백. */

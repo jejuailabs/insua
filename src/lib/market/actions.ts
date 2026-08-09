@@ -8,7 +8,7 @@ import { uploadToStorage } from '@/lib/stores/data'
 type ActionResult =
   { ok: true; id?: string } | { ok: false; code: 'INVALID' | 'FORBIDDEN' | 'FAILED' }
 
-/** 상품 등록 (FormData) — **설계사·관리자만** (사용자 확정 사양). */
+/** 상품 등록 (FormData) — 설계사·소상공인·관리자 (사용자 확정 사양). */
 export async function createProduct(form: FormData): Promise<ActionResult> {
   const name = String(form.get('name') ?? '').trim()
   const price = Number(String(form.get('price') ?? '')) || 0
@@ -17,7 +17,8 @@ export async function createProduct(form: FormData): Promise<ActionResult> {
 
   try {
     const session = await requireSession()
-    if (session.role !== 'agent' && !session.isAdmin) return { ok: false, code: 'FORBIDDEN' }
+    if (session.role !== 'agent' && session.role !== 'merchant' && !session.isAdmin)
+      return { ok: false, code: 'FORBIDDEN' }
 
     const db = getAdminDb()
     const ref = db.collection('products').doc()

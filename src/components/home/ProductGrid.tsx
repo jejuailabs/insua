@@ -27,7 +27,7 @@ export function ProductGrid({ items }: { items: MarketItem[] }) {
 
   return (
     <>
-      <ul className="mt-3 grid grid-cols-3 gap-2">
+      <ul className="mt-3 grid grid-cols-3 gap-2 lg:grid-cols-6">
         {items.map((item) => (
           <li key={item.id} className="overflow-hidden rounded-inner border border-line bg-surface">
             <Link href={`/${locale}/market/${item.id}`} className="relative block aspect-square">

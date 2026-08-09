@@ -1,13 +1,14 @@
 import { Bell } from 'lucide-react'
 import { AdminPeekBanner } from '@/components/admin/AdminPeekBanner'
 import { setRequestLocale } from 'next-intl/server'
-import { LiveFeed } from '@/components/feed/LiveFeed'
+import { FeedGrid } from '@/components/feed/FeedGrid'
 import { FeedShowcase } from '@/components/home/FeedShowcase'
 import { SettingsButton } from '@/components/layout/SettingsButton'
 import { SideRail } from '@/components/layout/SideRail'
 import { requireRolePage } from '@/lib/auth/guards'
 import { getMyConsumerProfile } from '@/lib/consumer/actions'
 import { listFeedPosts } from '@/lib/feed/data'
+import { listRandomProducts } from '@/lib/market/data'
 import { listHeroes } from '@/lib/stores/data'
 
 /** 소비자 LOCAL HERO 피드 (docs/08, ref-04) — 로그인 소비자 홈. */
@@ -16,15 +17,18 @@ export default async function FeedPage({ params }: { params: Promise<{ locale: s
   setRequestLocale(locale)
   await requireRolePage(locale, ['consumer'])
 
-  const profile = await getMyConsumerProfile()
-  const heroes = await listHeroes()
-  const feedPosts = await listFeedPosts()
-
+  const [profile, heroes, feedPosts, products] = await Promise.all([
+    getMyConsumerProfile(),
+    listHeroes(),
+    listFeedPosts(12),
+    listRandomProducts(6),
+  ])
+  
   return (
     <div className="flex">
       <SideRail variant="consumer" active="home" homeHref="/feed" />
 
-      <main className="mx-auto w-full max-w-md flex-1 px-4 pt-4 pb-10 lg:max-w-xl">
+      <main className="mx-auto w-full max-w-md flex-1 px-4 pt-4 pb-10 lg:max-w-4xl">
         <AdminPeekBanner />
         <header className="flex items-start justify-between">
           <h1 className="text-title tracking-[-0.03em] text-accent-strong">LOCAL HERO</h1>
@@ -37,10 +41,15 @@ export default async function FeedPage({ params }: { params: Promise<{ locale: s
         </header>
 
         <div className="mt-4">
-          <FeedShowcase heroes={heroes} signedIn initialSavedIds={profile?.savedStoreIds ?? []} />
+          <FeedShowcase
+            heroes={heroes}
+            products={products}
+            signedIn
+            initialSavedIds={profile?.savedStoreIds ?? []}
+          />
         </div>
 
-        <LiveFeed posts={feedPosts} />
+        <FeedGrid initialPosts={feedPosts} />
       </main>
     </div>
   )

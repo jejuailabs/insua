@@ -102,8 +102,12 @@ export function HeroCarousel({
           if (offset > count / 2) offset -= count
           if (offset < -count / 2) offset += count
 
-          const far = Math.abs(offset) > 1
+          const distance = Math.abs(offset)
+          // PC 확폭 시 옆으로 3장까지 걸쳐 보인다 (사용자 확정 사양). 모바일은 화면 밖.
+          const far = distance > 3
           const active = offset === 0
+          const SCALE = [1, 0.84, 0.72, 0.62] as const
+          const FADE = [1, 0.55, 0.32, 0.18] as const
 
           return (
             <article
@@ -117,9 +121,9 @@ export function HeroCarousel({
                 far && 'pointer-events-none',
               )}
               style={{
-                transform: `translateX(${offset * 62}%) scale(${active ? 1 : 0.84})`,
-                opacity: far ? 0 : active ? 1 : 0.55,
-                zIndex: 10 - Math.abs(offset),
+                transform: `translateX(${offset * 62}%) scale(${SCALE[distance] ?? 0.6})`,
+                opacity: far ? 0 : (FADE[distance] ?? 0),
+                zIndex: 10 - distance,
               }}
             >
               <Image

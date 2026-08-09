@@ -58,3 +58,9 @@ export async function createFeedPost(form: FormData): Promise<ActionResult> {
     return { ok: false, code: 'FAILED' }
   }
 }
+
+/** 무한 스크롤용 다음 페이지 (사용자 확정 사양) — 공개 데이터 읽기 전용. */
+export async function loadFeedPage(offset: number, limit = 9) {
+  const { listFeedPosts } = await import('./data')
+  return listFeedPosts(Math.min(limit, 24), Math.max(0, offset))
+}

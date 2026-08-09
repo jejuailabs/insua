@@ -67,3 +67,13 @@ export async function getProduct(productId: string): Promise<Product | null> {
   const mock = (await listProducts()).find((p) => p.id === productId && !p.real)
   return mock ?? null
 }
+
+/** 메인 고정 슬롯용 — 요청마다 랜덤 n개 (사용자 확정 사양). */
+export async function listRandomProducts(count = 6): Promise<Product[]> {
+  const all = await listProducts()
+  for (let i = all.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[all[i]!, all[j]!] = [all[j]!, all[i]!]
+  }
+  return all.slice(0, count)
+}

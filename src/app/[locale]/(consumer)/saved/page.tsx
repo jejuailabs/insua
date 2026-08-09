@@ -20,7 +20,7 @@ export default async function SavedPage({ params }: { params: Promise<{ locale: 
 
   return (
     <div className="flex">
-      <SideRail variant="consumer" active="saved" homeHref="/feed" />
+      <SideRail variant="consumer" active="me" homeHref="/feed" />
 
       <main className="mx-auto w-full max-w-md flex-1 px-4 pt-4 pb-10 lg:max-w-xl">
         <AdminPeekBanner />
