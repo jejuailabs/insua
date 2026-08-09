@@ -1,3 +1,4 @@
+import { LocalHeroLogo } from '@/components/brand/LocalHeroLogo'
 import { Bell } from 'lucide-react'
 import { AdminPeekBanner } from '@/components/admin/AdminPeekBanner'
 import { setRequestLocale } from 'next-intl/server'
@@ -31,7 +32,9 @@ export default async function FeedPage({ params }: { params: Promise<{ locale: s
       <main className="mx-auto w-full max-w-md flex-1 px-4 pt-4 pb-10 lg:max-w-4xl">
         <AdminPeekBanner />
         <header className="flex items-start justify-between">
-          <h1 className="text-title tracking-[-0.03em] text-accent-strong">LOCAL HERO</h1>
+          <h1>
+            <LocalHeroLogo />
+          </h1>
           <div className="flex items-center gap-1">
             <SettingsButton />
             <span className="grid h-10 w-10 place-items-center text-content-muted">

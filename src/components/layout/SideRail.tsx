@@ -3,6 +3,7 @@
 import { Menu, X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
+import { LocalHeroLogo } from '@/components/brand/LocalHeroLogo'
 import { agentRail } from '@/components/crm/agentRail'
 import { consumerRail, type ConsumerSection } from '@/components/home/consumerRail'
 import { Link } from '@/lib/i18n/navigation'
@@ -33,6 +34,8 @@ export function SideRail(props: Props) {
 
   const items: RailItem[] =
     props.variant === 'agent' ? agentRail(props.active) : consumerRail(props.active, props.homeHref)
+  // 설계사 레일에는 소비자 홈이 없다 — 로고는 각 역할의 첫 화면으로 보낸다.
+  const homeHref = props.variant === 'agent' ? '/crm' : props.homeHref
 
   const list = (onNavigate?: () => void) => (
     <ul className="flex flex-col gap-1 p-2">
@@ -74,8 +77,11 @@ export function SideRail(props: Props) {
 
   return (
     <>
-      {/* PC — 세로 레일 상시 */}
+      {/* PC — 세로 레일 상시. 최상단에 로고 전체(심볼+워드마크)를 놓는다. */}
       <nav className="sticky top-0 hidden h-dvh w-50 shrink-0 flex-col border-r border-line bg-surface lg:flex">
+        <Link href={homeHref} className="block px-5 pt-5 pb-4">
+          <LocalHeroLogo layout="stacked" />
+        </Link>
         {list()}
       </nav>
 
@@ -99,11 +105,9 @@ export function SideRail(props: Props) {
           />
           <nav className="absolute top-0 bottom-0 left-0 flex w-64 flex-col bg-surface shadow-card">
             <div className="flex items-center justify-between px-4 py-3">
-              <p className="text-subtitle leading-[0.95] font-extrabold tracking-[-0.04em] text-accent-strong">
-                LOCAL
-                <br />
-                HERO
-              </p>
+              <Link href={homeHref} onClick={() => setOpen(false)}>
+                <LocalHeroLogo markSize={34} />
+              </Link>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
