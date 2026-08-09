@@ -193,7 +193,9 @@
     "assignDue": "在此日期安排联系",
     "pickContact": "选择客户即可将其下次联系日定为该日期",
     "dueSet": "已安排",
-    "openSmsApp": "打开短信应用"
+    "openSmsApp": "打开短信应用",
+    "mapPinned": "{total}位客户中显示{n}位 · 有地址即自动添加",
+    "mapNoAddress": "还没有登记地址的客户。登记客户时填写地址即可显示在地图上。"
   },
   "merchant": {
     "spaceName": "小微店主的专属空间",

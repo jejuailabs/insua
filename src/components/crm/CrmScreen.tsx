@@ -20,6 +20,7 @@ import { setNextContactDate } from '@/lib/crm/actions'
 import { NewContactForm } from './NewContactForm'
 import { PersonCard } from './PersonCard'
 import { FeedPostButton } from '@/components/feed/FeedPostButton'
+import { PinMap } from '@/components/map/PinMap'
 import { Modal } from '@/components/ui/Modal'
 import { overdueDays, TIERS, type Contact, type Tier } from '@/lib/crm/types'
 import { cn } from '@/lib/utils/cn'
@@ -35,6 +36,10 @@ export function CrmScreen({ contacts }: { contacts: Contact[] }) {
   const t = useTranslations()
   const router = useRouter()
   const locale = useLocale()
+  // 지도에 찍을 수 있는 고객 = 주소 지오코딩이 끝난 고객
+  const mapPins = contacts
+    .filter((c) => c.lat !== undefined && c.lng !== undefined)
+    .map((c) => ({ id: c.id, label: c.name, lat: c.lat!, lng: c.lng! }))
 
   const [query, setQuery] = useState('')
   const [searchOpen, setSearchOpen] = useState(false)
@@ -328,12 +333,29 @@ export function CrmScreen({ contacts }: { contacts: Contact[] }) {
       <NewContactForm open={formOpen} onClose={() => setFormOpen(false)} />
 
       <Modal open={mapOpen} onClose={() => setMapOpen(false)} title={t('crm.mapView')}>
-        {/* 지도 SDK 미확정 (docs/06 §3) — MapPlaceholder */}
-        <div className="grid aspect-video place-items-center rounded-inner border border-line bg-surface-2">
-          <p className="max-w-60 text-center text-caption text-content-muted">
-            {t('crm.mapPreparing')}
-          </p>
-        </div>
+        {/* 담당 고객을 주소 기준으로 지도에 찍는다 (사용자 확정 사양).
+            좌표는 서버가 목록을 읽을 때 한 건씩 지오코딩해 채운다. */}
+        {mapPins.length ? (
+          <>
+            <PinMap
+              pins={mapPins}
+              className="aspect-square"
+              onPinClick={(id) => {
+                const target = contacts.find((c) => c.id === id)
+                if (target?.storeId) router.push(`/${locale}/s/${target.storeId}`)
+              }}
+            />
+            <p className="mt-2 text-micro text-content-faint">
+              {t('crm.mapPinned', { n: mapPins.length, total: contacts.length })}
+            </p>
+          </>
+        ) : (
+          <div className="grid aspect-video place-items-center rounded-inner border border-line bg-surface-2">
+            <p className="max-w-60 text-center text-caption text-content-muted">
+              {t('crm.mapNoAddress')}
+            </p>
+          </div>
+        )}
       </Modal>
 
       <Modal

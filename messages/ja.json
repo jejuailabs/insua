@@ -193,7 +193,9 @@
     "assignDue": "この日に連絡予定を設定",
     "pickContact": "顧客を選ぶとその日が次回連絡日になります",
     "dueSet": "設定しました",
-    "openSmsApp": "SMSアプリを開く"
+    "openSmsApp": "SMSアプリを開く",
+    "mapPinned": "顧客{total}名中{n}名を表示 · 住所があれば自動で追加されます",
+    "mapNoAddress": "住所が登録された顧客がありません。顧客登録時に住所を入れると地図に表示されます。"
   },
   "merchant": {
     "spaceName": "個人店主だけの空間",

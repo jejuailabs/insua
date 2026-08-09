@@ -142,6 +142,8 @@ export async function createContactWithCard(
       phone: str('phone'),
       tier,
       cycleDays,
+      // 지도 보기의 근거 — storeDraft 안에만 두면 고객 단위로 못 찾는다
+      address: str('storeAddress'),
       note: str('note'),
       photoURL,
       website: '',

@@ -33,6 +33,11 @@ export type Contact = {
   storeId: string | null
   /** 매장 정보(storeDraft)가 있어 버튼 한 번으로 카드 생성이 가능한가 */
   hasStoreDraft: boolean
+  /** 방문지 주소 — 지도 보기에서 핀을 찍는 근거 (사용자 확정 사양) */
+  address: string
+  /** 주소 지오코딩 결과. 서버가 채우고 캐시한다. */
+  lat?: number
+  lng?: number
 }
 
 export type InteractionType = 'note' | 'call' | 'visit' | 'voice'

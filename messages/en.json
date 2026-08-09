@@ -193,7 +193,9 @@
     "assignDue": "Schedule contact on this date",
     "pickContact": "Pick a customer to set their next-contact date",
     "dueSet": "Scheduled",
-    "openSmsApp": "Open SMS app"
+    "openSmsApp": "Open SMS app",
+    "mapPinned": "{n} of {total} customers shown · added automatically once an address exists",
+    "mapNoAddress": "No customer has an address yet. Add one when registering to see them here."
   },
   "merchant": {
     "spaceName": "A space just for local owners",

@@ -32,12 +32,45 @@ function toContact(id: string, d: FirebaseFirestore.DocumentData): Contact {
     createdAt: toIso(d.createdAt) ?? new Date(0).toISOString(),
     storeId: (d.storeId as string | null) ?? null,
     hasStoreDraft: Boolean((d.storeDraft as { name?: string } | undefined)?.name),
+    address:
+      (d.address as string) || ((d.storeDraft as { address?: string } | undefined)?.address ?? ''),
+    lat: typeof d.lat === 'number' ? d.lat : undefined,
+    lng: typeof d.lng === 'number' ? d.lng : undefined,
   }
 }
 
 export async function listContacts(agentUid: string): Promise<Contact[]> {
   const snap = await getAdminDb().collection('contacts').where('ownerAgentId', '==', agentUid).get()
-  return snap.docs.map((doc) => toContact(doc.id, doc.data()))
+  const contacts = snap.docs.map((doc) => toContact(doc.id, doc.data()))
+  await backfillContactCoords(contacts)
+  return contacts
+}
+
+/**
+ * 주소만 있고 좌표가 없는 고객을 한 건씩 지오코딩해 캐시한다 (Nominatim 정책상 요청당 1건).
+ * 화면을 열 때마다 한 명씩 채워지므로, 몇 번 드나들면 전부 지도에 뜬다.
+ * 실패는 조용히 넘어간다 — 좌표는 지도 보기의 부가 정보다.
+ */
+async function backfillContactCoords(contacts: Contact[]): Promise<void> {
+  const target = contacts.find((c) => c.address && c.lat === undefined)
+  if (!target) return
+  try {
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=kr&q=${encodeURIComponent(target.address)}`,
+      { headers: { 'User-Agent': 'local-os/0.1 (insua.vercel.app)' } },
+    )
+    const rows = (await res.json()) as Array<{ lat: string; lon: string }>
+    const hit = rows[0]
+    if (!hit) return
+    target.lat = Number(hit.lat)
+    target.lng = Number(hit.lon)
+    await getAdminDb()
+      .collection('contacts')
+      .doc(target.id)
+      .set({ lat: target.lat, lng: target.lng }, { merge: true })
+  } catch {
+    // 지오코딩 실패는 치명적이지 않다
+  }
 }
 
 export async function getContact(agentUid: string, contactId: string): Promise<Contact | null> {
