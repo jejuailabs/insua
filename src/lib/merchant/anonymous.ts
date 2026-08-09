@@ -23,16 +23,21 @@ export async function listAnonymousPosts(limit = 30): Promise<AnonymousPostView[
     .get()
 
   const now = Date.now()
-  return snap.docs.map((doc) => {
-    const d = doc.data()
-    const created = d.createdAt instanceof Timestamp ? d.createdAt.toMillis() : now
-    return {
-      id: doc.id,
-      title: (d.body as string) ?? '',
-      minutesAgo: Math.max(0, Math.floor((now - created) / 60_000)),
-      comments: (d.comments as number) ?? 0,
-    }
-  })
+  return (
+    snap.docs
+      // 어드민이 숨긴 글은 목록에서 빠진다
+      .filter((doc) => doc.data().status !== 'hidden')
+      .map((doc) => {
+        const d = doc.data()
+        const created = d.createdAt instanceof Timestamp ? d.createdAt.toMillis() : now
+        return {
+          id: doc.id,
+          title: (d.body as string) ?? '',
+          minutesAgo: Math.max(0, Math.floor((now - created) / 60_000)),
+          comments: (d.comments as number) ?? 0,
+        }
+      })
+  )
 }
 
 /** 최근 24시간 작성자 수 — "지금 n명이 이야기 중" 대체 지표 (docs/07 A-4). 숫자를 지어내지 않는다. */

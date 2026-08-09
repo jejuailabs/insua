@@ -19,7 +19,7 @@
     "minutesAgo": "{n}분 전",
     "hoursAgo": "{n}시간 전",
     "notifyEmpty": "새 알림이 없습니다",
-    "prev": "이전"
+    "error": "처리하지 못했습니다"
   },
   "nav": {
     "home": "홈",
@@ -418,7 +418,22 @@
     "viewConsumer": "일반인 화면",
     "backToConsole": "콘솔로",
     "grantAdmin": "관리자 지정",
-    "revokeAdmin": "관리자 해제"
+    "revokeAdmin": "관리자 해제",
+    "contentProducts": "상품",
+    "contentPosts": "게시물",
+    "contentReviews": "방문 후기",
+    "contentAnonymous": "익명글",
+    "contentStores": "매장",
+    "statusHidden": "숨김",
+    "hide": "숨기기",
+    "restore": "다시 노출",
+    "delete": "삭제",
+    "confirmDelete": "정말 삭제",
+    "moderated": {
+      "hide": "숨겼습니다",
+      "restore": "다시 노출했습니다",
+      "delete": "삭제했습니다"
+    }
   },
   "format": {
     "currency": "{amount}원",

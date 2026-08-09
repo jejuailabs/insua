@@ -19,7 +19,7 @@
     "minutesAgo": "{n}分钟前",
     "hoursAgo": "{n}小时前",
     "notifyEmpty": "暂无新通知",
-    "prev": "上一页"
+    "error": "处理失败"
   },
   "nav": {
     "home": "首页",
@@ -418,7 +418,22 @@
     "viewConsumer": "消费者页面",
     "backToConsole": "控制台",
     "grantAdmin": "指定管理员",
-    "revokeAdmin": "解除管理员"
+    "revokeAdmin": "解除管理员",
+    "contentProducts": "商品",
+    "contentPosts": "帖子",
+    "contentReviews": "到店评价",
+    "contentAnonymous": "匿名帖",
+    "contentStores": "店铺",
+    "statusHidden": "已隐藏",
+    "hide": "隐藏",
+    "restore": "重新显示",
+    "delete": "删除",
+    "confirmDelete": "确认删除",
+    "moderated": {
+      "hide": "已隐藏",
+      "restore": "已重新显示",
+      "delete": "已删除"
+    }
   },
   "format": {
     "currency": "₩{amount}",

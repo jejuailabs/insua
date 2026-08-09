@@ -50,11 +50,21 @@
 - 연결된 `contact.consent` 상태를 함께 표시한다. **동의 없이 공개된 매장을 찾아내기 위한 화면이다.**
   `consent.dataSharing === false` 인데 `isPublic === true` 인 레코드는 경고 표시.
 
-### 2.4 콘텐츠 `/admin/posts`
+### 2.4 콘텐츠 `/admin?tab=content` ✅ 구현됨
 
-- 최신순 목록, 이미지 썸네일 그리드
-- 숨김(`status: 'hidden'`) / 삭제(`removed`) 처리
-- 신고 누적 3건 이상은 자동 상단 정렬
+한 화면에서 5종을 종류 탭으로 오간다 (사용자 확정 사양):
+**상품**(products) · **게시물**(posts) · **방문 후기**(reviews) · **익명글**(anonymousPosts) · **매장**(stores).
+
+- 각 컬렉션 최근 50건, 최신순. 썸네일 + 제목 + 부가정보(가격·작성자·별점).
+- **숨기기** → `status: 'hidden'` (매장은 `status: 'published'` 해제).
+  숨긴 항목도 목록에 흐리게 남아 **다시 노출**로 복원할 수 있다.
+- **삭제** → 문서 영구 삭제. 되돌릴 수 없으므로 인라인 확인 버튼을 한 번 더 거친다.
+- 공개 화면 반영: 상품·게시물·매장은 기존 status 쿼리가, 후기·익명글은 메모리 필터가 걸러낸다.
+- **후기는 평점 집계를 역산한다** — 숨기면 `rating`/`ratingCount`/`reviewCount` 에서 빠지고,
+  복원하면 되돌아온다. 화면에서 사라진 후기가 평점에는 남아 있는 불일치를 막는다.
+- 모든 처리는 `auditLogs` 에 `content.{kind}.{hide|restore|delete}` 로 기록된다.
+- 판정은 서버 액션의 `requireAdmin()` — 버튼 표시는 표현일 뿐이다 (CLAUDE.md §3-2).
+- 신고 누적 정렬은 신고 기능이 생긴 뒤의 과제.
 
 ### 2.5 익명방 `/admin/anonymous` ★ 가장 조심할 화면
 

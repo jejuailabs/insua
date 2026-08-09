@@ -205,7 +205,7 @@ export function FeedShowcase({
                 type="button"
                 onClick={() => setListPage((p) => Math.max(0, p - 1))}
                 disabled={listPage === 0}
-                aria-label={t('common.prev')}
+                aria-label={t('common.previous')}
                 className="grid h-8 w-8 place-items-center rounded-chip border border-line text-content disabled:opacity-40"
               >
                 <ChevronLeft size={15} aria-hidden />

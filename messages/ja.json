@@ -19,7 +19,7 @@
     "minutesAgo": "{n}分前",
     "hoursAgo": "{n}時間前",
     "notifyEmpty": "新しい通知はありません",
-    "prev": "前へ"
+    "error": "処理できませんでした"
   },
   "nav": {
     "home": "ホーム",
@@ -418,7 +418,22 @@
     "viewConsumer": "一般画面",
     "backToConsole": "コンソールへ",
     "grantAdmin": "管理者に指定",
-    "revokeAdmin": "管理者を解除"
+    "revokeAdmin": "管理者を解除",
+    "contentProducts": "商品",
+    "contentPosts": "投稿",
+    "contentReviews": "訪問レビュー",
+    "contentAnonymous": "匿名投稿",
+    "contentStores": "店舗",
+    "statusHidden": "非表示",
+    "hide": "非表示にする",
+    "restore": "再表示",
+    "delete": "削除",
+    "confirmDelete": "本当に削除",
+    "moderated": {
+      "hide": "非表示にしました",
+      "restore": "再表示しました",
+      "delete": "削除しました"
+    }
   },
   "format": {
     "currency": "₩{amount}",

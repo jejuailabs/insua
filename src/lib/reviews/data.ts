@@ -21,19 +21,23 @@ export async function listReviews(storeId: string, limit = 12): Promise<ReviewVi
     .limit(60)
     .get()
   const now = Date.now()
-  return snap.docs
-    .map((doc) => {
-      const d = doc.data()
-      const created = d.createdAt instanceof Timestamp ? d.createdAt.toMillis() : now
-      return {
-        id: doc.id,
-        authorName: (d.authorName as string) ?? '',
-        rating: (d.rating as number) ?? 5,
-        body: (d.body as string) ?? '',
-        photoURL: (d.photoURL as string | null) ?? null,
-        minutesAgo: Math.max(0, Math.floor((now - created) / 60_000)),
-      }
-    })
-    .sort((a, b) => a.minutesAgo - b.minutesAgo)
-    .slice(0, limit)
+  return (
+    snap.docs
+      // 어드민이 숨긴 후기는 공개 목록에서 빠진다 (인덱스 없이 메모리 필터)
+      .filter((doc) => doc.data().status !== 'hidden')
+      .map((doc) => {
+        const d = doc.data()
+        const created = d.createdAt instanceof Timestamp ? d.createdAt.toMillis() : now
+        return {
+          id: doc.id,
+          authorName: (d.authorName as string) ?? '',
+          rating: (d.rating as number) ?? 5,
+          body: (d.body as string) ?? '',
+          photoURL: (d.photoURL as string | null) ?? null,
+          minutesAgo: Math.max(0, Math.floor((now - created) / 60_000)),
+        }
+      })
+      .sort((a, b) => a.minutesAgo - b.minutesAgo)
+      .slice(0, limit)
+  )
 }

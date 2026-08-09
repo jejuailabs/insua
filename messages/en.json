@@ -19,7 +19,7 @@
     "minutesAgo": "{n}m ago",
     "hoursAgo": "{n}h ago",
     "notifyEmpty": "No new notifications",
-    "prev": "Previous"
+    "error": "Something went wrong"
   },
   "nav": {
     "home": "Home",
@@ -418,7 +418,22 @@
     "viewConsumer": "Consumer screen",
     "backToConsole": "Console",
     "grantAdmin": "Grant admin",
-    "revokeAdmin": "Revoke admin"
+    "revokeAdmin": "Revoke admin",
+    "contentProducts": "Products",
+    "contentPosts": "Posts",
+    "contentReviews": "Reviews",
+    "contentAnonymous": "Anonymous",
+    "contentStores": "Stores",
+    "statusHidden": "Hidden",
+    "hide": "Hide",
+    "restore": "Show again",
+    "delete": "Delete",
+    "confirmDelete": "Delete for real",
+    "moderated": {
+      "hide": "Hidden.",
+      "restore": "Visible again.",
+      "delete": "Deleted."
+    }
   },
   "format": {
     "currency": "₩{amount}",

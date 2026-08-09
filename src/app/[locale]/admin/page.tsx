@@ -1,5 +1,6 @@
 import {
   FileWarning,
+  Home,
   Landmark,
   ScrollText,
   ShieldAlert,
@@ -9,8 +10,9 @@ import {
   UsersRound,
 } from 'lucide-react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { ContentTable } from '@/components/admin/ContentTable'
 import { UserTable } from '@/components/admin/UserTable'
-import { listAuditLogs, listUsers } from '@/lib/admin/data'
+import { listAdminContent, listAuditLogs, listUsers } from '@/lib/admin/data'
 import { getSession } from '@/lib/auth/session'
 import { Link, redirect } from '@/lib/i18n/navigation'
 import { ROLE_HOME } from '@/types/user'
@@ -47,19 +49,30 @@ export default async function AdminPage({
     { id: 'audit', icon: ScrollText, label: t('admin.auditLogs') },
   ]
 
-  const [users, logs] = await Promise.all([
+  const [users, logs, content] = await Promise.all([
     tab === 'users' ? listUsers() : Promise.resolve([]),
     tab === 'audit' ? listAuditLogs() : Promise.resolve([]),
+    tab === 'content' ? listAdminContent() : Promise.resolve(null),
   ])
 
   return (
-    <main className="mx-auto max-w-2xl px-4 py-4 pb-10">
+    <main className="mx-auto max-w-3xl px-4 py-4 pb-10">
       {/* 어드민 배너 — 지금 권한이 다르다는 걸 항상 보이게 (docs/09 §1) */}
       <p className="rounded-chip bg-warning/15 px-3 py-2 text-caption text-content">
         {t('admin.banner')}
       </p>
 
-      <h1 className="mt-3 text-display text-content">{t('admin.title')}</h1>
+      {/* 콘솔에서 나가는 길 — 어느 탭에서도 홈으로 돌아갈 수 있어야 한다 */}
+      <div className="mt-3 flex items-center justify-between gap-3">
+        <h1 className="text-display text-content">{t('admin.title')}</h1>
+        <Link
+          href="/"
+          className="flex shrink-0 items-center gap-1.5 rounded-chip border border-line px-3 py-2 text-label text-content-muted hover:border-accent"
+        >
+          <Home size={15} aria-hidden />
+          {t('nav.feed')}
+        </Link>
+      </div>
 
       {/* 화면별 보기 — 각 역할의 초기 화면을 관리자 권한으로 연다.
           guards.requireRolePage 가 isAdmin 을 통과시키고, 역할 화면 상단의
@@ -128,7 +141,7 @@ export default async function AdminPage({
             <EmptyBox text={t('admin.noLogs')} />
           ))}
 
-        {tab === 'content' && <EmptyBox text={t('admin.contentEmpty')} />}
+        {tab === 'content' && content && <ContentTable content={content} />}
         {tab === 'reports' && <EmptyBox text={t('admin.reportsEmpty')} />}
         {tab === 'support' && <EmptyBox text={t('support.sourceNotice')} />}
       </div>
