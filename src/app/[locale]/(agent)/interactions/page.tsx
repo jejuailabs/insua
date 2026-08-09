@@ -6,6 +6,8 @@ import { SideRail } from '@/components/layout/SideRail'
 import { requireRolePage } from '@/lib/auth/guards'
 import { listContacts, listInteractions } from '@/lib/crm/data'
 
+export const maxDuration = 60
+
 /** 상담로그 (docs/06 §7). */
 export default async function InteractionsPage({
   params,

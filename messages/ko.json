@@ -17,7 +17,8 @@
     "previous": "이전",
     "next": "다음",
     "minutesAgo": "{n}분 전",
-    "hoursAgo": "{n}시간 전"
+    "hoursAgo": "{n}시간 전",
+    "notifyEmpty": "새 알림이 없습니다"
   },
   "nav": {
     "home": "홈",
@@ -148,7 +149,21 @@
       "consentRecording": "상담 녹음 동의",
       "submit": "등록",
       "saving": "등록하는 중",
-      "failed": "등록에 실패했습니다"
+      "failed": "등록에 실패했습니다",
+      "ownerPhoto": "고객(사장님) 사진",
+      "menuPhoto": "대표 메뉴 사진",
+      "storeSection": "매장 정보 (히어로 카드 재료)",
+      "storeSectionHint": "정보 공유에 동의한 고객은 등록과 동시에 히어로 카드와 랜딩페이지가 자동 생성됩니다.",
+      "storeName": "상호",
+      "storeTagline": "한 줄 소개",
+      "storeCategory": "업종",
+      "storeAddress": "주소",
+      "storeHours": "영업시간",
+      "sns": "SNS 주소",
+      "menuName": "대표 메뉴명",
+      "menuPrice": "가격(원)",
+      "generating": "AI 히어로 카드 생성 중… (최대 30초)",
+      "generatedWithCard": "고객 등록 + 히어로 카드·랜딩페이지 생성 완료"
     },
     "stats": {
       "title": "통계",
@@ -156,7 +171,22 @@
       "monthlyContacts": "이번 달 접촉",
       "overdueCount": "연락 지연",
       "total": "전체"
-    }
+    },
+    "makeHeroCard": "히어로 카드 만들기",
+    "viewHeroCard": "카드 보기",
+    "heroCardDone": "히어로 카드가 생성됐습니다",
+    "heroCardFailed": "카드 생성에 실패했습니다. 다시 시도해 주세요.",
+    "needShareConsent": "정보 공유 동의가 필요합니다",
+    "record": "녹음",
+    "recording": "녹음 중… 탭해서 종료",
+    "attachPhoto": "사진 첨부",
+    "transcribe": "텍스트로 정리",
+    "transcribing": "정리하는 중…",
+    "transcriptTitle": "상담 정리",
+    "assistant": "CRM 비서",
+    "assistantHint": "내 고객·상담 기록에 대해 물어보세요. 예: \"이번 주 연락할 고객은?\"",
+    "assistantPlaceholder": "무엇이든 물어보세요",
+    "aiBadge": "AI 생성"
   },
   "merchant": {
     "spaceName": "소상공인들만의 공간",
@@ -301,7 +331,9 @@
     "regionAll": "제주시 전체",
     "regionJeju": "제주시",
     "regionSeogwipo": "서귀포시",
-    "eventsEmpty": "진행 중인 이벤트가 없습니다"
+    "eventsEmpty": "진행 중인 이벤트가 없습니다",
+    "viewCard": "카드형",
+    "viewList": "목록형"
   },
   "admin": {
     "title": "관리자",
@@ -329,5 +361,20 @@
     "currency": "{amount}원",
     "rating": "{rating} ({count})",
     "reviewCount": "리뷰 {count}"
+  },
+  "market": {
+    "register": "상품 등록",
+    "registerHint": "설계사·관리자만 등록할 수 있습니다",
+    "name": "상품명",
+    "price": "가격(원)",
+    "desc": "상품 설명",
+    "photo": "상품 사진",
+    "submit": "등록",
+    "registered": "등록했습니다",
+    "detail": "상품 정보",
+    "inquiryCall": "전화 문의",
+    "inquiryKakao": "카카오톡 문의",
+    "soldBy": "판매",
+    "empty": "등록된 상품이 없습니다"
   }
 }

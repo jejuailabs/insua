@@ -4,7 +4,10 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { PublicActionBar } from '@/components/store/PublicActionBar'
 import { TierBadge } from '@/components/ui/TierBadge'
-import { findStore, MENU_SECTION_KEY } from '@/lib/mock/store'
+import { MENU_SECTION_KEY } from '@/lib/mock/store'
+import { getStoreForLanding } from '@/lib/stores/data'
+
+export const revalidate = 300
 
 /**
  * 공개 매장 페이지 (docs/07 B-4). 비로그인 접근 가능 — proxy 보호 목록에 없다.
@@ -19,7 +22,7 @@ export default async function PublicStorePage({
   const { locale, storeId } = await params
   setRequestLocale(locale)
 
-  const store = findStore(storeId)
+  const store = await getStoreForLanding(storeId)
   if (!store) notFound()
 
   const t = await getTranslations()

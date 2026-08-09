@@ -1,13 +1,16 @@
 'use client'
 
-import { ChevronRight, TicketPercent } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { ChevronRight, LayoutGrid, Rows3, Star, TicketPercent } from 'lucide-react'
+import { useLocale, useTranslations } from 'next-intl'
+import Image from 'next/image'
+import Link from 'next/link'
 import { useState, useTransition } from 'react'
 import { HeroCarousel } from './HeroCarousel'
 import { ProductGrid } from './ProductGrid'
 import { Modal } from '@/components/ui/Modal'
 import { issueCoupon, toggleSaveStore } from '@/lib/consumer/actions'
 import { CATEGORY_PRODUCTS, type Hero } from '@/lib/mock/home'
+import { cn } from '@/lib/utils/cn'
 
 /**
  * 히어로 캐러셀 + 업종 연동 상품 섹션 (ref-04, docs/08 §6).
@@ -26,14 +29,16 @@ export function FeedShowcase({
   initialSavedIds?: string[]
 }) {
   const t = useTranslations()
+  const locale = useLocale()
   const [index, setIndex] = useState(0)
+  const [view, setView] = useState<'card' | 'list'>('card')
   const [savedIds, setSavedIds] = useState<string[]>(initialSavedIds)
   const [couponHero, setCouponHero] = useState<{ hero: Hero; rate: number } | null>(null)
   const [couponCode, setCouponCode] = useState<string | null>(null)
   const [pending, startTransition] = useTransition()
   const [toast, setToast] = useState<string | null>(null)
 
-  const category = heroes[index]!.category
+  const category = heroes[Math.min(index, heroes.length - 1)]!.category
 
   function showToast(message: string) {
     setToast(message)
@@ -69,13 +74,72 @@ export function FeedShowcase({
 
   return (
     <>
-      <HeroCarousel
-        heroes={heroes}
-        onIndexChange={setIndex}
-        savedIds={savedIds}
-        onToggleSave={handleSave}
-        onCouponClick={handleCoupon}
-      />
+      {/* 카드형 / 목록형 토글 (사용자 확정 사양) */}
+      <div className="mb-3 flex justify-end gap-1">
+        {(
+          [
+            { id: 'card', icon: LayoutGrid, label: t('consumer.viewCard') },
+            { id: 'list', icon: Rows3, label: t('consumer.viewList') },
+          ] as const
+        ).map(({ id, icon: Icon, label }) => (
+          <button
+            key={id}
+            type="button"
+            onClick={() => setView(id)}
+            aria-pressed={view === id}
+            className={cn(
+              'flex items-center gap-1 rounded-chip border px-2.5 py-1.5 text-micro',
+              view === id
+                ? 'border-accent bg-accent-soft text-accent-strong'
+                : 'border-line text-content-muted',
+            )}
+          >
+            <Icon size={13} aria-hidden />
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {view === 'card' ? (
+        <HeroCarousel
+          heroes={heroes}
+          onIndexChange={setIndex}
+          savedIds={savedIds}
+          onToggleSave={handleSave}
+          onCouponClick={handleCoupon}
+        />
+      ) : (
+        <ul className="flex flex-col gap-2">
+          {heroes.map((hero, i) => (
+            <li key={hero.id}>
+              <Link
+                href={`/${locale}/s/${hero.id}`}
+                className={cn(
+                  'flex items-center gap-3 rounded-card border bg-surface p-3',
+                  i === index ? 'border-accent' : 'border-line',
+                )}
+              >
+                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-inner">
+                  <Image src={hero.image} alt="" fill sizes="64px" className="object-cover" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-subtitle text-content">{hero.name}</p>
+                  <p className="truncate text-caption text-content-muted">{hero.tagline}</p>
+                  <p className="mt-0.5 flex items-center gap-1 text-caption text-content">
+                    <Star size={12} className="fill-current text-warning" aria-hidden />
+                    <span className="tabular">
+                      {t('format.rating', { rating: hero.rating, count: hero.reviews })}
+                    </span>
+                  </p>
+                </div>
+                <span className="shrink-0 rounded-pill bg-surface-2 px-2.5 py-1 text-micro text-content-muted">
+                  {t(`consumer.category.${hero.category}`)}
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
 
       <section className="mt-6 rounded-card border border-line bg-surface p-4">
         <div className="flex items-center justify-between">

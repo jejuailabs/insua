@@ -4,13 +4,16 @@ import Image from 'next/image'
 import { consumerRail } from '@/components/home/consumerRail'
 import { SideRail } from '@/components/layout/SideRail'
 import { Link } from '@/lib/i18n/navigation'
-import { HEROES } from '@/lib/mock/home'
+import { listHeroes } from '@/lib/stores/data'
+
+export const revalidate = 300
 
 /** 히어로 목록 (docs/08 §3) — 공개. 카드를 누르면 공개 매장 페이지로 간다. */
 export default async function HeroesPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
   setRequestLocale(locale)
   const t = await getTranslations()
+  const heroes = await listHeroes()
 
   return (
     <div className="flex">
@@ -20,7 +23,7 @@ export default async function HeroesPage({ params }: { params: Promise<{ locale:
         <h1 className="text-display text-content">{t('nav.heroes')}</h1>
 
         <ul className="mt-4 grid grid-cols-2 gap-3">
-          {HEROES.map((hero) => (
+          {heroes.map((hero) => (
             <li key={hero.id}>
               <Link
                 href={`/s/${hero.id}`}

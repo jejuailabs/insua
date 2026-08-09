@@ -1,10 +1,13 @@
 'use client'
 
 // 이 lucide 버전에는 브랜드 아이콘(Instagram)이 없다. 인스타는 Camera 로 대신한다.
-import { Camera, Globe, MessageCircle, Phone } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { Camera, Globe, MessageCircle, Phone, Sparkles } from 'lucide-react'
+import { useLocale, useTranslations } from 'next-intl'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import { useState, useTransition } from 'react'
 import { TierBadge } from '@/components/ui/TierBadge'
+import { generateHeroForContact } from '@/lib/crm/actions'
 import { overdueDays, type Contact, type Tier } from '@/lib/crm/types'
 import { cn } from '@/lib/utils/cn'
 
@@ -38,7 +41,27 @@ export function PersonCard({
   onOpenLog?: () => void
 }) {
   const t = useTranslations('crm')
+  const router = useRouter()
+  const locale = useLocale()
   const overdue = overdueDays(contact)
+  const [pending, startTransition] = useTransition()
+  const [toast, setToast] = useState<string | null>(null)
+
+  /** 미동의→안내, 동의+재료→AI 생성, 생성됨→랜딩으로 (사용자 확정 사양의 "버튼 하나"). */
+  function handleHeroCard() {
+    if (contact.storeId) return router.push(`/${locale}/s/${contact.storeId}`)
+    if (!contact.consent.dataSharing) {
+      setToast(t('needShareConsent'))
+      setTimeout(() => setToast(null), 2200)
+      return
+    }
+    startTransition(async () => {
+      const result = await generateHeroForContact(contact.id)
+      setToast(result.ok ? t('heroCardDone') : t('heroCardFailed'))
+      setTimeout(() => setToast(null), 2200)
+      if (result.ok) router.refresh()
+    })
+  }
 
   return (
     <article
@@ -112,11 +135,38 @@ export function PersonCard({
             </p>
           </div>
 
-          <div className="flex w-28 shrink-0 flex-col justify-between">
+          <div className="flex w-28 shrink-0 flex-col justify-between gap-1.5">
             <div>
               <p className="text-caption text-content-muted">{t('note')}</p>
               <p className="mt-0.5 line-clamp-2 text-label text-content">{contact.note}</p>
             </div>
+
+            {/* 히어로 카드 — 있으면 보기, 없으면 버튼 하나로 생성 (동의 시) */}
+            {contact.hasStoreDraft && (
+              <button
+                type="button"
+                disabled={pending}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleHeroCard()
+                }}
+                className={cn(
+                  'flex items-center justify-center gap-1 rounded-chip px-2 py-1.5 text-center text-micro',
+                  contact.storeId
+                    ? 'bg-accent-soft text-accent-strong'
+                    : 'bg-accent-strong text-accent-on',
+                  pending && 'opacity-60',
+                )}
+              >
+                <Sparkles size={12} aria-hidden />
+                {pending
+                  ? t('form.generating')
+                  : contact.storeId
+                    ? t('viewHeroCard')
+                    : t('makeHeroCard')}
+              </button>
+            )}
+
             <button
               type="button"
               onClick={(e) => {
@@ -133,6 +183,15 @@ export function PersonCard({
           </div>
         </div>
       </div>
+
+      {toast && (
+        <p
+          role="status"
+          className="fixed bottom-24 left-1/2 z-50 -translate-x-1/2 rounded-pill bg-content px-4 py-2 text-label text-surface shadow-card"
+        >
+          {toast}
+        </p>
+      )}
     </article>
   )
 }

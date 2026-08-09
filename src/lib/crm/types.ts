@@ -29,6 +29,10 @@ export type Contact = {
   nextContactDueAt: string | null
   consent: ContactConsent
   createdAt: string
+  /** 히어로 카드·랜딩이 생성된 매장 id. null 이면 아직 CRM 카드만 있는 상태 */
+  storeId: string | null
+  /** 매장 정보(storeDraft)가 있어 버튼 한 번으로 카드 생성이 가능한가 */
+  hasStoreDraft: boolean
 }
 
 export type InteractionType = 'note' | 'call' | 'visit' | 'voice'
@@ -38,6 +42,10 @@ export type Interaction = {
   type: InteractionType
   body: string
   createdAt: string
+  audioUrl?: string | null
+  imageUrl?: string | null
+  /** 녹음 → [텍스트로 정리] 결과 (마크다운) */
+  transcript?: string | null
 }
 
 /** 연락 예정일이 며칠 지났나. 음수면 아직 여유. */

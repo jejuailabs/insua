@@ -1,18 +1,21 @@
 'use client'
 
 import { Heart, ShoppingCart } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useState } from 'react'
 import type { MarketItem } from '@/lib/mock/home'
 import { cn } from '@/lib/utils/cn'
 
 /**
  * 직거래 상품 그리드 (docs/08 §6) — 모바일 3열.
- * 하트 = 찜 토글(낙관적). 장바구니·결제는 스코프 밖 — 저장 토스트까지만.
+ * 상품을 누르면 쇼핑몰 상세(/market/{id})로 간다 (사용자 확정 사양).
+ * 하트 = 찜 토글(낙관적). 결제는 스코프 밖.
  */
 export function ProductGrid({ items }: { items: MarketItem[] }) {
   const t = useTranslations()
+  const locale = useLocale()
   const [saved, setSaved] = useState<Record<string, boolean>>({})
   const [toast, setToast] = useState(false)
 
@@ -27,7 +30,7 @@ export function ProductGrid({ items }: { items: MarketItem[] }) {
       <ul className="mt-3 grid grid-cols-3 gap-2">
         {items.map((item) => (
           <li key={item.id} className="overflow-hidden rounded-inner border border-line bg-surface">
-            <div className="relative aspect-square">
+            <Link href={`/${locale}/market/${item.id}`} className="relative block aspect-square">
               <Image src={item.image} alt="" fill sizes="33vw" className="object-cover" />
               {item.best && (
                 <span className="absolute top-1.5 left-1.5 rounded-chip bg-accent-strong px-1.5 py-0.5 text-micro text-accent-on">
@@ -36,7 +39,10 @@ export function ProductGrid({ items }: { items: MarketItem[] }) {
               )}
               <button
                 type="button"
-                onClick={() => save(item.id)}
+                onClick={(e) => {
+                  e.preventDefault()
+                  save(item.id)
+                }}
                 aria-pressed={Boolean(saved[item.id])}
                 aria-label={t('nav.saved')}
                 className={cn(
@@ -50,7 +56,7 @@ export function ProductGrid({ items }: { items: MarketItem[] }) {
                   className={saved[item.id] ? 'fill-current' : undefined}
                 />
               </button>
-            </div>
+            </Link>
             <div className="p-2">
               <p className="truncate text-label text-content">{item.name}</p>
               <p className="mt-0.5 truncate text-micro text-content-muted">{item.sub}</p>

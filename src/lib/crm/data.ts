@@ -30,6 +30,8 @@ function toContact(id: string, d: FirebaseFirestore.DocumentData): Contact {
       recording: consent.recording === true,
     },
     createdAt: toIso(d.createdAt) ?? new Date(0).toISOString(),
+    storeId: (d.storeId as string | null) ?? null,
+    hasStoreDraft: Boolean((d.storeDraft as { name?: string } | undefined)?.name),
   }
 }
 
@@ -67,6 +69,9 @@ export async function listInteractions(
       type: (d.type as InteractionType) ?? 'note',
       body: (d.body as string) ?? '',
       createdAt: toIso(d.createdAt) ?? new Date(0).toISOString(),
+      audioUrl: (d.audioUrl as string | null) ?? null,
+      imageUrl: (d.imageUrl as string | null) ?? null,
+      transcript: (d.transcript as string | null) ?? null,
     }
   })
 }

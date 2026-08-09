@@ -17,7 +17,8 @@
     "previous": "Previous",
     "next": "Next",
     "minutesAgo": "{n}m ago",
-    "hoursAgo": "{n}h ago"
+    "hoursAgo": "{n}h ago",
+    "notifyEmpty": "No new notifications"
   },
   "nav": {
     "home": "Home",
@@ -148,7 +149,21 @@
       "consentRecording": "Call recording",
       "submit": "Create",
       "saving": "Creating",
-      "failed": "Failed to create"
+      "failed": "Failed to create",
+      "ownerPhoto": "Owner photo",
+      "menuPhoto": "Signature menu photo",
+      "storeSection": "Store info (hero card source)",
+      "storeSectionHint": "With data-sharing consent, a hero card and landing page are generated on save.",
+      "storeName": "Store name",
+      "storeTagline": "Tagline",
+      "storeCategory": "Category",
+      "storeAddress": "Address",
+      "storeHours": "Hours",
+      "sns": "SNS link",
+      "menuName": "Signature menu",
+      "menuPrice": "Price (KRW)",
+      "generating": "Generating AI hero card… (up to 30s)",
+      "generatedWithCard": "Contact saved + hero card & landing generated"
     },
     "stats": {
       "title": "Stats",
@@ -156,7 +171,22 @@
       "monthlyContacts": "Contacts this month",
       "overdueCount": "Overdue",
       "total": "Total"
-    }
+    },
+    "makeHeroCard": "Create hero card",
+    "viewHeroCard": "View card",
+    "heroCardDone": "Hero card created",
+    "heroCardFailed": "Generation failed. Try again.",
+    "needShareConsent": "Data-sharing consent required",
+    "record": "Record",
+    "recording": "Recording… tap to stop",
+    "attachPhoto": "Attach photo",
+    "transcribe": "Summarize to text",
+    "transcribing": "Summarizing…",
+    "transcriptTitle": "Consultation summary",
+    "assistant": "CRM assistant",
+    "assistantHint": "Ask about your contacts and logs. e.g. \"Who should I call this week?\"",
+    "assistantPlaceholder": "Ask anything",
+    "aiBadge": "AI generated"
   },
   "merchant": {
     "spaceName": "A space just for local owners",
@@ -301,7 +331,9 @@
     "regionAll": "All Jeju",
     "regionJeju": "Jeju-si",
     "regionSeogwipo": "Seogwipo-si",
-    "eventsEmpty": "No events running"
+    "eventsEmpty": "No events running",
+    "viewCard": "Cards",
+    "viewList": "List"
   },
   "admin": {
     "title": "Admin",
@@ -329,5 +361,20 @@
     "currency": "₩{amount}",
     "rating": "{rating} ({count})",
     "reviewCount": "{count} reviews"
+  },
+  "market": {
+    "register": "Add product",
+    "registerHint": "Agents and admins only",
+    "name": "Product name",
+    "price": "Price (KRW)",
+    "desc": "Description",
+    "photo": "Product photo",
+    "submit": "Add",
+    "registered": "Added",
+    "detail": "Product info",
+    "inquiryCall": "Call",
+    "inquiryKakao": "KakaoTalk",
+    "soldBy": "Seller",
+    "empty": "No products yet"
   }
 }

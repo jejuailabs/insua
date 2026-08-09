@@ -8,7 +8,7 @@ import { SettingsButton } from '@/components/layout/SettingsButton'
 import { SideRail } from '@/components/layout/SideRail'
 import { getSession } from '@/lib/auth/session'
 import { getMyConsumerProfile } from '@/lib/consumer/actions'
-import { HEROES } from '@/lib/mock/home'
+import { listHeroes } from '@/lib/stores/data'
 
 /**
  * 메인 (docs/08, ref-04).
@@ -25,6 +25,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
   const session = await getSession()
   const profile = session ? await getMyConsumerProfile() : null
+  const heroes = await listHeroes()
   const t = await getTranslations()
 
   return (
@@ -54,7 +55,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
           <div className="mt-4">
             <FeedShowcase
-              heroes={HEROES}
+              heroes={heroes}
               signedIn={Boolean(session)}
               initialSavedIds={profile?.savedStoreIds ?? []}
             />

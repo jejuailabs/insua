@@ -35,7 +35,12 @@ export function AuthLauncher({ signedIn, role }: { signedIn: boolean; role: Role
   const locale = useLocale()
 
   const [loginOpen, setLoginOpen] = useState(false)
-  const [roleOpen, setRoleOpen] = useState(false)
+  // 최초 가입 직후(로그인 O, 역할 X)에는 역할 선택이 바로 이어진다 (사용자 확정 사양).
+  // 파생값으로 계산한다 — 로그인 상태 + 역할 없음 + 사용자가 닫지 않았을 때만 열린다.
+  // 역할이 정해져 프롭이 갱신되면 조건이 깨져 자동으로 닫힌다.
+  const [roleDismissed, setRoleDismissed] = useState(false)
+  const [rolePicking, setRolePicking] = useState(false)
+  const roleOpen = rolePicking || (signedIn && !role && !roleDismissed)
   const [busy, setBusy] = useState(false)
   const [errorKey, setErrorKey] = useState<ErrorKey | null>(null)
 
@@ -58,7 +63,7 @@ export function AuthLauncher({ signedIn, role }: { signedIn: boolean; role: Role
         router.refresh()
         return
       }
-      setRoleOpen(true)
+      setRolePicking(true)
     } catch (error) {
       setErrorKey(toErrorKey(error))
       setBusy(false)
@@ -67,7 +72,7 @@ export function AuthLauncher({ signedIn, role }: { signedIn: boolean; role: Role
 
   function handleFabClick() {
     if (!signedIn) return setLoginOpen(true)
-    if (!role) return setRoleOpen(true)
+    if (!role) return setRolePicking(true)
     router.push(`/${locale}${ROLE_HOME[role]}`)
   }
 
@@ -120,7 +125,10 @@ export function AuthLauncher({ signedIn, role }: { signedIn: boolean; role: Role
 
       <Modal
         open={roleOpen}
-        onClose={() => setRoleOpen(false)}
+        onClose={() => {
+          setRolePicking(false)
+          setRoleDismissed(true)
+        }}
         title={tOnboarding('title')}
         description={tOnboarding('subtitle')}
       >

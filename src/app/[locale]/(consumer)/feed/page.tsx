@@ -8,7 +8,7 @@ import { SettingsButton } from '@/components/layout/SettingsButton'
 import { SideRail } from '@/components/layout/SideRail'
 import { requireRolePage } from '@/lib/auth/guards'
 import { getMyConsumerProfile } from '@/lib/consumer/actions'
-import { HEROES } from '@/lib/mock/home'
+import { listHeroes } from '@/lib/stores/data'
 
 /** 소비자 LOCAL HERO 피드 (docs/08, ref-04) — 로그인 소비자 홈. */
 export default async function FeedPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -17,6 +17,7 @@ export default async function FeedPage({ params }: { params: Promise<{ locale: s
   await requireRolePage(locale, ['consumer'])
 
   const profile = await getMyConsumerProfile()
+  const heroes = await listHeroes()
 
   return (
     <div className="flex">
@@ -43,7 +44,7 @@ export default async function FeedPage({ params }: { params: Promise<{ locale: s
         </div>
 
         <div className="mt-4">
-          <FeedShowcase heroes={HEROES} signedIn initialSavedIds={profile?.savedStoreIds ?? []} />
+          <FeedShowcase heroes={heroes} signedIn initialSavedIds={profile?.savedStoreIds ?? []} />
         </div>
       </main>
     </div>

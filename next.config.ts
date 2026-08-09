@@ -4,6 +4,10 @@ import createNextIntlPlugin from 'next-intl/plugin'
 const withNextIntl = createNextIntlPlugin('./src/lib/i18n/request.ts')
 
 const nextConfig: NextConfig = {
+  experimental: {
+    // 상담 녹음·사진을 서버 액션(FormData)으로 받는다. 녹음 3분 webm ≈ 3~4MB.
+    serverActions: { bodySizeLimit: '15mb' },
+  },
   images: {
     // Firebase Storage 와 구글 계정 프로필 사진만 허용한다 (docs/01 §8).
     remotePatterns: [

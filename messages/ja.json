@@ -17,7 +17,8 @@
     "previous": "前へ",
     "next": "次へ",
     "minutesAgo": "{n}分前",
-    "hoursAgo": "{n}時間前"
+    "hoursAgo": "{n}時間前",
+    "notifyEmpty": "新しい通知はありません"
   },
   "nav": {
     "home": "ホーム",
@@ -148,7 +149,21 @@
       "consentRecording": "通話録音の同意",
       "submit": "登録",
       "saving": "登録中",
-      "failed": "登録に失敗しました"
+      "failed": "登録に失敗しました",
+      "ownerPhoto": "店主の写真",
+      "menuPhoto": "看板メニューの写真",
+      "storeSection": "店舗情報 (カード素材)",
+      "storeSectionHint": "情報共有に同意した顧客は、保存と同時にヒーローカードとLPが自動生成されます。",
+      "storeName": "店名",
+      "storeTagline": "ひとこと紹介",
+      "storeCategory": "業種",
+      "storeAddress": "住所",
+      "storeHours": "営業時間",
+      "sns": "SNS リンク",
+      "menuName": "看板メニュー",
+      "menuPrice": "価格(ウォン)",
+      "generating": "AI カード生成中… (最大30秒)",
+      "generatedWithCard": "顧客登録 + カードとLPを生成しました"
     },
     "stats": {
       "title": "統計",
@@ -156,7 +171,22 @@
       "monthlyContacts": "今月の接触",
       "overdueCount": "連絡遅延",
       "total": "全体"
-    }
+    },
+    "makeHeroCard": "ヒーローカード生成",
+    "viewHeroCard": "カードを見る",
+    "heroCardDone": "カードを生成しました",
+    "heroCardFailed": "生成に失敗しました。再試行してください。",
+    "needShareConsent": "情報共有の同意が必要です",
+    "record": "録音",
+    "recording": "録音中… タップで終了",
+    "attachPhoto": "写真添付",
+    "transcribe": "テキスト整理",
+    "transcribing": "整理中…",
+    "transcriptTitle": "相談まとめ",
+    "assistant": "CRM アシスタント",
+    "assistantHint": "顧客や記録について質問できます。例: \"今週連絡すべき顧客は?\"",
+    "assistantPlaceholder": "何でも質問",
+    "aiBadge": "AI 生成"
   },
   "merchant": {
     "spaceName": "個人店主だけの空間",
@@ -301,7 +331,9 @@
     "regionAll": "済州市全体",
     "regionJeju": "済州市",
     "regionSeogwipo": "西帰浦市",
-    "eventsEmpty": "開催中のイベントはありません"
+    "eventsEmpty": "開催中のイベントはありません",
+    "viewCard": "カード",
+    "viewList": "リスト"
   },
   "admin": {
     "title": "管理者",
@@ -329,5 +361,20 @@
     "currency": "₩{amount}",
     "rating": "{rating} ({count})",
     "reviewCount": "レビュー {count}"
+  },
+  "market": {
+    "register": "商品登録",
+    "registerHint": "プランナー·管理者のみ",
+    "name": "商品名",
+    "price": "価格(ウォン)",
+    "desc": "商品説明",
+    "photo": "商品写真",
+    "submit": "登録",
+    "registered": "登録しました",
+    "detail": "商品情報",
+    "inquiryCall": "電話で問い合わせ",
+    "inquiryKakao": "カカオトークで問い合わせ",
+    "soldBy": "販売者",
+    "empty": "商品がまだありません"
   }
 }

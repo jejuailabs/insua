@@ -1,10 +1,13 @@
 import { setRequestLocale } from 'next-intl/server'
 import { AdminPeekBanner } from '@/components/admin/AdminPeekBanner'
 import { agentRail } from '@/components/crm/agentRail'
+import { CrmAssistant } from '@/components/crm/CrmAssistant'
 import { CrmScreen } from '@/components/crm/CrmScreen'
 import { SideRail } from '@/components/layout/SideRail'
 import { requireRolePage } from '@/lib/auth/guards'
 import { listContacts } from '@/lib/crm/data'
+
+export const maxDuration = 60
 
 /** 설계사 CRM (docs/06, ref-03) — Firestore 실데이터. */
 export default async function CrmPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -21,6 +24,8 @@ export default async function CrmPage({ params }: { params: Promise<{ locale: st
         <AdminPeekBanner />
         <CrmScreen contacts={contacts} />
       </main>
+      {/* RAG 챗봇 — 내 고객·상담 데이터 자연어 질의 (사용자 확정 사양) */}
+      <CrmAssistant />
     </div>
   )
 }

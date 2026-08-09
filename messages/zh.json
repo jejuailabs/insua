@@ -17,7 +17,8 @@
     "previous": "上一个",
     "next": "下一个",
     "minutesAgo": "{n}分钟前",
-    "hoursAgo": "{n}小时前"
+    "hoursAgo": "{n}小时前",
+    "notifyEmpty": "暂无新通知"
   },
   "nav": {
     "home": "首页",
@@ -148,7 +149,21 @@
       "consentRecording": "通话录音同意",
       "submit": "登记",
       "saving": "登记中",
-      "failed": "登记失败"
+      "failed": "登记失败",
+      "ownerPhoto": "店主照片",
+      "menuPhoto": "招牌菜照片",
+      "storeSection": "店铺信息 (卡片素材)",
+      "storeSectionHint": "已同意信息共享的客户, 保存时会自动生成主打卡片和落地页。",
+      "storeName": "店名",
+      "storeTagline": "一句话介绍",
+      "storeCategory": "行业",
+      "storeAddress": "地址",
+      "storeHours": "营业时间",
+      "sns": "SNS 链接",
+      "menuName": "招牌菜",
+      "menuPrice": "价格(韩元)",
+      "generating": "正在生成 AI 卡片… (最多30秒)",
+      "generatedWithCard": "客户已登记 + 卡片和落地页已生成"
     },
     "stats": {
       "title": "统计",
@@ -156,7 +171,22 @@
       "monthlyContacts": "本月接触",
       "overdueCount": "联系逾期",
       "total": "全部"
-    }
+    },
+    "makeHeroCard": "生成主打卡片",
+    "viewHeroCard": "查看卡片",
+    "heroCardDone": "卡片已生成",
+    "heroCardFailed": "生成失败, 请重试。",
+    "needShareConsent": "需要信息共享同意",
+    "record": "录音",
+    "recording": "录音中… 点击结束",
+    "attachPhoto": "附加照片",
+    "transcribe": "整理为文本",
+    "transcribing": "整理中…",
+    "transcriptTitle": "咨询整理",
+    "assistant": "CRM 助手",
+    "assistantHint": "询问您的客户和记录。例: \"本周该联系谁?\"",
+    "assistantPlaceholder": "随便问",
+    "aiBadge": "AI 生成"
   },
   "merchant": {
     "spaceName": "小微店主的专属空间",
@@ -301,7 +331,9 @@
     "regionAll": "济州市全部",
     "regionJeju": "济州市",
     "regionSeogwipo": "西归浦市",
-    "eventsEmpty": "暂无进行中的活动"
+    "eventsEmpty": "暂无进行中的活动",
+    "viewCard": "卡片",
+    "viewList": "列表"
   },
   "admin": {
     "title": "管理员",
@@ -329,5 +361,20 @@
     "currency": "₩{amount}",
     "rating": "{rating} ({count})",
     "reviewCount": "评价 {count}"
+  },
+  "market": {
+    "register": "登记商品",
+    "registerHint": "仅限设计师·管理员",
+    "name": "商品名",
+    "price": "价格(韩元)",
+    "desc": "商品说明",
+    "photo": "商品照片",
+    "submit": "登记",
+    "registered": "已登记",
+    "detail": "商品信息",
+    "inquiryCall": "电话咨询",
+    "inquiryKakao": "KakaoTalk 咨询",
+    "soldBy": "卖家",
+    "empty": "暂无商品"
   }
 }
