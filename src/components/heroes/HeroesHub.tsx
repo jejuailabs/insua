@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useRef, useState, useTransition } from 'react'
-import { CategoryChips } from '@/components/home/CategoryChips'
+import { CategoryChips, SubChips } from '@/components/home/CategoryChips'
 import { bucketOf, type FilterCategory } from '@/components/home/heroFilter'
 import { RadiusChips } from '@/components/home/RadiusChips'
 import { HeroMap } from './HeroMap'
@@ -142,8 +142,8 @@ export function HeroesHub({
 
   return (
     <>
-      {/* 한 줄: 반경 + 정렬 + 보기 전환 */}
-      <div className="mt-3 mb-2 flex flex-wrap items-center justify-between gap-2">
+      {/* 한 줄: 반경 세그먼트 · 카테고리 · 정렬 · 보기 전환 (사용자 확정 사양) */}
+      <div className="mt-3 mb-2 flex items-center gap-2">
         <RadiusChips
           onChange={(km) => {
             setRadius(km)
@@ -151,7 +151,19 @@ export function HeroesHub({
           }}
           onLocated={setUserPos}
         />
-        <div className="flex items-center gap-1.5">
+
+        <span aria-hidden className="h-4 w-px shrink-0 bg-line" />
+
+        <CategoryChips
+          filter={filter}
+          onFilter={(next) => {
+            setFilter(next)
+            setSubFilter(null)
+            setShownCount(PAGE)
+          }}
+        />
+
+        <div className="flex shrink-0 items-center gap-1.5">
           {(
             [
               { id: 'reco', label: t('consumer.sortReco') },
@@ -200,19 +212,15 @@ export function HeroesHub({
         </div>
       </div>
 
-      <CategoryChips
-        filter={filter}
-        subFilter={subFilter}
-        onFilter={(next) => {
-          setFilter(next)
-          setSubFilter(null)
-          setShownCount(PAGE)
-        }}
-        onSubFilter={(next) => {
-          setSubFilter(next)
-          setShownCount(PAGE)
-        }}
-      />
+      {filter === 'restaurant' && (
+        <SubChips
+          subFilter={subFilter}
+          onSubFilter={(next) => {
+            setSubFilter(next)
+            setShownCount(PAGE)
+          }}
+        />
+      )}
 
       {view === 'map' ? (
         <HeroMap heroes={capped} userPos={userPos} />

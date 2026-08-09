@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useTransition } from 'react'
-import { CategoryChips } from './CategoryChips'
+import { CategoryChips, SubChips } from './CategoryChips'
 import { HeroCarousel } from './HeroCarousel'
 import { bucketOf, type FilterCategory } from './heroFilter'
 import { ProductGrid } from './ProductGrid'
@@ -105,8 +105,9 @@ export function FeedShowcase({
 
   return (
     <>
-      {/* 한 줄 헤더 — 반경 칩 + 아이콘 뷰 토글 (사용자 확정 사양) */}
-      <div className="mb-2 flex items-center justify-between gap-2">
+      {/* 한 줄 필터 바 (사용자 확정 사양) — 반경 세그먼트 · 구분선 · 카테고리 칩 · 뷰 토글.
+          가운데 카테고리만 남는 폭에서 스크롤하고, 양 끝은 자리를 지킨다. */}
+      <div className="mb-2 flex items-center gap-2">
         <RadiusChips
           onChange={(km) => {
             setRadius(km)
@@ -114,6 +115,11 @@ export function FeedShowcase({
             setListPage(0)
           }}
         />
+
+        <span aria-hidden className="h-4 w-px shrink-0 bg-line" />
+
+        <CategoryChips filter={filter} onFilter={pickFilter} />
+
         <div className="flex shrink-0 gap-1">
           {(
             [
@@ -140,17 +146,17 @@ export function FeedShowcase({
         </div>
       </div>
 
-      {/* 카테고리 5종 + 식당 세부 8종 (사용자 확정 사양) — 히어로 허브와 공용 컴포넌트 */}
-      <CategoryChips
-        filter={filter}
-        subFilter={subFilter}
-        onFilter={pickFilter}
-        onSubFilter={(next) => {
-          setSubFilter(next)
-          setIndex(0)
-          setListPage(0)
-        }}
-      />
+      {/* 식당 세부 8종 — 음식점을 고른 경우에만 다음 줄 */}
+      {filter === 'restaurant' && (
+        <SubChips
+          subFilter={subFilter}
+          onSubFilter={(next) => {
+            setSubFilter(next)
+            setIndex(0)
+            setListPage(0)
+          }}
+        />
+      )}
 
       {shown.length === 0 ? (
         <p className="rounded-card border border-line bg-surface p-8 text-center text-caption text-content-muted">

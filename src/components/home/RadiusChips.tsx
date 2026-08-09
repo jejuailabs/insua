@@ -52,23 +52,26 @@ export function RadiusChips({
   }
 
   return (
+    // 세그먼트 컨트롤 — 카테고리 칩과 한 줄에 서므로, 낱개 칩이 아니라
+    // 하나로 묶인 덩어리로 보여야 "거리"와 "업종"이 다른 축임이 읽힌다.
     <div className="flex items-center gap-1.5">
-      {[1, 3, 5].map((km) => (
-        <button
-          key={km}
-          type="button"
-          onClick={() => pick(km)}
-          aria-label={t('radius', { km })}
-          className={cn(
-            'tabular rounded-pill border px-2.5 py-1 text-micro',
-            km === radius && !denied
-              ? 'border-accent bg-accent-soft text-accent-strong'
-              : 'border-line text-content-muted',
-          )}
-        >
-          {km}km
-        </button>
-      ))}
+      <div className="flex shrink-0 items-center overflow-hidden rounded-pill border border-line">
+        {[1, 3, 5].map((km) => (
+          <button
+            key={km}
+            type="button"
+            onClick={() => pick(km)}
+            aria-label={t('radius', { km })}
+            aria-pressed={km === radius && !denied}
+            className={cn(
+              'tabular border-line px-2.5 py-1 text-micro not-first:border-l',
+              km === radius && !denied ? 'bg-accent-soft text-accent-strong' : 'text-content-muted',
+            )}
+          >
+            {km}km
+          </button>
+        ))}
+      </div>
 
       {denied && (
         <select
