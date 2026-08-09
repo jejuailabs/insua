@@ -11,6 +11,16 @@ import { TIER_CYCLE_DAYS, TIERS, type Tier } from '@/lib/crm/types'
 import { cn } from '@/lib/utils/cn'
 
 const CATEGORIES = ['restaurant', 'cafe', 'bakery', 'salon', 'farm', 'retail', 'etc'] as const
+const RESTAURANT_SUBS = [
+  'meat',
+  'seafood',
+  'korean',
+  'chinese',
+  'japanese',
+  'western',
+  'snack',
+  'chicken',
+] as const
 
 /**
  * 신규 고객 등록 폼 v2 (docs/06 §6 + 히어로 카드 파이프라인).
@@ -22,11 +32,13 @@ export function NewContactForm({ open, onClose }: { open: boolean; onClose: () =
   const t = useTranslations('crm.form')
   const tTier = useTranslations('tier')
   const tCat = useTranslations('consumer.category')
+  const tSub = useTranslations('consumer.sub')
   const router = useRouter()
   const formRef = useRef<HTMLFormElement>(null)
   const [pending, startTransition] = useTransition()
 
   const [tier, setTier] = useState<Tier>('B')
+  const [category, setCategory] = useState<string>('restaurant')
   const [consentShare, setConsentShare] = useState(false)
   const [error, setError] = useState(false)
   const [ownerPreview, setOwnerPreview] = useState<string | null>(null)
@@ -154,7 +166,12 @@ export function NewContactForm({ open, onClose }: { open: boolean; onClose: () =
             </label>
             <label className="flex flex-col gap-1">
               <span className={label}>{t('storeCategory')}</span>
-              <select name="storeCategory" className={field} defaultValue="restaurant">
+              <select
+                name="storeCategory"
+                className={field}
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
                 {CATEGORIES.map((c) => (
                   <option key={c} value={c}>
                     {tCat(c)}
@@ -168,6 +185,19 @@ export function NewContactForm({ open, onClose }: { open: boolean; onClose: () =
             <span className={label}>{t('storeTagline')}</span>
             <input name="storeTagline" className={field} />
           </label>
+
+          {category === 'restaurant' && (
+            <label className="flex flex-col gap-1">
+              <span className={label}>{t('subCategory')}</span>
+              <select name="storeSubCategory" className={field} defaultValue="korean">
+                {RESTAURANT_SUBS.map((sub) => (
+                  <option key={sub} value={sub}>
+                    {tSub(sub)}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
 
           <div className="grid grid-cols-2 gap-2">
             <label className="flex flex-col gap-1">

@@ -125,6 +125,7 @@ export async function createContactWithCard(
       name: str('storeName'),
       tagline: str('storeTagline'),
       category: str('storeCategory') || 'restaurant',
+      subCategory: str('storeSubCategory'),
       address: str('storeAddress'),
       hours: { open: str('storeOpen') || '09:00', close: str('storeClose') || '18:00' },
       sns: str('sns'),
@@ -183,6 +184,7 @@ export async function generateHeroForContact(contactId: string): Promise<ActionR
           name: string
           tagline: string
           category: string
+          subCategory?: string
           address: string
           hours: { open: string; close: string }
           sns: string
@@ -231,6 +233,7 @@ export async function generateHeroForContact(contactId: string): Promise<ActionR
         name: draft.name,
         tagline: draft.tagline,
         category: draft.category,
+        subCategory: draft.subCategory ?? '',
         address: draft.address,
         phone: (d.phone as string) ?? '',
         sns: draft.sns,

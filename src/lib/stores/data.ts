@@ -3,7 +3,7 @@ import 'server-only'
 import { randomUUID } from 'node:crypto'
 import { getAdminDb } from '@/lib/firebase/admin'
 import { getStorage } from 'firebase-admin/storage'
-import { HEROES, type Hero, type HeroCategory } from '@/lib/mock/home'
+import { HEROES, type Hero, type HeroCategory, type RestaurantSub } from '@/lib/mock/home'
 import { findStore, STORES, type Store } from '@/lib/mock/store'
 
 /**
@@ -18,6 +18,7 @@ export type StoreDoc = Store & {
   phone: string
   sns: string
   aiGenerated: boolean
+  subCategory?: string
 }
 
 function toStore(id: string, d: FirebaseFirestore.DocumentData): StoreDoc {
@@ -40,6 +41,7 @@ function toStore(id: string, d: FirebaseFirestore.DocumentData): StoreDoc {
     ownerAgentId: (d.ownerAgentId as string) ?? '',
     contactId: (d.contactId as string | null) ?? null,
     aiGenerated: d.aiGenerated === true,
+    subCategory: (d.subCategory as string) || undefined,
   }
 }
 
@@ -68,6 +70,7 @@ export async function listHeroes(): Promise<Hero[]> {
         : 'restaurant') as HeroCategory,
       rating: s.rating || 5.0,
       reviews: s.ratingCount,
+      subCategory: (s as StoreDoc & { subCategory?: RestaurantSub }).subCategory,
       image: s.heroImage,
       perks: [
         { kind: 'signature', value: s.menus[0]?.name ?? s.tagline },

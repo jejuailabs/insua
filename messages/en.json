@@ -164,7 +164,8 @@
       "menuName": "Signature menu",
       "menuPrice": "Price (KRW)",
       "generating": "Generating AI hero card… (up to 30s)",
-      "generatedWithCard": "Contact saved + hero card & landing generated"
+      "generatedWithCard": "Contact saved + hero card & landing generated",
+      "subCategory": "Sub-category (restaurant)"
     },
     "stats": {
       "title": "Stats",
@@ -375,7 +376,19 @@
     "applyMerchant": "Apply as merchant",
     "applyMerchantDesc": "Run a shop? Apply to switch to a merchant account. Switched after admin approval.",
     "applyDone": "Applied. You will be switched after approval.",
-    "applyPending": "Merchant application under review"
+    "applyPending": "Merchant application under review",
+    "categoryAll": "All",
+    "sub": {
+      "meat": "BBQ/Meat",
+      "seafood": "Seafood",
+      "korean": "Korean",
+      "chinese": "Chinese",
+      "japanese": "Japanese",
+      "western": "Western",
+      "snack": "Snack",
+      "chicken": "Chicken"
+    },
+    "noMatch": "No shops in this category yet"
   },
   "admin": {
     "title": "Admin",
@@ -428,5 +441,16 @@
     "placeholder": "Share local news, products, or food finds",
     "post": "Post",
     "posted": "Posted"
+  },
+  "review": {
+    "section": "Visit reviews",
+    "write": "Write a review",
+    "placeholder": "How was your visit?",
+    "photo": "Attach photo",
+    "submit": "Post",
+    "posted": "Review posted",
+    "loginNeeded": "Sign in to leave a review",
+    "empty": "No reviews yet. Be the first!",
+    "rating": "Rating"
   }
 }

@@ -164,7 +164,8 @@
       "menuName": "看板メニュー",
       "menuPrice": "価格(ウォン)",
       "generating": "AI カード生成中… (最大30秒)",
-      "generatedWithCard": "顧客登録 + カードとLPを生成しました"
+      "generatedWithCard": "顧客登録 + カードとLPを生成しました",
+      "subCategory": "細分類 (飲食店)"
     },
     "stats": {
       "title": "統計",
@@ -375,7 +376,19 @@
     "applyMerchant": "事業者申請",
     "applyMerchantDesc": "店舗を運営中なら事業者への切替を申請できます。承認後に切り替わります。",
     "applyDone": "申請しました。承認後に切り替わります。",
-    "applyPending": "事業者切替を審査中"
+    "applyPending": "事業者切替を審査中",
+    "categoryAll": "すべて",
+    "sub": {
+      "meat": "焼肉",
+      "seafood": "海鮮",
+      "korean": "韓食",
+      "chinese": "中華",
+      "japanese": "和食",
+      "western": "洋食",
+      "snack": "軽食",
+      "chicken": "チキン"
+    },
+    "noMatch": "このカテゴリの店舗はまだありません"
   },
   "admin": {
     "title": "管理者",
@@ -428,5 +441,16 @@
     "placeholder": "地元の話題や商品、グルメを投稿しましょう",
     "post": "投稿",
     "posted": "投稿しました"
+  },
+  "review": {
+    "section": "訪問レビュー",
+    "write": "レビューを書く",
+    "placeholder": "訪問の感想をどうぞ",
+    "photo": "写真添付",
+    "submit": "投稿",
+    "posted": "投稿しました",
+    "loginNeeded": "レビューにはログインが必要です",
+    "empty": "まだレビューがありません。最初の一件をどうぞ!",
+    "rating": "評価"
   }
 }

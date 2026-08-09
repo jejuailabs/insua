@@ -7,10 +7,39 @@ import Link from 'next/link'
 import { useState, useTransition } from 'react'
 import { HeroCarousel } from './HeroCarousel'
 import { ProductGrid } from './ProductGrid'
+import { RadiusChips } from './RadiusChips'
 import { Modal } from '@/components/ui/Modal'
 import { issueCoupon, toggleSaveStore } from '@/lib/consumer/actions'
-import { CATEGORY_PRODUCTS, type Hero } from '@/lib/mock/home'
+import {
+  CATEGORY_PRODUCTS,
+  type Hero,
+  type HeroCategory,
+  type RestaurantSub,
+} from '@/lib/mock/home'
 import { cn } from '@/lib/utils/cn'
+
+/** 메인 카테고리 필터 5종 (사용자 확정 사양) — 앞 4개에 안 걸리면 전부 기타. */
+const FILTER_CATEGORIES = ['restaurant', 'cafe', 'salon', 'farm', 'etc'] as const
+type FilterCategory = (typeof FILTER_CATEGORIES)[number]
+
+const RESTAURANT_SUBS: RestaurantSub[] = [
+  'meat',
+  'seafood',
+  'korean',
+  'chinese',
+  'japanese',
+  'western',
+  'snack',
+  'chicken',
+]
+
+function bucketOf(category: HeroCategory): FilterCategory {
+  return (['restaurant', 'cafe', 'salon', 'farm'] as const).includes(
+    category as 'restaurant' | 'cafe' | 'salon' | 'farm',
+  )
+    ? (category as FilterCategory)
+    : 'etc'
+}
 
 /**
  * 히어로 캐러셀 + 업종 연동 상품 섹션 (ref-04, docs/08 §6).
@@ -32,13 +61,31 @@ export function FeedShowcase({
   const locale = useLocale()
   const [index, setIndex] = useState(0)
   const [view, setView] = useState<'card' | 'list'>('card')
+  const [filter, setFilter] = useState<FilterCategory | 'all'>('all')
+  const [subFilter, setSubFilter] = useState<RestaurantSub | null>(null)
   const [savedIds, setSavedIds] = useState<string[]>(initialSavedIds)
   const [couponHero, setCouponHero] = useState<{ hero: Hero; rate: number } | null>(null)
   const [couponCode, setCouponCode] = useState<string | null>(null)
   const [pending, startTransition] = useTransition()
   const [toast, setToast] = useState<string | null>(null)
 
-  const category = heroes[Math.min(index, heroes.length - 1)]!.category
+  // 카테고리 → (식당이면) 세부 업종 2단 필터 (사용자 확정 사양)
+  const filtered = heroes.filter((hero) => {
+    if (filter === 'all') return true
+    if (bucketOf(hero.category) !== filter) return false
+    if (filter === 'restaurant' && subFilter) return hero.subCategory === subFilter
+    return true
+  })
+  const shown = filtered.length ? filtered : []
+  const category = shown.length
+    ? shown[Math.min(index, shown.length - 1)]!.category
+    : heroes[0]!.category
+
+  function pickFilter(next: FilterCategory | 'all') {
+    setFilter(next)
+    setSubFilter(null)
+    setIndex(0)
+  }
 
   function showToast(message: string) {
     setToast(message)
@@ -74,35 +121,97 @@ export function FeedShowcase({
 
   return (
     <>
-      {/* 카드형 / 목록형 토글 (사용자 확정 사양) */}
-      <div className="mb-3 flex justify-end gap-1">
-        {(
-          [
-            { id: 'card', icon: LayoutGrid, label: t('consumer.viewCard') },
-            { id: 'list', icon: Rows3, label: t('consumer.viewList') },
-          ] as const
-        ).map(({ id, icon: Icon, label }) => (
+      {/* 한 줄 헤더 — 반경 칩 + 아이콘 뷰 토글 (사용자 확정 사양) */}
+      <div className="mb-2 flex items-center justify-between gap-2">
+        <RadiusChips />
+        <div className="flex shrink-0 gap-1">
+          {(
+            [
+              { id: 'card', icon: LayoutGrid, label: t('consumer.viewCard') },
+              { id: 'list', icon: Rows3, label: t('consumer.viewList') },
+            ] as const
+          ).map(({ id, icon: Icon, label }) => (
+            <button
+              key={id}
+              type="button"
+              onClick={() => setView(id)}
+              aria-pressed={view === id}
+              aria-label={label}
+              className={cn(
+                'grid h-7 w-7 place-items-center rounded-chip border',
+                view === id
+                  ? 'border-accent bg-accent-soft text-accent-strong'
+                  : 'border-line text-content-muted',
+              )}
+            >
+              <Icon size={13} aria-hidden />
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* 카테고리 5종 + 식당 세부 8종 (사용자 확정 사양) */}
+      <div className="mb-1 flex [scrollbar-width:none] gap-1.5 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden">
+        <button
+          type="button"
+          onClick={() => pickFilter('all')}
+          className={cn(
+            'shrink-0 rounded-pill border px-2.5 py-1 text-micro',
+            filter === 'all'
+              ? 'border-accent bg-accent-strong text-accent-on'
+              : 'border-line text-content-muted',
+          )}
+        >
+          {t('consumer.categoryAll')}
+        </button>
+        {FILTER_CATEGORIES.map((cat) => (
           <button
-            key={id}
+            key={cat}
             type="button"
-            onClick={() => setView(id)}
-            aria-pressed={view === id}
+            onClick={() => pickFilter(cat)}
             className={cn(
-              'flex items-center gap-1 rounded-chip border px-2.5 py-1.5 text-micro',
-              view === id
-                ? 'border-accent bg-accent-soft text-accent-strong'
+              'shrink-0 rounded-pill border px-2.5 py-1 text-micro',
+              filter === cat
+                ? 'border-accent bg-accent-strong text-accent-on'
                 : 'border-line text-content-muted',
             )}
           >
-            <Icon size={13} aria-hidden />
-            {label}
+            {t(`consumer.category.${cat}`)}
           </button>
         ))}
       </div>
 
-      {view === 'card' ? (
+      {filter === 'restaurant' && (
+        <div className="mb-2 flex [scrollbar-width:none] gap-1.5 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden">
+          {RESTAURANT_SUBS.map((sub) => (
+            <button
+              key={sub}
+              type="button"
+              onClick={() => {
+                setSubFilter(subFilter === sub ? null : sub)
+                setIndex(0)
+              }}
+              className={cn(
+                'shrink-0 rounded-pill border px-2.5 py-1 text-micro',
+                subFilter === sub
+                  ? 'border-accent bg-accent-soft text-accent-strong'
+                  : 'border-line text-content-faint',
+              )}
+            >
+              {t(`consumer.sub.${sub}`)}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {shown.length === 0 ? (
+        <p className="rounded-card border border-line bg-surface p-8 text-center text-caption text-content-muted">
+          {t('consumer.noMatch')}
+        </p>
+      ) : view === 'card' ? (
         <HeroCarousel
-          heroes={heroes}
+          key={`${filter}-${subFilter ?? ''}`}
+          heroes={shown}
           onIndexChange={setIndex}
           savedIds={savedIds}
           onToggleSave={handleSave}
@@ -110,7 +219,7 @@ export function FeedShowcase({
         />
       ) : (
         <ul className="flex flex-col gap-2">
-          {heroes.map((hero, i) => (
+          {shown.map((hero, i) => (
             <li key={hero.id}>
               <Link
                 href={`/${locale}/s/${hero.id}`}

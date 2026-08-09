@@ -164,7 +164,8 @@
       "menuName": "招牌菜",
       "menuPrice": "价格(韩元)",
       "generating": "正在生成 AI 卡片… (最多30秒)",
-      "generatedWithCard": "客户已登记 + 卡片和落地页已生成"
+      "generatedWithCard": "客户已登记 + 卡片和落地页已生成",
+      "subCategory": "细分类 (餐厅)"
     },
     "stats": {
       "title": "统计",
@@ -375,7 +376,19 @@
     "applyMerchant": "申请成为商户",
     "applyMerchantDesc": "经营店铺? 申请转换为商户账号, 管理员批准后生效。",
     "applyDone": "已申请, 批准后转换。",
-    "applyPending": "商户转换申请审核中"
+    "applyPending": "商户转换申请审核中",
+    "categoryAll": "全部",
+    "sub": {
+      "meat": "烤肉",
+      "seafood": "海鲜",
+      "korean": "韩餐",
+      "chinese": "中餐",
+      "japanese": "日料",
+      "western": "西餐",
+      "snack": "小吃",
+      "chicken": "炸鸡"
+    },
+    "noMatch": "该分类暂无店铺"
   },
   "admin": {
     "title": "管理员",
@@ -428,5 +441,16 @@
     "placeholder": "分享本地消息、商品或美食",
     "post": "发布",
     "posted": "已发布"
+  },
+  "review": {
+    "section": "探店评价",
+    "write": "写评价",
+    "placeholder": "分享您的到访感受",
+    "photo": "附加照片",
+    "submit": "发布",
+    "posted": "已发布评价",
+    "loginNeeded": "发表评价需要登录",
+    "empty": "还没有评价, 来写第一条吧!",
+    "rating": "评分"
   }
 }

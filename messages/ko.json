@@ -164,7 +164,8 @@
       "menuName": "대표 메뉴명",
       "menuPrice": "가격(원)",
       "generating": "AI 히어로 카드 생성 중… (최대 30초)",
-      "generatedWithCard": "고객 등록 + 히어로 카드·랜딩페이지 생성 완료"
+      "generatedWithCard": "고객 등록 + 히어로 카드·랜딩페이지 생성 완료",
+      "subCategory": "세부 업종 (식당)"
     },
     "stats": {
       "title": "통계",
@@ -375,7 +376,19 @@
     "applyMerchant": "소상공인 신청하기",
     "applyMerchantDesc": "가게를 운영 중이시면 소상공인으로 전환을 신청하세요. 운영자 승인 후 전환됩니다.",
     "applyDone": "신청했습니다. 운영자 승인 후 전환됩니다.",
-    "applyPending": "소상공인 전환 신청 검토 중"
+    "applyPending": "소상공인 전환 신청 검토 중",
+    "categoryAll": "전체",
+    "sub": {
+      "meat": "고기",
+      "seafood": "수산물",
+      "korean": "한식",
+      "chinese": "중식",
+      "japanese": "일식",
+      "western": "양식",
+      "snack": "분식",
+      "chicken": "치킨"
+    },
+    "noMatch": "이 카테고리에는 아직 매장이 없습니다"
   },
   "admin": {
     "title": "관리자",
@@ -428,5 +441,16 @@
     "placeholder": "동네 소식, 상품, 맛집 이야기를 올려보세요",
     "post": "올리기",
     "posted": "올렸습니다"
+  },
+  "review": {
+    "section": "방문 후기",
+    "write": "후기 남기기",
+    "placeholder": "방문 소감을 남겨주세요",
+    "photo": "사진 첨부",
+    "submit": "올리기",
+    "posted": "후기를 올렸습니다",
+    "loginNeeded": "후기를 남기려면 로그인이 필요합니다",
+    "empty": "아직 후기가 없습니다. 첫 방문 후기를 남겨보세요!",
+    "rating": "별점"
   }
 }

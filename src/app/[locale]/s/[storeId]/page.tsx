@@ -3,12 +3,13 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { MapEmbed } from '@/components/store/MapEmbed'
+import { ReviewSection } from '@/components/store/ReviewSection'
 import { PublicActionBar } from '@/components/store/PublicActionBar'
 import { TierBadge } from '@/components/ui/TierBadge'
 import { MENU_SECTION_KEY } from '@/lib/mock/store'
+import { getSession } from '@/lib/auth/session'
+import { listReviews } from '@/lib/reviews/data'
 import { getStoreForLanding } from '@/lib/stores/data'
-
-export const revalidate = 300
 
 /**
  * 공개 매장 페이지 (docs/07 B-4). 비로그인 접근 가능 — proxy 보호 목록에 없다.
@@ -25,6 +26,8 @@ export default async function PublicStorePage({
 
   const store = await getStoreForLanding(storeId)
   if (!store) notFound()
+
+  const [reviews, session] = await Promise.all([listReviews(storeId), getSession()])
 
   const t = await getTranslations()
 
@@ -100,6 +103,9 @@ export default async function PublicStorePage({
             <MapEmbed address={store.address} />
           </div>
         </section>
+
+        {/* 방문 후기 — 사진과 함께 (사용자 확정 사양) */}
+        <ReviewSection storeId={storeId} reviews={reviews} signedIn={Boolean(session)} />
       </main>
 
       <PublicActionBar store={store} />

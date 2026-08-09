@@ -3,7 +3,6 @@ import { AdminPeekBanner } from '@/components/admin/AdminPeekBanner'
 import { setRequestLocale } from 'next-intl/server'
 import { LiveFeed } from '@/components/feed/LiveFeed'
 import { FeedShowcase } from '@/components/home/FeedShowcase'
-import { RadiusChips } from '@/components/home/RadiusChips'
 import { SettingsButton } from '@/components/layout/SettingsButton'
 import { SideRail } from '@/components/layout/SideRail'
 import { requireRolePage } from '@/lib/auth/guards'
@@ -28,11 +27,7 @@ export default async function FeedPage({ params }: { params: Promise<{ locale: s
       <main className="mx-auto w-full max-w-md flex-1 px-4 pt-4 pb-10 lg:max-w-xl">
         <AdminPeekBanner />
         <header className="flex items-start justify-between">
-          <h1 className="text-display leading-[0.95] tracking-[-0.04em] text-accent-strong">
-            LOCAL
-            <br />
-            HERO
-          </h1>
+          <h1 className="text-title tracking-[-0.03em] text-accent-strong">LOCAL HERO</h1>
           <div className="flex items-center gap-1">
             <SettingsButton />
             <span className="grid h-10 w-10 place-items-center text-content-muted">
@@ -40,10 +35,6 @@ export default async function FeedPage({ params }: { params: Promise<{ locale: s
             </span>
           </div>
         </header>
-
-        <div className="mt-3">
-          <RadiusChips />
-        </div>
 
         <div className="mt-4">
           <FeedShowcase heroes={heroes} signedIn initialSavedIds={profile?.savedStoreIds ?? []} />

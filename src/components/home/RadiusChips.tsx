@@ -42,20 +42,21 @@ export function RadiusChips() {
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1.5">
       {[1, 3, 5].map((km) => (
         <button
           key={km}
           type="button"
           onClick={() => pick(km)}
+          aria-label={t('radius', { km })}
           className={cn(
-            'rounded-pill border px-3 py-1.5 text-label',
+            'tabular rounded-pill border px-2.5 py-1 text-micro',
             km === radius && !denied
               ? 'border-accent bg-accent-soft text-accent-strong'
               : 'border-line text-content-muted',
           )}
         >
-          {t('radius', { km })}
+          {km}km
         </button>
       ))}
 
@@ -64,7 +65,7 @@ export function RadiusChips() {
           value={region}
           onChange={(e) => setRegion(e.target.value)}
           aria-label={t('regionAll')}
-          className="min-h-9 rounded-chip border border-line bg-surface px-2 text-label text-content"
+          className="min-h-7 rounded-chip border border-line bg-surface px-1.5 text-micro text-content"
         >
           <option value="all">{t('regionAll')}</option>
           <option value="jeju">{t('regionJeju')}</option>

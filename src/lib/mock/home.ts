@@ -17,12 +17,17 @@ export type Perk =
   | { kind: 'hours'; open: string; close: string }
   | { kind: 'gift'; value: string }
 
+export type RestaurantSub =
+  'meat' | 'seafood' | 'korean' | 'chinese' | 'japanese' | 'western' | 'snack' | 'chicken'
+
 export type Hero = {
   id: string
   /** 사장님 이름 + 직함 */
   name: string
   tagline: string
   category: HeroCategory
+  /** 식당 세부 업종 (사용자 확정 사양) — 카테고리 필터 2단계 */
+  subCategory?: RestaurantSub
   rating: number
   reviews: number
   image: string
@@ -35,6 +40,7 @@ export const HEROES: Hero[] = [
     name: '김순자 사장',
     tagline: '30년 전통 해녀밥상',
     category: 'restaurant',
+    subCategory: 'seafood',
     rating: 4.9,
     reviews: 128,
     image: merchants.haenyeoBapsang,
@@ -106,6 +112,7 @@ export const HEROES: Hero[] = [
     name: '강도현 사장',
     tagline: '제주 흑돼지 전문점',
     category: 'restaurant',
+    subCategory: 'meat',
     rating: 4.7,
     reviews: 88,
     image: merchants.sandeulBbq,
