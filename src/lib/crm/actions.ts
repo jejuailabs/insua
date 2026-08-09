@@ -540,9 +540,7 @@ export async function updateContact(form: FormData): Promise<ActionResult> {
       note: str('note'),
       address,
       // 주소가 바뀌면 옛 좌표는 거짓말이 된다 — 지워서 다음 조회 때 다시 찍게 한다
-      ...(address !== prevAddress
-        ? { lat: FieldValue.delete(), lng: FieldValue.delete() }
-        : {}),
+      ...(address !== prevAddress ? { lat: FieldValue.delete(), lng: FieldValue.delete() } : {}),
       consent: {
         dataSharing: form.get('consentShare') === 'on',
         portrait: form.get('consentPortrait') === 'on',

@@ -458,7 +458,8 @@
       "restore": "已重新显示",
       "delete": "已删除"
     },
-    "contentBoard": "论坛"
+    "contentBoard": "论坛",
+    "contentEvents": "活动"
   },
   "format": {
     "currency": "₩{amount}",
@@ -538,5 +539,23 @@
       "desc": "分享对生意有帮助的信息",
       "metaPlaceholder": "一句话摘要(可选)"
     }
+  },
+  "events": {
+    "create": "登记活动",
+    "createHint": "关联店铺则为店铺活动，不关联则为全区域活动",
+    "titlePlaceholder": "活动标题",
+    "bodyPlaceholder": "请输入活动内容",
+    "startsAt": "开始日",
+    "endsAt": "结束日",
+    "discountPlaceholder": "折扣率(%) — 留空则为纯公告",
+    "linkStores": "关联店铺",
+    "linkedHint": "将登记为所选{n}家店铺的活动",
+    "wideHint": "未关联店铺，将登记为全区域活动",
+    "pickAtLeastOne": "请至少选择1家店铺",
+    "noStores": "没有可关联的店铺",
+    "submit": "登记",
+    "wide": "全区域",
+    "pickStore": "使用优惠券的店铺",
+    "getCoupon": "领取{rate}%优惠券"
   }
 }

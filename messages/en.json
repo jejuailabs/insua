@@ -458,7 +458,8 @@
       "restore": "Visible again.",
       "delete": "Deleted."
     },
-    "contentBoard": "Boards"
+    "contentBoard": "Boards",
+    "contentEvents": "Events"
   },
   "format": {
     "currency": "₩{amount}",
@@ -538,5 +539,23 @@
       "desc": "Share what helps the business",
       "metaPlaceholder": "One-line summary (optional)"
     }
+  },
+  "events": {
+    "create": "New event",
+    "createHint": "Link stores for a store event, or leave unlinked for an area-wide event",
+    "titlePlaceholder": "Event title",
+    "bodyPlaceholder": "Describe the event",
+    "startsAt": "Starts",
+    "endsAt": "Ends",
+    "discountPlaceholder": "Discount % — leave empty for a notice-only event",
+    "linkStores": "Link stores",
+    "linkedHint": "Will be registered for {n} selected store(s)",
+    "wideHint": "No stores linked — this becomes an area-wide event",
+    "pickAtLeastOne": "Pick at least one store",
+    "noStores": "No stores available to link",
+    "submit": "Publish",
+    "wide": "Area-wide",
+    "pickStore": "Store to use the coupon at",
+    "getCoupon": "Get {rate}% coupon"
   }
 }

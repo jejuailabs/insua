@@ -64,6 +64,7 @@ const CONTENT_COLLECTIONS = {
   anonymous: 'anonymousPosts',
   store: 'stores',
   board: 'boardPosts',
+  event: 'events',
 } as const
 
 export type ContentKind = keyof typeof CONTENT_COLLECTIONS

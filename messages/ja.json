@@ -458,7 +458,8 @@
       "restore": "再表示しました",
       "delete": "削除しました"
     },
-    "contentBoard": "掲示板"
+    "contentBoard": "掲示板",
+    "contentEvents": "イベント"
   },
   "format": {
     "currency": "₩{amount}",
@@ -538,5 +539,23 @@
       "desc": "商売に役立つ情報を共有します",
       "metaPlaceholder": "一行要約(任意)"
     }
+  },
+  "events": {
+    "create": "イベント登録",
+    "createHint": "店舗を連携すると店舗イベント、連携しなければ地域全体のイベントになります",
+    "titlePlaceholder": "イベント名",
+    "bodyPlaceholder": "イベント内容を入力してください",
+    "startsAt": "開始日",
+    "endsAt": "終了日",
+    "discountPlaceholder": "割引率(%) — 空欄ならクーポンなしのお知らせ",
+    "linkStores": "店舗連携",
+    "linkedHint": "選択した{n}店舗のイベントとして登録されます",
+    "wideHint": "店舗を連携していないため地域全体のイベントになります",
+    "pickAtLeastOne": "店舗を1つ以上選んでください",
+    "noStores": "連携できる店舗がありません",
+    "submit": "登録",
+    "wide": "地域全体",
+    "pickStore": "クーポンを使う店舗",
+    "getCoupon": "{rate}%クーポンをもらう"
   }
 }

@@ -43,7 +43,8 @@ export async function listUsers(limit = 100): Promise<AdminUserRow[]> {
 }
 
 /** 콘텐츠 관리 행 (사용자 확정 사양) — 상품·게시물·후기·익명글·매장을 한 틀로 다룬다. */
-export type AdminContentKind = 'product' | 'post' | 'review' | 'anonymous' | 'store' | 'board'
+export type AdminContentKind =
+  'product' | 'post' | 'review' | 'anonymous' | 'store' | 'board' | 'event'
 
 export type AdminContentRow = {
   id: string
@@ -62,6 +63,7 @@ export type AdminContent = {
   anonymous: AdminContentRow[]
   stores: AdminContentRow[]
   board: AdminContentRow[]
+  events: AdminContentRow[]
 }
 
 function byNewest(a: AdminContentRow, b: AdminContentRow) {
@@ -71,14 +73,16 @@ function byNewest(a: AdminContentRow, b: AdminContentRow) {
 /** 올라온 콘텐츠 전부 — 각 컬렉션 최근 50건. 숨김 상태도 보인다 (복원 대상). */
 export async function listAdminContent(): Promise<AdminContent> {
   const db = getAdminDb()
-  const [productSnap, postSnap, reviewSnap, anonSnap, storeSnap, boardSnap] = await Promise.all([
-    db.collection('products').limit(50).get(),
-    db.collection('posts').limit(50).get(),
-    db.collection('reviews').limit(50).get(),
-    db.collection('anonymousPosts').limit(50).get(),
-    db.collection('stores').limit(50).get(),
-    db.collection('boardPosts').limit(50).get(),
-  ])
+  const [productSnap, postSnap, reviewSnap, anonSnap, storeSnap, boardSnap, eventSnap] =
+    await Promise.all([
+      db.collection('products').limit(50).get(),
+      db.collection('posts').limit(50).get(),
+      db.collection('reviews').limit(50).get(),
+      db.collection('anonymousPosts').limit(50).get(),
+      db.collection('stores').limit(50).get(),
+      db.collection('boardPosts').limit(50).get(),
+      db.collection('events').limit(50).get(),
+    ])
 
   return {
     products: productSnap.docs
@@ -134,6 +138,23 @@ export async function listAdminContent(): Promise<AdminContent> {
           imageURL: null,
           status: d.status === 'hidden' ? 'hidden' : 'active',
           createdAt: iso(d.createdAt),
+        }
+      })
+      .sort(byNewest),
+    events: eventSnap.docs
+      .map((doc): AdminContentRow => {
+        const e = doc.data()
+        const stores = Array.isArray(e.stores) ? (e.stores as Array<{ name: string }>) : []
+        return {
+          id: doc.id,
+          kind: 'event',
+          title: (e.title as string) ?? '',
+          detail: stores.length
+            ? stores.map((s) => s.name).join(', ')
+            : `${(e.authorName as string) ?? ''}`,
+          imageURL: (e.imageURL as string | null) ?? null,
+          status: e.status === 'hidden' ? 'hidden' : 'active',
+          createdAt: iso(e.createdAt),
         }
       })
       .sort(byNewest),

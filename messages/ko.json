@@ -458,7 +458,8 @@
       "restore": "다시 노출했습니다",
       "delete": "삭제했습니다"
     },
-    "contentBoard": "게시판"
+    "contentBoard": "게시판",
+    "contentEvents": "이벤트"
   },
   "format": {
     "currency": "{amount}원",
@@ -538,5 +539,23 @@
       "desc": "장사에 도움되는 정보를 나눕니다",
       "metaPlaceholder": "한 줄 요약 (선택)"
     }
+  },
+  "events": {
+    "create": "이벤트 등록",
+    "createHint": "매장을 연계하면 그 매장 이벤트, 연계하지 않으면 지역 전체 이벤트가 됩니다",
+    "titlePlaceholder": "이벤트 제목",
+    "bodyPlaceholder": "이벤트 내용을 적어주세요",
+    "startsAt": "시작일",
+    "endsAt": "종료일",
+    "discountPlaceholder": "할인율(%) — 비우면 쿠폰 없는 공지",
+    "linkStores": "매장 연계",
+    "linkedHint": "선택한 매장 {n}곳의 이벤트로 등록됩니다",
+    "wideHint": "매장을 연계하지 않아 지역 전체 이벤트로 등록됩니다",
+    "pickAtLeastOne": "매장을 1곳 이상 선택해주세요",
+    "noStores": "연계할 수 있는 매장이 없습니다",
+    "submit": "등록",
+    "wide": "지역 전체",
+    "pickStore": "쿠폰을 사용할 매장",
+    "getCoupon": "{rate}% 쿠폰 받기"
   }
 }
