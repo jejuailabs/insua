@@ -37,7 +37,7 @@ export default async function AiToolPage({
   }
 
   return (
-    <main className="mx-auto max-w-md px-4 pt-2 pb-10 lg:max-w-2xl">
+    <main className="mx-auto max-w-md px-4 pt-2 pb-10 lg:max-w-3xl">
       <AdminPeekBanner />
       <header className="relative flex min-h-11 items-center">
         <Link

@@ -32,11 +32,16 @@ export type Hero = {
   reviews: number
   image: string
   perks: Perk[]
+  /** 거리순 정렬·지도 보기용 좌표 (WGS84). 실매장은 주소 지오코딩으로 채운다. */
+  lat?: number
+  lng?: number
 }
 
 export const HEROES: Hero[] = [
   {
     id: 'haenyeo-bapsang',
+    lat: 33.5567,
+    lng: 126.7959,
     name: '김순자 사장',
     tagline: '30년 전통 해녀밥상',
     category: 'restaurant',
@@ -52,6 +57,8 @@ export const HEROES: Hero[] = [
   },
   {
     id: 'cafe-oreum',
+    lat: 33.4996,
+    lng: 126.5312,
     name: '박민수 바리스타',
     tagline: '스페셜티 핸드드립 전문',
     category: 'cafe',
@@ -67,6 +74,8 @@ export const HEROES: Hero[] = [
   },
   {
     id: 'morning-bakery',
+    lat: 33.489,
+    lng: 126.4983,
     name: '이수진 사장',
     tagline: '매일 아침 굽는 건강한 빵',
     category: 'bakery',
@@ -81,6 +90,8 @@ export const HEROES: Hero[] = [
   },
   {
     id: 'jeju-farmer',
+    lat: 33.4629,
+    lng: 126.3312,
     name: '김철수 농부',
     tagline: '제주 자연 재배 농산물',
     category: 'farm',
@@ -95,6 +106,8 @@ export const HEROES: Hero[] = [
   },
   {
     id: 'hair-studio',
+    lat: 33.4874,
+    lng: 126.4863,
     name: '이지은 디자이너',
     tagline: '헤어 스타일링 전문가',
     category: 'salon',
@@ -109,6 +122,8 @@ export const HEROES: Hero[] = [
   },
   {
     id: 'sandeul-bbq',
+    lat: 33.2541,
+    lng: 126.5601,
     name: '강도현 사장',
     tagline: '제주 흑돼지 전문점',
     category: 'restaurant',

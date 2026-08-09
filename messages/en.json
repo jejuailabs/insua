@@ -18,7 +18,8 @@
     "next": "Next",
     "minutesAgo": "{n}m ago",
     "hoursAgo": "{n}h ago",
-    "notifyEmpty": "No new notifications"
+    "notifyEmpty": "No new notifications",
+    "prev": "Previous"
   },
   "nav": {
     "home": "Home",
@@ -388,7 +389,12 @@
       "snack": "Snack",
       "chicken": "Chicken"
     },
-    "noMatch": "No shops in this category yet"
+    "noMatch": "No shops in this category yet",
+    "directions": "Directions",
+    "sortReco": "For you",
+    "sortNearby": "Nearby",
+    "viewMapToggle": "Map view",
+    "visitCount": "Regular ×{n}"
   },
   "admin": {
     "title": "Admin",

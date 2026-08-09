@@ -6,7 +6,7 @@ import { SideRail } from '@/components/layout/SideRail'
 import { requireRolePage } from '@/lib/auth/guards'
 import { getMyConsumerProfile } from '@/lib/consumer/actions'
 import { Link } from '@/lib/i18n/navigation'
-import { HEROES } from '@/lib/mock/home'
+import { listHeroesByIds } from '@/lib/stores/data'
 
 /** 찜한가게 (docs/08 §8) — users/{uid}/saved 실데이터. */
 export default async function SavedPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -15,7 +15,8 @@ export default async function SavedPage({ params }: { params: Promise<{ locale: 
   await requireRolePage(locale, ['consumer'])
 
   const profile = await getMyConsumerProfile()
-  const saved = HEROES.filter((hero) => profile?.savedStoreIds.includes(hero.id))
+  // 실매장·목데이터를 함께 찾는다 — 목데이터만 거르면 실매장 찜이 사라진다
+  const saved = await listHeroesByIds(profile?.savedStoreIds ?? [])
   const t = await getTranslations()
 
   return (

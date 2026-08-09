@@ -7,7 +7,7 @@
 export default function MerchantLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-dvh lg:bg-surface-2">
-      <div className="relative mx-auto min-h-dvh w-full max-w-md bg-bg lg:max-w-2xl lg:border-x lg:border-line lg:shadow-card">
+      <div className="relative mx-auto min-h-dvh w-full max-w-md bg-bg lg:max-w-3xl lg:border-x lg:border-line lg:shadow-card">
         {children}
       </div>
     </div>

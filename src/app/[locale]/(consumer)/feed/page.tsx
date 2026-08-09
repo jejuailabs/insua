@@ -19,11 +19,11 @@ export default async function FeedPage({ params }: { params: Promise<{ locale: s
 
   const [profile, heroes, feedPosts, products] = await Promise.all([
     getMyConsumerProfile(),
-    listHeroes(),
+    listHeroes(20), // 메인 캐러셀 최대 20장 (사용자 확정 사양)
     listFeedPosts(12),
     listRandomProducts(6),
   ])
-  
+
   return (
     <div className="flex">
       <SideRail variant="consumer" active="home" homeHref="/feed" />

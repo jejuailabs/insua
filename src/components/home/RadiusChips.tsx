@@ -9,7 +9,15 @@ import { cn } from '@/lib/utils/cn'
  * 위치 권한은 **첫 진입 시가 아니라 칩을 누를 때** 요청한다 — 진입 즉시 팝업은 이탈률만 높인다.
  * 거부하면 지역 선택 드롭다운으로 폴백한다. geohash 쿼리는 실데이터 단계에서 붙는다.
  */
-export function RadiusChips() {
+export function RadiusChips({
+  onChange,
+  onLocated,
+}: {
+  /** 반경 변경 콜백 — 반경별 노출 캡(1km 15 / 3km 30 / 5km 50)에 쓴다. */
+  onChange?: (km: number) => void
+  /** 위치 확보 콜백 — 거리순 정렬에 쓴다. */
+  onLocated?: (pos: { lat: number; lng: number }) => void
+} = {}) {
   const t = useTranslations('consumer')
   const [radius, setRadius] = useState(3)
   const [denied, setDenied] = useState(false)
@@ -28,9 +36,11 @@ export function RadiusChips() {
       return
     }
     navigator.geolocation.getCurrentPosition(
-      () => {
+      (pos) => {
         setDenied(false)
         setRadius(km)
+        onChange?.(km)
+        onLocated?.({ lat: pos.coords.latitude, lng: pos.coords.longitude })
         showToast(t('radiusApplied', { km }))
       },
       () => {

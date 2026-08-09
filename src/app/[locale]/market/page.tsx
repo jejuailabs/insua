@@ -24,13 +24,14 @@ export default async function MarketPage({ params }: { params: Promise<{ locale:
     <div className="flex">
       <SideRail variant="consumer" active="market" homeHref="/" />
 
-      <main className="mx-auto w-full max-w-md flex-1 px-4 pt-4 pb-10 lg:max-w-xl">
+      <main className="mx-auto w-full max-w-md flex-1 px-4 pt-4 pb-10 lg:max-w-5xl">
         <div className="flex items-center justify-between">
           <h1 className="text-display text-content">{t('nav.market')}</h1>
           {canRegister && <ProductRegisterButton />}
         </div>
 
-        <ProductGrid items={products} />
+        {/* PC 쇼핑몰 수준의 큰 카드 (사용자 확정 사양) */}
+        <ProductGrid items={products} large />
       </main>
     </div>
   )

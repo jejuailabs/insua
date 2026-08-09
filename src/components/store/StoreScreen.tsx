@@ -86,7 +86,7 @@ export function StoreScreen({ stores, news = [] }: { stores: Store[]; news?: New
 
   return (
     <>
-      <main className="mx-auto max-w-md px-4 pt-2 pb-56 lg:max-w-2xl">
+      <main className="mx-auto max-w-md px-4 pt-2 pb-56 lg:max-w-3xl">
         <header className="relative flex min-h-11 items-center justify-between">
           <button
             type="button"

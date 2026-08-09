@@ -1,40 +1,24 @@
 'use client'
 
-import { ChevronRight, LayoutGrid, Rows3, Star, TicketPercent } from 'lucide-react'
+import { ChevronLeft, ChevronRight, LayoutGrid, Rows3, Star, TicketPercent } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useTransition } from 'react'
+import { CategoryChips } from './CategoryChips'
 import { HeroCarousel } from './HeroCarousel'
+import { bucketOf, type FilterCategory } from './heroFilter'
 import { ProductGrid } from './ProductGrid'
 import { RadiusChips } from './RadiusChips'
 import { Modal } from '@/components/ui/Modal'
 import { issueCoupon, toggleSaveStore } from '@/lib/consumer/actions'
-import type { Hero, HeroCategory, MarketItem, RestaurantSub } from '@/lib/mock/home'
+import type { Hero, MarketItem, RestaurantSub } from '@/lib/mock/home'
 import { cn } from '@/lib/utils/cn'
 
-/** 메인 카테고리 필터 5종 (사용자 확정 사양) — 앞 4개에 안 걸리면 전부 기타. */
-const FILTER_CATEGORIES = ['restaurant', 'cafe', 'salon', 'farm', 'etc'] as const
-type FilterCategory = (typeof FILTER_CATEGORIES)[number]
-
-const RESTAURANT_SUBS: RestaurantSub[] = [
-  'meat',
-  'seafood',
-  'korean',
-  'chinese',
-  'japanese',
-  'western',
-  'snack',
-  'chicken',
-]
-
-function bucketOf(category: HeroCategory): FilterCategory {
-  return (['restaurant', 'cafe', 'salon', 'farm'] as const).includes(
-    category as 'restaurant' | 'cafe' | 'salon' | 'farm',
-  )
-    ? (category as FilterCategory)
-    : 'etc'
-}
+/** 반경별 노출 캡 (사용자 확정 사양) — 더 많은 히어로는 히어로 허브에서 본다. */
+const RADIUS_CAP: Record<number, number> = { 1: 15, 3: 30, 5: 50 }
+/** 목록형 페이지 크기 (사용자 확정 사양 — 목록형은 페이지네이션). */
+const LIST_PAGE = 10
 
 /**
  * 히어로 캐러셀 + 업종 연동 상품 섹션 (ref-04, docs/08 §6).
@@ -59,27 +43,32 @@ export function FeedShowcase({
   const locale = useLocale()
   const [index, setIndex] = useState(0)
   const [view, setView] = useState<'card' | 'list'>('card')
+  const [radius, setRadius] = useState(3)
   const [filter, setFilter] = useState<FilterCategory | 'all'>('all')
   const [subFilter, setSubFilter] = useState<RestaurantSub | null>(null)
+  const [listPage, setListPage] = useState(0)
   const [savedIds, setSavedIds] = useState<string[]>(initialSavedIds)
   const [couponHero, setCouponHero] = useState<{ hero: Hero; rate: number } | null>(null)
   const [couponCode, setCouponCode] = useState<string | null>(null)
   const [pending, startTransition] = useTransition()
   const [toast, setToast] = useState<string | null>(null)
 
-  // 카테고리 → (식당이면) 세부 업종 2단 필터 (사용자 확정 사양)
+  // 카테고리 → (식당이면) 세부 업종 2단 필터 (사용자 확정 사양) → 반경 캡
   const filtered = heroes.filter((hero) => {
     if (filter === 'all') return true
     if (bucketOf(hero.category) !== filter) return false
     if (filter === 'restaurant' && subFilter) return hero.subCategory === subFilter
     return true
   })
-  const shown = filtered.length ? filtered : []
+  const shown = filtered.slice(0, RADIUS_CAP[radius] ?? 30)
+  const listPages = Math.max(1, Math.ceil(shown.length / LIST_PAGE))
+  const listShown = shown.slice(listPage * LIST_PAGE, (listPage + 1) * LIST_PAGE)
 
   function pickFilter(next: FilterCategory | 'all') {
     setFilter(next)
     setSubFilter(null)
     setIndex(0)
+    setListPage(0)
   }
 
   function showToast(message: string) {
@@ -118,7 +107,13 @@ export function FeedShowcase({
     <>
       {/* 한 줄 헤더 — 반경 칩 + 아이콘 뷰 토글 (사용자 확정 사양) */}
       <div className="mb-2 flex items-center justify-between gap-2">
-        <RadiusChips />
+        <RadiusChips
+          onChange={(km) => {
+            setRadius(km)
+            setIndex(0)
+            setListPage(0)
+          }}
+        />
         <div className="flex shrink-0 gap-1">
           {(
             [
@@ -145,59 +140,17 @@ export function FeedShowcase({
         </div>
       </div>
 
-      {/* 카테고리 5종 + 식당 세부 8종 (사용자 확정 사양) */}
-      <div className="mb-1 flex [scrollbar-width:none] gap-1.5 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden">
-        <button
-          type="button"
-          onClick={() => pickFilter('all')}
-          className={cn(
-            'shrink-0 rounded-pill border px-2.5 py-1 text-micro',
-            filter === 'all'
-              ? 'border-accent bg-accent-strong text-accent-on'
-              : 'border-line text-content-muted',
-          )}
-        >
-          {t('consumer.categoryAll')}
-        </button>
-        {FILTER_CATEGORIES.map((cat) => (
-          <button
-            key={cat}
-            type="button"
-            onClick={() => pickFilter(cat)}
-            className={cn(
-              'shrink-0 rounded-pill border px-2.5 py-1 text-micro',
-              filter === cat
-                ? 'border-accent bg-accent-strong text-accent-on'
-                : 'border-line text-content-muted',
-            )}
-          >
-            {t(`consumer.category.${cat}`)}
-          </button>
-        ))}
-      </div>
-
-      {filter === 'restaurant' && (
-        <div className="mb-2 flex [scrollbar-width:none] gap-1.5 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden">
-          {RESTAURANT_SUBS.map((sub) => (
-            <button
-              key={sub}
-              type="button"
-              onClick={() => {
-                setSubFilter(subFilter === sub ? null : sub)
-                setIndex(0)
-              }}
-              className={cn(
-                'shrink-0 rounded-pill border px-2.5 py-1 text-micro',
-                subFilter === sub
-                  ? 'border-accent bg-accent-soft text-accent-strong'
-                  : 'border-line text-content-faint',
-              )}
-            >
-              {t(`consumer.sub.${sub}`)}
-            </button>
-          ))}
-        </div>
-      )}
+      {/* 카테고리 5종 + 식당 세부 8종 (사용자 확정 사양) — 히어로 허브와 공용 컴포넌트 */}
+      <CategoryChips
+        filter={filter}
+        subFilter={subFilter}
+        onFilter={pickFilter}
+        onSubFilter={(next) => {
+          setSubFilter(next)
+          setIndex(0)
+          setListPage(0)
+        }}
+      />
 
       {shown.length === 0 ? (
         <p className="rounded-card border border-line bg-surface p-8 text-center text-caption text-content-muted">
@@ -213,36 +166,65 @@ export function FeedShowcase({
           onCouponClick={handleCoupon}
         />
       ) : (
-        <ul className="flex flex-col gap-2">
-          {shown.map((hero, i) => (
-            <li key={hero.id}>
-              <Link
-                href={`/${locale}/s/${hero.id}`}
-                className={cn(
-                  'flex items-center gap-3 rounded-card border bg-surface p-3',
-                  i === index ? 'border-accent' : 'border-line',
-                )}
+        <>
+          <ul className="flex flex-col gap-2">
+            {listShown.map((hero, i) => (
+              <li key={hero.id}>
+                <Link
+                  href={`/${locale}/s/${hero.id}`}
+                  className={cn(
+                    'flex items-center gap-3 rounded-card border bg-surface p-3',
+                    listPage * LIST_PAGE + i === index ? 'border-accent' : 'border-line',
+                  )}
+                >
+                  <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-inner">
+                    <Image src={hero.image} alt="" fill sizes="64px" className="object-cover" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-subtitle text-content">{hero.name}</p>
+                    <p className="truncate text-caption text-content-muted">{hero.tagline}</p>
+                    <p className="mt-0.5 flex items-center gap-1 text-caption text-content">
+                      <Star size={12} className="fill-current text-warning" aria-hidden />
+                      <span className="tabular">
+                        {t('format.rating', { rating: hero.rating, count: hero.reviews })}
+                      </span>
+                    </p>
+                  </div>
+                  <span className="shrink-0 rounded-pill bg-surface-2 px-2.5 py-1 text-micro text-content-muted">
+                    {t(`consumer.category.${hero.category}`)}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          {/* 목록형 페이지네이션 (사용자 확정 사양) */}
+          {listPages > 1 && (
+            <div className="mt-3 flex items-center justify-center gap-3">
+              <button
+                type="button"
+                onClick={() => setListPage((p) => Math.max(0, p - 1))}
+                disabled={listPage === 0}
+                aria-label={t('common.prev')}
+                className="grid h-8 w-8 place-items-center rounded-chip border border-line text-content disabled:opacity-40"
               >
-                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-inner">
-                  <Image src={hero.image} alt="" fill sizes="64px" className="object-cover" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-subtitle text-content">{hero.name}</p>
-                  <p className="truncate text-caption text-content-muted">{hero.tagline}</p>
-                  <p className="mt-0.5 flex items-center gap-1 text-caption text-content">
-                    <Star size={12} className="fill-current text-warning" aria-hidden />
-                    <span className="tabular">
-                      {t('format.rating', { rating: hero.rating, count: hero.reviews })}
-                    </span>
-                  </p>
-                </div>
-                <span className="shrink-0 rounded-pill bg-surface-2 px-2.5 py-1 text-micro text-content-muted">
-                  {t(`consumer.category.${hero.category}`)}
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+                <ChevronLeft size={15} aria-hidden />
+              </button>
+              <span className="tabular text-caption text-content-muted">
+                {listPage + 1} / {listPages}
+              </span>
+              <button
+                type="button"
+                onClick={() => setListPage((p) => Math.min(listPages - 1, p + 1))}
+                disabled={listPage >= listPages - 1}
+                aria-label={t('common.next')}
+                className="grid h-8 w-8 place-items-center rounded-chip border border-line text-content disabled:opacity-40"
+              >
+                <ChevronRight size={15} aria-hidden />
+              </button>
+            </div>
+          )}
+        </>
       )}
 
       <section className="mt-6 rounded-card border border-line bg-surface p-4">

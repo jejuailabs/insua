@@ -18,7 +18,8 @@
     "next": "次へ",
     "minutesAgo": "{n}分前",
     "hoursAgo": "{n}時間前",
-    "notifyEmpty": "新しい通知はありません"
+    "notifyEmpty": "新しい通知はありません",
+    "prev": "前へ"
   },
   "nav": {
     "home": "ホーム",
@@ -388,7 +389,12 @@
       "snack": "軽食",
       "chicken": "チキン"
     },
-    "noMatch": "このカテゴリの店舗はまだありません"
+    "noMatch": "このカテゴリの店舗はまだありません",
+    "directions": "アクセス",
+    "sortReco": "おすすめ",
+    "sortNearby": "近い順",
+    "viewMapToggle": "地図で見る",
+    "visitCount": "常連 {n}回"
   },
   "admin": {
     "title": "管理者",

@@ -35,7 +35,7 @@ export default async function HomePage({
   // 직렬 대기가 메인 TTFB 를 잡아먹는다 — 전부 병렬로 (사용자 성능 피드백)
   const [profile, heroes, feedPosts, products, t] = await Promise.all([
     session ? getMyConsumerProfile() : Promise.resolve(null),
-    listHeroes(),
+    listHeroes(20), // 메인 캐러셀 최대 20장 (사용자 확정 사양)
     listFeedPosts(12),
     listRandomProducts(6),
     getTranslations(),

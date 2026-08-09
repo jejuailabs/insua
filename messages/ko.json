@@ -18,7 +18,8 @@
     "next": "다음",
     "minutesAgo": "{n}분 전",
     "hoursAgo": "{n}시간 전",
-    "notifyEmpty": "새 알림이 없습니다"
+    "notifyEmpty": "새 알림이 없습니다",
+    "prev": "이전"
   },
   "nav": {
     "home": "홈",
@@ -388,7 +389,12 @@
       "snack": "분식",
       "chicken": "치킨"
     },
-    "noMatch": "이 카테고리에는 아직 매장이 없습니다"
+    "noMatch": "이 카테고리에는 아직 매장이 없습니다",
+    "directions": "오시는 길",
+    "sortReco": "추천순",
+    "sortNearby": "거리순",
+    "viewMapToggle": "지도로 보기",
+    "visitCount": "단골 {n}회"
   },
   "admin": {
     "title": "관리자",

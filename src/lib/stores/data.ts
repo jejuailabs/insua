@@ -20,6 +20,8 @@ export type StoreDoc = Store & {
   aiGenerated: boolean
   subCategory?: string
   createdAtMs: number
+  lat?: number
+  lng?: number
 }
 
 function toStore(id: string, d: FirebaseFirestore.DocumentData): StoreDoc {
@@ -44,6 +46,34 @@ function toStore(id: string, d: FirebaseFirestore.DocumentData): StoreDoc {
     aiGenerated: d.aiGenerated === true,
     subCategory: (d.subCategory as string) || undefined,
     createdAtMs: d.createdAt?.toMillis?.() ?? 0,
+    lat: typeof d.lat === 'number' ? d.lat : undefined,
+    lng: typeof d.lng === 'number' ? d.lng : undefined,
+  }
+}
+
+/**
+ * 좌표 없는 실매장을 지오코딩해 문서에 캐시한다 (Nominatim 1건/요청 — 정책 준수).
+ * 실패해도 조용히 넘어간다 — 좌표는 거리순·지도 보기의 부가 정보다.
+ */
+async function backfillCoords(stores: StoreDoc[]): Promise<void> {
+  const target = stores.find((s) => s.address && s.lat === undefined)
+  if (!target) return
+  try {
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=kr&q=${encodeURIComponent(target.address)}`,
+      { headers: { 'User-Agent': 'local-os/0.1 (insua.vercel.app)' } },
+    )
+    const rows = (await res.json()) as Array<{ lat: string; lon: string }>
+    const hit = rows[0]
+    if (!hit) return
+    target.lat = Number(hit.lat)
+    target.lng = Number(hit.lon)
+    await getAdminDb()
+      .collection('stores')
+      .doc(target.id)
+      .set({ lat: target.lat, lng: target.lng }, { merge: true })
+  } catch {
+    // 지오코딩 실패는 치명적이지 않다
   }
 }
 
@@ -58,29 +88,34 @@ export async function listPublishedStores(limit = 12): Promise<StoreDoc[]> {
   return snap.docs.map((doc) => toStore(doc.id, doc.data()))
 }
 
-/** 실매장 + 목데이터 폴백으로 히어로 목록을 만든다. */
-export async function listHeroes(): Promise<Hero[]> {
-  const real = await listPublishedStores()
-  const realHeroes: Hero[] = real
-    .filter((s) => s.heroImage)
-    .map((s) => ({
-      id: s.id,
-      name: s.name,
-      tagline: s.tagline,
-      category: (['restaurant', 'cafe', 'bakery', 'salon', 'farm'].includes(s.category)
-        ? s.category
-        : 'restaurant') as HeroCategory,
-      rating: s.rating || 5.0,
-      reviews: s.ratingCount,
-      subCategory: (s as StoreDoc & { subCategory?: RestaurantSub }).subCategory,
-      image: s.heroImage,
-      perks: [
-        { kind: 'signature', value: s.menus[0]?.name ?? s.tagline },
-        { kind: 'hours', open: s.hours.open, close: s.hours.close },
-      ],
-    }))
-  // 노출 순서 (사용자 확정 사양): 위치기반 정렬은 좌표 데이터가 붙는 단계의 과제.
-  // 지금은 신규(5일 이내) 실매장을 최신순으로 앞세우고, 나머지는 요청마다 랜덤 셔플.
+function storeToHero(s: StoreDoc): Hero {
+  return {
+    id: s.id,
+    name: s.name,
+    tagline: s.tagline,
+    category: (['restaurant', 'cafe', 'bakery', 'salon', 'farm'].includes(s.category)
+      ? s.category
+      : 'restaurant') as HeroCategory,
+    rating: s.rating || 5.0,
+    reviews: s.ratingCount,
+    subCategory: (s as StoreDoc & { subCategory?: RestaurantSub }).subCategory,
+    image: s.heroImage,
+    perks: [
+      { kind: 'signature', value: s.menus[0]?.name ?? s.tagline },
+      { kind: 'hours', open: s.hours.open, close: s.hours.close },
+    ],
+    lat: s.lat,
+    lng: s.lng,
+  }
+}
+
+/** 실매장 + 목데이터 폴백으로 히어로 목록을 만든다. 메인 20장, 히어로 허브 최대 50장. */
+export async function listHeroes(limit = 12): Promise<Hero[]> {
+  const real = (await listPublishedStores(60)).filter((s) => s.heroImage)
+  await backfillCoords(real)
+  const realHeroes = real.map(storeToHero)
+  // 노출 순서 (사용자 확정 사양): 위치기반 정렬은 클라이언트(거리순 토글)가 맡고,
+  // 서버 기본 순서는 신규(5일 이내) 실매장 최신순 → 나머지 요청마다 랜덤 셔플.
   const FIVE_DAYS = 5 * 86_400_000
   const now = Date.now()
   const withMeta = realHeroes.map((hero, i) => ({ hero, createdAtMs: real[i]?.createdAtMs ?? 0 }))
@@ -96,7 +131,27 @@ export async function listHeroes(): Promise<Hero[]> {
     const j = Math.floor(Math.random() * (i + 1))
     ;[rest[i]!, rest[j]!] = [rest[j]!, rest[i]!]
   }
-  return [...fresh, ...rest].slice(0, 12)
+  return [...fresh, ...rest].slice(0, limit)
+}
+
+/** 찜한가게 목록용 — 저장된 id 로 실매장·목데이터를 함께 찾는다. */
+export async function listHeroesByIds(ids: string[]): Promise<Hero[]> {
+  if (!ids.length) return []
+  const db = getAdminDb()
+  const out: Hero[] = []
+  for (const id of ids.slice(0, 30)) {
+    const mock = HEROES.find((h) => h.id === id)
+    if (mock) {
+      out.push(mock)
+      continue
+    }
+    const doc = await db.collection('stores').doc(id).get()
+    if (doc.exists && doc.data()!.status === 'published') {
+      const store = toStore(doc.id, doc.data()!)
+      if (store.heroImage) out.push(storeToHero(store))
+    }
+  }
+  return out
 }
 
 /** 랜딩 페이지용 단건 조회 — 실매장 우선, 목데이터 폴백. */

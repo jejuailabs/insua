@@ -33,8 +33,9 @@ export default async function PublicStorePage({
 
   return (
     <>
-      <main className="mx-auto max-w-md px-4 pt-4 pb-28">
-        <article className="relative aspect-[4/5] overflow-hidden rounded-card border border-line">
+      {/* PC 는 2컬럼(히어로 고정 + 내용), 모바일은 한 컬럼 (사용자 확정 사양) */}
+      <main className="mx-auto max-w-md px-4 pt-4 pb-28 lg:grid lg:max-w-4xl lg:grid-cols-[minmax(0,24rem)_1fr] lg:items-start lg:gap-8">
+        <article className="relative aspect-[4/5] overflow-hidden rounded-card border border-line lg:sticky lg:top-6">
           <Image
             src={store.heroImage}
             alt=""
@@ -74,38 +75,55 @@ export default async function PublicStorePage({
           </div>
         </article>
 
-        <section className="mt-6">
-          <h2 className="text-subtitle text-content">{t(MENU_SECTION_KEY[store.category])}</h2>
-          <ul className="mt-3 grid grid-cols-3 gap-2">
-            {store.menus.map((menu) => (
-              <li
-                key={menu.id}
-                className="overflow-hidden rounded-inner border border-line bg-surface"
-              >
-                <div className="relative aspect-square">
-                  <Image src={menu.image} alt="" fill sizes="33vw" className="object-cover" />
-                </div>
-                <div className="p-2">
-                  <p className="truncate text-label text-content">{menu.name}</p>
-                  <p className="tabular mt-0.5 text-label text-content">
-                    {t('format.currency', { amount: menu.price.toLocaleString() })}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </section>
+        <div className="lg:min-w-0">
+          <section className="mt-6 lg:mt-0">
+            <h2 className="text-subtitle text-content">{t(MENU_SECTION_KEY[store.category])}</h2>
+            <ul className="mt-3 grid grid-cols-3 gap-2 lg:gap-3">
+              {store.menus.map((menu) => (
+                <li
+                  key={menu.id}
+                  className="overflow-hidden rounded-inner border border-line bg-surface"
+                >
+                  <div className="relative aspect-square">
+                    <Image
+                      src={menu.image}
+                      alt=""
+                      fill
+                      sizes="(max-width: 1024px) 33vw, 180px"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="p-2">
+                    <p className="truncate text-label text-content">{menu.name}</p>
+                    <p className="tabular mt-0.5 text-label text-content">
+                      {t('format.currency', { amount: menu.price.toLocaleString() })}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
 
-        <section className="mt-6">
-          <h2 className="text-subtitle text-content">{t('merchant.storeIntro')}</h2>
-          <div className="mt-2 flex gap-3">
-            <p className="flex-1 text-body whitespace-pre-line text-content">{store.intro}</p>
-            <MapEmbed address={store.address} />
-          </div>
-        </section>
+          <section className="mt-6">
+            <h2 className="text-subtitle text-content">{t('merchant.storeIntro')}</h2>
+            <p className="mt-2 text-body whitespace-pre-line text-content">{store.intro}</p>
+          </section>
 
-        {/* 방문 후기 — 사진과 함께 (사용자 확정 사양) */}
-        <ReviewSection storeId={storeId} reviews={reviews} signedIn={Boolean(session)} />
+          {/* 오시는 길 — 한 줄 전체 큰 지도 (사용자 확정 사양) */}
+          <section className="mt-6">
+            <h2 className="flex items-center gap-1.5 text-subtitle text-content">
+              <MapPin size={15} aria-hidden className="text-accent-strong" />
+              {t('consumer.directions')}
+            </h2>
+            <p className="mt-1 text-caption text-content-muted">{store.address}</p>
+            <div className="mt-2">
+              <MapEmbed address={store.address} wide />
+            </div>
+          </section>
+
+          {/* 방문 후기 — 사진과 함께 (사용자 확정 사양) */}
+          <ReviewSection storeId={storeId} reviews={reviews} signedIn={Boolean(session)} />
+        </div>
       </main>
 
       <PublicActionBar store={store} />

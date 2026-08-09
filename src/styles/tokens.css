@@ -35,6 +35,16 @@
   --tier-b-on: #644712;
   --tier-c-on: #193923;
 
+  /* ── 방문 단골 등급 글로우 — 등급색과 같은 이유로 팔레트 불변 ──
+   * 방문이력이 쌓일수록 동 → 은 → 금으로 강조된다 (사용자 확정 사양). */
+  --visit-bronze: #c07a3d;
+  --visit-silver: #a8b2bf;
+  --visit-gold: #e0a72e;
+  /* 배지 위 텍스트 — 등급색 -on 과 같은 원리 (같은 hue 의 짙은 톤, 4.5:1 이상) */
+  --visit-bronze-on: #2d1a09;
+  --visit-silver-on: #1f242b;
+  --visit-gold-on: #3a2a05;
+
   /* ── 간격 (docs/04 §4) ──
    * Tailwind 기본 spacing 스케일과 값이 일치한다 (gap-4 = 1rem = 16px).
    * 유틸리티로 표현 가능한 곳에서는 Tailwind 를 쓰고, 이 변수는 raw CSS 전용. */

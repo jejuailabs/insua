@@ -18,7 +18,8 @@
     "next": "下一个",
     "minutesAgo": "{n}分钟前",
     "hoursAgo": "{n}小时前",
-    "notifyEmpty": "暂无新通知"
+    "notifyEmpty": "暂无新通知",
+    "prev": "上一页"
   },
   "nav": {
     "home": "首页",
@@ -388,7 +389,12 @@
       "snack": "小吃",
       "chicken": "炸鸡"
     },
-    "noMatch": "该分类暂无店铺"
+    "noMatch": "该分类暂无店铺",
+    "directions": "到店路线",
+    "sortReco": "推荐",
+    "sortNearby": "距离最近",
+    "viewMapToggle": "地图查看",
+    "visitCount": "常客 {n}次"
   },
   "admin": {
     "title": "管理员",

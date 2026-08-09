@@ -10,7 +10,16 @@ import { useEffect, useState } from 'react'
  * OSM 공식 타일은 상업 대량 사용을 제한하므로, 트래픽이 붙기 전에 카카오맵
  * JS SDK(무료 쿼터 일 30만, JavaScript 키 필요)로 교체한다.
  */
-export function MapEmbed({ address, className }: { address: string; className?: string }) {
+export function MapEmbed({
+  address,
+  className,
+  wide = false,
+}: {
+  address: string
+  className?: string
+  /** true 면 한 줄 전체를 쓰는 큰 지도 (사용자 확정 사양 — 랜딩 오시는 길). */
+  wide?: boolean
+}) {
   const t = useTranslations('merchant')
   const [coords, setCoords] = useState<{ lat: number; lon: number } | null | 'failed'>(null)
 
@@ -37,7 +46,9 @@ export function MapEmbed({ address, className }: { address: string; className?: 
       <div
         className={
           className ??
-          'grid aspect-[4/3] w-32 shrink-0 place-items-center rounded-inner border border-line bg-surface-2'
+          (wide
+            ? 'grid aspect-[16/7] w-full place-items-center rounded-inner border border-line bg-surface-2'
+            : 'grid aspect-[4/3] w-32 shrink-0 place-items-center rounded-inner border border-line bg-surface-2')
         }
       >
         <span className="flex flex-col items-center gap-1 px-2 text-center text-content-muted">
@@ -51,14 +62,20 @@ export function MapEmbed({ address, className }: { address: string; className?: 
   }
 
   const { lat, lon } = coords
-  const bbox = `${lon - 0.004},${lat - 0.0025},${lon + 0.004},${lat + 0.0025}`
+  const bbox = wide
+    ? `${lon - 0.01},${lat - 0.004},${lon + 0.01},${lat + 0.004}`
+    : `${lon - 0.004},${lat - 0.0025},${lon + 0.004},${lat + 0.0025}`
 
   return (
-    <div className={className ?? 'w-32 shrink-0'}>
+    <div className={className ?? (wide ? 'w-full' : 'w-32 shrink-0')}>
       <iframe
         title={address}
         src={`https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat},${lon}`}
-        className="aspect-[4/3] w-full rounded-inner border border-line"
+        className={
+          wide
+            ? 'aspect-[16/9] w-full rounded-inner border border-line sm:aspect-[16/7]'
+            : 'aspect-[4/3] w-full rounded-inner border border-line'
+        }
         loading="lazy"
       />
       <a

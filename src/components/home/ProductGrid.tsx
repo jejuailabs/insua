@@ -13,7 +13,14 @@ import { cn } from '@/lib/utils/cn'
  * 상품을 누르면 쇼핑몰 상세(/market/{id})로 간다 (사용자 확정 사양).
  * 하트 = 찜 토글(낙관적). 결제는 스코프 밖.
  */
-export function ProductGrid({ items }: { items: MarketItem[] }) {
+export function ProductGrid({
+  items,
+  large = false,
+}: {
+  items: MarketItem[]
+  /** true 면 PC 쇼핑몰 수준의 큰 카드 (사용자 확정 사양 — 마켓 페이지). */
+  large?: boolean
+}) {
   const t = useTranslations()
   const locale = useLocale()
   const [saved, setSaved] = useState<Record<string, boolean>>({})
@@ -27,11 +34,22 @@ export function ProductGrid({ items }: { items: MarketItem[] }) {
 
   return (
     <>
-      <ul className="mt-3 grid grid-cols-3 gap-2 lg:grid-cols-6">
+      <ul
+        className={cn(
+          'mt-3 grid',
+          large ? 'grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4' : 'grid-cols-3 gap-2 lg:grid-cols-6',
+        )}
+      >
         {items.map((item) => (
           <li key={item.id} className="overflow-hidden rounded-inner border border-line bg-surface">
             <Link href={`/${locale}/market/${item.id}`} className="relative block aspect-square">
-              <Image src={item.image} alt="" fill sizes="33vw" className="object-cover" />
+              <Image
+                src={item.image}
+                alt=""
+                fill
+                sizes={large ? '(max-width: 1024px) 50vw, 260px' : '33vw'}
+                className="object-cover"
+              />
               {item.best && (
                 <span className="absolute top-1.5 left-1.5 rounded-chip bg-accent-strong px-1.5 py-0.5 text-micro text-accent-on">
                   BEST
@@ -57,11 +75,25 @@ export function ProductGrid({ items }: { items: MarketItem[] }) {
                 />
               </button>
             </Link>
-            <div className="p-2">
-              <p className="truncate text-label text-content">{item.name}</p>
-              <p className="mt-0.5 truncate text-micro text-content-muted">{item.sub}</p>
+            <div className={large ? 'p-3' : 'p-2'}>
+              <p className={cn('truncate text-content', large ? 'text-body' : 'text-label')}>
+                {item.name}
+              </p>
+              <p
+                className={cn(
+                  'mt-0.5 truncate text-content-muted',
+                  large ? 'text-caption' : 'text-micro',
+                )}
+              >
+                {item.sub}
+              </p>
               <div className="mt-1.5 flex items-center justify-between gap-1">
-                <span className="tabular truncate text-label text-content">
+                <span
+                  className={cn(
+                    'tabular truncate text-content',
+                    large ? 'text-subtitle' : 'text-label',
+                  )}
+                >
                   {t('format.currency', { amount: item.price.toLocaleString() })}
                 </span>
                 <button
@@ -70,7 +102,7 @@ export function ProductGrid({ items }: { items: MarketItem[] }) {
                   aria-label={t('nav.saved')}
                   className="shrink-0 text-accent-strong"
                 >
-                  <ShoppingCart size={15} aria-hidden />
+                  <ShoppingCart size={large ? 18 : 15} aria-hidden />
                 </button>
               </div>
             </div>
