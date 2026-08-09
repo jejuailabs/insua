@@ -7,7 +7,6 @@ import { LandingNav } from '@/components/store/LandingNav'
 import { MapEmbed } from '@/components/store/MapEmbed'
 import { ReviewSection } from '@/components/store/ReviewSection'
 import { PublicActionBar } from '@/components/store/PublicActionBar'
-import { TierBadge } from '@/components/ui/TierBadge'
 import { MENU_SECTION_KEY } from '@/lib/mock/store'
 import { getSession } from '@/lib/auth/session'
 import { listReviews } from '@/lib/reviews/data'
@@ -160,23 +159,21 @@ export default async function PublicStorePage({
 
       <LandingNav storeName={store.name} sections={sections} />
 
-      <main className="mx-auto max-w-3xl px-4 pt-4 pb-28">
-        {/* 히어로 */}
-        <article className="relative aspect-[4/5] overflow-hidden rounded-card border border-line sm:aspect-[16/10]">
+      {/* 좌: 세로 히어로 카드(고정) · 우: 내용이 아래로 흐른다 (사용자 확정 사양).
+          히어로 카드는 어디서나 세로 4:5 — 카드가 곧 이 서비스의 기본 단위다. */}
+      <main className="mx-auto max-w-5xl px-4 pt-4 pb-28 lg:grid lg:grid-cols-[24rem_1fr] lg:items-start lg:gap-8">
+        <article className="relative aspect-[4/5] overflow-hidden rounded-card border border-line lg:sticky lg:top-20">
           <Image
             src={store.heroImage}
             alt={`${store.name} ${store.tagline}`}
             fill
-            sizes="(max-width: 768px) 92vw, 768px"
+            sizes="(max-width: 1024px) 92vw, 384px"
             className="object-cover"
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/35" />
-          <span className="absolute top-3 right-3">
-            <TierBadge tier={store.tier} />
-          </span>
 
-          <div className="absolute inset-x-0 bottom-0 p-4 text-right sm:p-6">
+          <div className="absolute inset-x-0 bottom-0 p-4 text-right">
             <h1 className="text-display text-white">{store.name}</h1>
             <p className="mt-1 text-body text-white/85">{seo?.subheadline || store.tagline}</p>
             <p className="mt-2.5 flex items-center justify-end gap-3 text-label text-white">
@@ -202,122 +199,125 @@ export default async function PublicStorePage({
           </div>
         </article>
 
-        {/* AI 헤드라인 — 검색결과에서 클릭해 들어온 사람이 첫 화면에서 읽는 문장 */}
-        {seo?.headline && (
-          <h2 className="mt-6 text-title leading-snug text-content">{seo.headline}</h2>
-        )}
-
-        {/* 한눈에 보기 — 답변엔진이 그대로 인용하기 좋은 사실 조각 */}
-        {seo?.highlights?.length ? (
-          <ul className="mt-4 flex flex-wrap gap-2">
-            {seo.highlights.map((h) => (
-              <li
-                key={h}
-                className="rounded-pill border border-line bg-surface px-3 py-1.5 text-caption text-content"
-              >
-                {h}
-              </li>
-            ))}
-          </ul>
-        ) : null}
-
-        {/* 소개 — AI 서술형 본문 3섹션 */}
-        <section id="about" className="mt-8 scroll-mt-16">
-          <h2 className="text-subtitle text-content">{t('merchant.storeIntro')}</h2>
-          {seo?.sections?.length ? (
-            <div className="mt-3 flex flex-col gap-5">
-              {seo.sections.map((s) => (
-                <div key={s.heading}>
-                  <h3 className="text-label text-accent-strong">{s.heading}</h3>
-                  <p className="mt-1.5 text-body leading-relaxed text-content">{s.body}</p>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="mt-2 text-body whitespace-pre-line text-content">{store.intro}</p>
+        <div className="lg:min-w-0">
+          {/* AI 헤드라인 — 검색결과에서 클릭해 들어온 사람이 첫 화면에서 읽는 문장 */}
+          {seo?.headline && (
+            <h2 className="mt-6 text-title leading-snug text-content lg:mt-0">{seo.headline}</h2>
           )}
-        </section>
 
-        {/* 메뉴 */}
-        {store.menus.length > 0 && (
-          <section id="menu" className="mt-8 scroll-mt-16">
-            <h2 className="text-subtitle text-content">{t(MENU_SECTION_KEY[store.category])}</h2>
-            <ul className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {store.menus.map((menu) => (
+          {/* 한눈에 보기 — 답변엔진이 그대로 인용하기 좋은 사실 조각 */}
+          {seo?.highlights?.length ? (
+            <ul className="mt-4 flex flex-wrap gap-2">
+              {seo.highlights.map((h) => (
                 <li
-                  key={menu.id}
-                  className="overflow-hidden rounded-inner border border-line bg-surface"
+                  key={h}
+                  className="rounded-pill border border-line bg-surface px-3 py-1.5 text-caption text-content"
                 >
-                  <div className="relative aspect-square">
-                    <Image
-                      src={menu.image}
-                      alt={`${store.name} ${menu.name}`}
-                      fill
-                      sizes="(max-width: 768px) 45vw, 240px"
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="p-2.5">
-                    <p className="truncate text-label text-content">{menu.name}</p>
-                    <p className="tabular mt-0.5 text-label text-content">
-                      {t('format.currency', { amount: menu.price.toLocaleString() })}
-                    </p>
-                  </div>
+                  {h}
                 </li>
               ))}
             </ul>
-          </section>
-        )}
+          ) : null}
 
-        {/* 오시는 길 */}
-        <section id="map" className="mt-8 scroll-mt-16">
-          <h2 className="flex items-center gap-1.5 text-subtitle text-content">
-            <MapPin size={15} aria-hidden className="text-accent-strong" />
-            {t('consumer.directions')}
-          </h2>
-          <p className="mt-1 text-caption text-content-muted">{store.address}</p>
-          <div className="mt-2">
-            <MapEmbed address={store.address} wide />
-          </div>
-          {store.phone && (
-            <p className="mt-2 flex items-center gap-1.5 text-caption text-content-muted">
-              <Phone size={13} aria-hidden />
-              {store.phone}
-            </p>
+          {/* 소개 — AI 서술형 본문 3섹션 */}
+          <section id="about" className="mt-8 scroll-mt-16">
+            <h2 className="text-subtitle text-content">{t('merchant.storeIntro')}</h2>
+            {seo?.sections?.length ? (
+              <div className="mt-3 flex flex-col gap-5">
+                {seo.sections.map((s) => (
+                  <div key={s.heading}>
+                    <h3 className="text-label text-accent-strong">{s.heading}</h3>
+                    <p className="mt-1.5 text-body leading-relaxed text-content">{s.body}</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="mt-2 text-body whitespace-pre-line text-content">{store.intro}</p>
+            )}
+          </section>
+
+          {/* 메뉴 */}
+          {store.menus.length > 0 && (
+            <section id="menu" className="mt-8 scroll-mt-16">
+              <h2 className="text-subtitle text-content">{t(MENU_SECTION_KEY[store.category])}</h2>
+              <ul className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {store.menus.map((menu) => (
+                  <li
+                    key={menu.id}
+                    className="overflow-hidden rounded-inner border border-line bg-surface"
+                  >
+                    <div className="relative aspect-square">
+                      <Image
+                        src={menu.image}
+                        alt={`${store.name} ${menu.name}`}
+                        fill
+                        sizes="(max-width: 768px) 45vw, 240px"
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="p-2.5">
+                      <p className="truncate text-label text-content">{menu.name}</p>
+                      <p className="tabular mt-0.5 text-label text-content">
+                        {t('format.currency', { amount: menu.price.toLocaleString() })}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </section>
           )}
-        </section>
 
-        {/* FAQ — 답변엔진(AEO)용. 화면에도 보이고 JSON-LD 로도 나간다 */}
-        {seo?.faq?.length ? (
-          <section id="faq" className="mt-8 scroll-mt-16">
-            <h2 className="text-subtitle text-content">{t('merchant.landingFaq')}</h2>
-            <div className="mt-3 flex flex-col gap-2">
-              {seo.faq.map((f) => (
-                <details
-                  key={f.q}
-                  className="rounded-inner border border-line bg-surface px-4 py-3 [&_summary::-webkit-details-marker]:hidden"
-                >
-                  <summary className="cursor-pointer list-none text-label text-content">
-                    {f.q}
-                  </summary>
-                  <p className="mt-2 text-body leading-relaxed text-content-muted">{f.a}</p>
-                </details>
-              ))}
+          {/* 오시는 길 */}
+          <section id="map" className="mt-8 scroll-mt-16">
+            <h2 className="flex items-center gap-1.5 text-subtitle text-content">
+              <MapPin size={15} aria-hidden className="text-accent-strong" />
+              {t('consumer.directions')}
+            </h2>
+            <p className="mt-1 text-caption text-content-muted">{store.address}</p>
+            <div className="mt-2">
+              <MapEmbed address={store.address} wide />
             </div>
+            {store.phone && (
+              <p className="mt-2 flex items-center gap-1.5 text-caption text-content-muted">
+                <Phone size={13} aria-hidden />
+                {store.phone}
+              </p>
+            )}
           </section>
-        ) : null}
 
-        {/* 방문 후기 */}
-        <div id="reviews" className="scroll-mt-16">
-          <ReviewSection storeId={storeId} reviews={reviews} signedIn={Boolean(session)} />
+          {/* FAQ — 답변엔진(AEO)용. 화면에도 보이고 JSON-LD 로도 나간다 */}
+          {seo?.faq?.length ? (
+            <section id="faq" className="mt-8 scroll-mt-16">
+              <h2 className="text-subtitle text-content">{t('merchant.landingFaq')}</h2>
+              <div className="mt-3 flex flex-col gap-2">
+                {seo.faq.map((f) => (
+                  <details
+                    key={f.q}
+                    className="rounded-inner border border-line bg-surface px-4 py-3 [&_summary::-webkit-details-marker]:hidden"
+                  >
+                    <summary className="cursor-pointer list-none text-label text-content">
+                      {f.q}
+                    </summary>
+                    <p className="mt-2 text-body leading-relaxed text-content-muted">{f.a}</p>
+                  </details>
+                ))}
+              </div>
+            </section>
+          ) : null}
+
+          {/* 방문 후기 */}
+          <div id="reviews" className="scroll-mt-16">
+            <ReviewSection storeId={storeId} reviews={reviews} signedIn={Boolean(session)} />
+          </div>
+
+          {store.aiGenerated && (
+            <p className="mt-8 text-micro text-content-faint">{t('ai.generatedNotice')}</p>
+          )}
         </div>
-
-        {store.aiGenerated && (
-          <p className="mt-8 text-micro text-content-faint">{t('ai.generatedNotice')}</p>
-        )}
       </main>
 
-      <PublicActionBar store={store} />
+      {/* 액션 바에는 이름·전화·주소만 넘긴다 — 등급 같은 내부 정보를 클라이언트로 보내지 않는다 */}
+      <PublicActionBar name={store.name} phone={store.phone} address={store.address} />
     </>
   )
 }

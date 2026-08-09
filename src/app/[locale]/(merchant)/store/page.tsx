@@ -19,7 +19,8 @@ export default async function StorePage({ params }: { params: Promise<{ locale: 
     <>
       <AdminPeekBanner />
       <StoreScreen
-        stores={stores}
+        // 등급은 설계사의 내부 평가다 — 업주 화면으로 값 자체를 내려보내지 않는다
+        stores={stores.map((store) => ({ ...store, tier: undefined }))}
         news={myPosts.map((post) => ({
           id: post.id,
           text: post.body,

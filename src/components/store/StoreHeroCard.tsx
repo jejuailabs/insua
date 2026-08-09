@@ -12,7 +12,6 @@ import {
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useState } from 'react'
-import { TierBadge } from '@/components/ui/TierBadge'
 import type { Store } from '@/lib/mock/store'
 import { cn } from '@/lib/utils/cn'
 
@@ -77,9 +76,6 @@ export function StoreHeroCard({
 
               <span className="tabular absolute top-3 left-3 rounded-chip bg-black/50 px-2 py-1 text-label text-white">
                 {String(i + 1).padStart(2, '0')}
-              </span>
-              <span className="absolute top-3 right-3">
-                <TierBadge tier={store.tier} />
               </span>
 
               <div className="absolute inset-x-0 bottom-0 p-4 text-right">

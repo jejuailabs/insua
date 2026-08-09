@@ -17,7 +17,8 @@ export type Store = {
   id: string
   name: string
   tagline: string
-  tier: 'S' | 'A' | 'B' | 'C'
+  /** 설계사가 매긴 고객 등급. CRM 전용 — 공개·업주 화면으로는 내려보내지 않는다. */
+  tier?: 'S' | 'A' | 'B' | 'C'
   category: StoreCategory
   rating: number
   ratingCount: number
