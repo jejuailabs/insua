@@ -64,16 +64,29 @@ export function AiToolScreen({
     startTransition(async () => {
       // Vercel 요청 한도(4.5MB) 안으로 — 업로드 전 압축
       if (image1 && fittingStage !== 'wear') form.set('image1', await compressImage(image1))
-      if (image2) form.set('image2', await compressImage(image2))
+      if (image2 && fittingStage !== 'studio') form.set('image2', await compressImage(image2))
       const res = await runAiTool(form)
       if (!res.ok) {
         setFailed(true)
         return
       }
       setResult(res.resultURL)
+
       if (tool === 'fitting' && fittingStage === 'studio') {
         setStudioBase(res.resultURL)
-        setImage2(null)
+        // 인물과 함께 옷을 올렸으면 스튜디오 보정에서 멈추지 않고 바로 입혀본다
+        // (사용자 확정 사양) — 버튼 한 번으로 1단계+2단계가 이어진다.
+        if (image2) {
+          const wearForm = new FormData()
+          wearForm.set('tool', 'fitting')
+          wearForm.set('stage', 'wear')
+          wearForm.set('sizeLabel', sizeLabel)
+          wearForm.set('baseUrl', res.resultURL)
+          wearForm.set('image2', await compressImage(image2))
+          const wearRes = await runAiTool(wearForm)
+          if (wearRes.ok) setResult(wearRes.resultURL)
+          else setFailed(true)
+        }
       }
       router.refresh()
     })
@@ -122,7 +135,9 @@ export function AiToolScreen({
             <UploadBox label={labels[tool].input1} file={image1} onPick={setImage1} />
           )}
 
-          {(needsImage2 || tool === 'pet') && labels[tool].input2 && (
+          {/* 인물이 있으면 입혀볼 옷도 같은 화면에서 올린다 (사용자 확정 사양).
+              피팅룸은 1단계에서도 옷칸을 열어둔다 — 옷이 있으면 자동으로 2단계까지 간다. */}
+          {(needsImage2 || tool === 'pet' || tool === 'fitting') && labels[tool].input2 && (
             <UploadBox label={labels[tool].input2!} file={image2} onPick={setImage2} />
           )}
         </div>

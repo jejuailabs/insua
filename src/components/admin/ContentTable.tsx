@@ -20,6 +20,7 @@ const KINDS: Array<{ id: keyof AdminContent; kind: ContentKind; labelKey: string
   { id: 'reviews', kind: 'review', labelKey: 'admin.contentReviews' },
   { id: 'anonymous', kind: 'anonymous', labelKey: 'admin.contentAnonymous' },
   { id: 'stores', kind: 'store', labelKey: 'admin.contentStores' },
+  { id: 'board', kind: 'board', labelKey: 'admin.contentBoard' },
 ]
 
 export function ContentTable({ content }: { content: AdminContent }) {

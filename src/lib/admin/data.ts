@@ -43,7 +43,7 @@ export async function listUsers(limit = 100): Promise<AdminUserRow[]> {
 }
 
 /** 콘텐츠 관리 행 (사용자 확정 사양) — 상품·게시물·후기·익명글·매장을 한 틀로 다룬다. */
-export type AdminContentKind = 'product' | 'post' | 'review' | 'anonymous' | 'store'
+export type AdminContentKind = 'product' | 'post' | 'review' | 'anonymous' | 'store' | 'board'
 
 export type AdminContentRow = {
   id: string
@@ -61,6 +61,7 @@ export type AdminContent = {
   reviews: AdminContentRow[]
   anonymous: AdminContentRow[]
   stores: AdminContentRow[]
+  board: AdminContentRow[]
 }
 
 function byNewest(a: AdminContentRow, b: AdminContentRow) {
@@ -70,12 +71,13 @@ function byNewest(a: AdminContentRow, b: AdminContentRow) {
 /** 올라온 콘텐츠 전부 — 각 컬렉션 최근 50건. 숨김 상태도 보인다 (복원 대상). */
 export async function listAdminContent(): Promise<AdminContent> {
   const db = getAdminDb()
-  const [productSnap, postSnap, reviewSnap, anonSnap, storeSnap] = await Promise.all([
+  const [productSnap, postSnap, reviewSnap, anonSnap, storeSnap, boardSnap] = await Promise.all([
     db.collection('products').limit(50).get(),
     db.collection('posts').limit(50).get(),
     db.collection('reviews').limit(50).get(),
     db.collection('anonymousPosts').limit(50).get(),
     db.collection('stores').limit(50).get(),
+    db.collection('boardPosts').limit(50).get(),
   ])
 
   return {
@@ -132,6 +134,20 @@ export async function listAdminContent(): Promise<AdminContent> {
           imageURL: null,
           status: d.status === 'hidden' ? 'hidden' : 'active',
           createdAt: iso(d.createdAt),
+        }
+      })
+      .sort(byNewest),
+    board: boardSnap.docs
+      .map((doc): AdminContentRow => {
+        const b = doc.data()
+        return {
+          id: doc.id,
+          kind: 'board',
+          title: (b.title as string) ?? '',
+          detail: `${(b.kind as string) ?? ''} · ${(b.authorName as string) ?? ''}`,
+          imageURL: (b.imageURL as string | null) ?? null,
+          status: b.status === 'hidden' ? 'hidden' : 'active',
+          createdAt: iso(b.createdAt),
         }
       })
       .sort(byNewest),

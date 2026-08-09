@@ -442,7 +442,8 @@
       "hide": "已隐藏",
       "restore": "已重新显示",
       "delete": "已删除"
-    }
+    },
+    "contentBoard": "论坛"
   },
   "format": {
     "currency": "₩{amount}",
@@ -492,5 +493,35 @@
   },
   "ai": {
     "generatedNotice": "本页的介绍文字与图片由 AI 生成"
+  },
+  "board": {
+    "write": "写帖",
+    "empty": "暂无帖子",
+    "submit": "发布",
+    "photo": "照片(可选)",
+    "source": "原文",
+    "titlePlaceholder": "标题",
+    "bodyPlaceholder": "请输入内容",
+    "sourcePlaceholder": "原文·申请链接(可选)",
+    "realty": {
+      "title": "店铺买卖·租赁",
+      "desc": "寻找或出租店面",
+      "metaPlaceholder": "条件(例:押金3,000/月租150)"
+    },
+    "support": {
+      "title": "政府扶持·特别贷款",
+      "desc": "共享扶持项目与低息贷款信息",
+      "metaPlaceholder": "条件(例:最高7千万韩元·年利2.0%)"
+    },
+    "groupbuy": {
+      "title": "团购",
+      "desc": "一起买更便宜",
+      "metaPlaceholder": "条件(例:最高28%·剩2天)"
+    },
+    "share": {
+      "title": "信息分享",
+      "desc": "分享对生意有帮助的信息",
+      "metaPlaceholder": "一句话摘要(可选)"
+    }
   }
 }

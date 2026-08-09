@@ -442,7 +442,8 @@
       "hide": "非表示にしました",
       "restore": "再表示しました",
       "delete": "削除しました"
-    }
+    },
+    "contentBoard": "掲示板"
   },
   "format": {
     "currency": "₩{amount}",
@@ -492,5 +493,35 @@
   },
   "ai": {
     "generatedNotice": "このページの紹介文と画像は AI が作成しました"
+  },
+  "board": {
+    "write": "投稿",
+    "empty": "まだ投稿がありません",
+    "submit": "登録",
+    "photo": "写真(任意)",
+    "source": "原文",
+    "titlePlaceholder": "タイトル",
+    "bodyPlaceholder": "内容を入力してください",
+    "sourcePlaceholder": "原文・申請リンク(任意)",
+    "realty": {
+      "title": "不動産 売買・賃貸",
+      "desc": "店舗物件を探す・出す",
+      "metaPlaceholder": "条件(例:保証金3,000/月150)"
+    },
+    "support": {
+      "title": "政府支援・特別融資",
+      "desc": "支援事業と低金利融資の情報を共有します",
+      "metaPlaceholder": "条件(例:最大7千万ウォン・年2.0%)"
+    },
+    "groupbuy": {
+      "title": "共同購入",
+      "desc": "一緒に買えば安くなります",
+      "metaPlaceholder": "条件(例:最大28%・締切2日)"
+    },
+    "share": {
+      "title": "情報共有",
+      "desc": "商売に役立つ情報を共有します",
+      "metaPlaceholder": "一行要約(任意)"
+    }
   }
 }

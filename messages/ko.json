@@ -442,7 +442,8 @@
       "hide": "숨겼습니다",
       "restore": "다시 노출했습니다",
       "delete": "삭제했습니다"
-    }
+    },
+    "contentBoard": "게시판"
   },
   "format": {
     "currency": "{amount}원",
@@ -492,5 +493,35 @@
   },
   "ai": {
     "generatedNotice": "이 페이지의 소개글과 이미지는 AI가 만들었습니다"
+  },
+  "board": {
+    "write": "글쓰기",
+    "empty": "아직 등록된 글이 없습니다",
+    "submit": "등록",
+    "photo": "사진 (선택)",
+    "source": "원문",
+    "titlePlaceholder": "제목",
+    "bodyPlaceholder": "내용을 적어주세요",
+    "sourcePlaceholder": "원문·신청 링크 (선택)",
+    "realty": {
+      "title": "부동산 매매·임대",
+      "desc": "내 가게 자리를 찾거나 내놓습니다",
+      "metaPlaceholder": "조건 (예: 보증금 3,000 / 월 150 · 25평)"
+    },
+    "support": {
+      "title": "정부지원·특별대출",
+      "desc": "지원사업·저금리 대출 정보를 함께 나눕니다",
+      "metaPlaceholder": "조건 (예: 최대 7천만원 · 연 2.0%)"
+    },
+    "groupbuy": {
+      "title": "공동구매",
+      "desc": "함께 사면 더 싸집니다",
+      "metaPlaceholder": "조건 (예: 최대 28% · 마감 2일)"
+    },
+    "share": {
+      "title": "정보공유",
+      "desc": "장사에 도움되는 정보를 나눕니다",
+      "metaPlaceholder": "한 줄 요약 (선택)"
+    }
   }
 }

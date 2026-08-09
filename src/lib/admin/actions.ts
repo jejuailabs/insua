@@ -63,6 +63,7 @@ const CONTENT_COLLECTIONS = {
   review: 'reviews',
   anonymous: 'anonymousPosts',
   store: 'stores',
+  board: 'boardPosts',
 } as const
 
 export type ContentKind = keyof typeof CONTENT_COLLECTIONS

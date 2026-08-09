@@ -236,10 +236,13 @@ export function FeedShowcase({
       <section className="mt-6 rounded-card border border-line bg-surface p-4">
         <div className="flex items-center justify-between">
           <h2 className="text-subtitle text-content">{t('consumer.todayFresh')}</h2>
-          <span className="flex items-center gap-0.5 text-caption text-content-muted">
+          <Link
+            href={`/${locale}/market`}
+            className="flex min-h-8 items-center gap-0.5 rounded-chip px-2 text-caption text-content-muted hover:bg-surface-2"
+          >
             {t('common.more')}
             <ChevronRight size={14} aria-hidden />
-          </span>
+          </Link>
         </div>
         <ProductGrid items={products} />
       </section>

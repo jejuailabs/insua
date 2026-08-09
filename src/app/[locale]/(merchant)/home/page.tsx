@@ -20,6 +20,7 @@ import { BottomTabBar } from '@/components/layout/BottomTabBar'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { requireRolePage } from '@/lib/auth/guards'
 import { Link } from '@/lib/i18n/navigation'
+import { listBoardPreview } from '@/lib/board/data'
 import { countRecentAuthors, listAnonymousPosts } from '@/lib/merchant/anonymous'
 import { ANONYMOUS_ROOM, GROUP_BUYS, REALTY_LISTINGS, SUPPORT_PROGRAMS } from '@/lib/mock/merchant'
 
@@ -34,7 +35,13 @@ export default async function MerchantHomePage({
   await requireRolePage(locale, ['merchant'])
 
   // 익명방 미리보기 — 실글이 있으면 실글, 없으면 목데이터로 빈 카드를 피한다.
-  const [realPosts, realCount] = await Promise.all([listAnonymousPosts(3), countRecentAuthors()])
+  const [realPosts, realCount, realtyPosts, supportPosts, groupBuyPosts] = await Promise.all([
+    listAnonymousPosts(3),
+    countRecentAuthors(),
+    listBoardPreview('realty'),
+    listBoardPreview('support'),
+    listBoardPreview('groupbuy'),
+  ])
   const posts = realPosts.length ? realPosts : ANONYMOUS_ROOM.posts
   const liveCount = realPosts.length ? realCount : ANONYMOUS_ROOM.liveCount
 
@@ -113,18 +120,31 @@ export default async function MerchantHomePage({
 
         {/* 부동산 (docs/07 A-5) */}
         <section className="mt-6">
-          <SectionHeader title={t('realty.section')} sub={t('realty.sectionSub')} />
+          <SectionHeader title={t('realty.section')} sub={t('realty.sectionSub')} href="/realty" />
           <ul className="-mx-4 mt-3 flex [scrollbar-width:none] gap-3 overflow-x-auto px-4 [&::-webkit-scrollbar]:hidden">
-            {REALTY_LISTINGS.map((listing) => (
+            {(realtyPosts.length
+              ? realtyPosts.map((p) => ({
+                  id: p.id,
+                  kind: 'rent' as const,
+                  title: p.title,
+                  priceMain: p.meta,
+                  priceSub: p.body.split(/\n/)[0] ?? '',
+                  image: p.imageURL ?? REALTY_LISTINGS[0]!.image,
+                  real: true,
+                }))
+              : REALTY_LISTINGS.map((l) => ({ ...l, real: false }))
+            ).map((listing) => (
               <li
                 key={listing.id}
                 className="w-40 shrink-0 overflow-hidden rounded-inner border border-line bg-surface"
               >
                 <div className="relative aspect-[3/2]">
                   <Image src={listing.image} alt="" fill sizes="160px" className="object-cover" />
-                  <span className="absolute top-1.5 left-1.5 rounded-chip bg-accent-strong px-1.5 py-0.5 text-micro text-accent-on">
-                    {t(`realty.${listing.kind}`)}
-                  </span>
+                  {!listing.real && (
+                    <span className="absolute top-1.5 left-1.5 rounded-chip bg-accent-strong px-1.5 py-0.5 text-micro text-accent-on">
+                      {t(`realty.${listing.kind}`)}
+                    </span>
+                  )}
                 </div>
                 <div className="p-2.5">
                   <p className="truncate text-label text-content">{listing.title}</p>
@@ -138,9 +158,22 @@ export default async function MerchantHomePage({
 
         {/* 정부지원 (docs/07 A-5) — sourceUrl 없는 레코드는 렌더하지 않는다 */}
         <section className="mt-6">
-          <SectionHeader title={t('support.section')} sub={t('support.sectionSub')} />
+          <SectionHeader
+            title={t('support.section')}
+            sub={t('support.sectionSub')}
+            href="/support"
+          />
           <ul className="mt-3 flex flex-col overflow-hidden rounded-card border border-line bg-surface">
-            {SUPPORT_PROGRAMS.filter((p) => p.sourceUrl).map((program, i) => (
+            {(supportPosts.length
+              ? supportPosts.map((p) => ({
+                  id: p.id,
+                  kind: 'loan' as const,
+                  title: p.title,
+                  summary: p.meta || p.body.slice(0, 40),
+                  sourceUrl: p.sourceUrl,
+                }))
+              : SUPPORT_PROGRAMS.filter((p) => p.sourceUrl)
+            ).map((program, i) => (
               <li key={program.id} className={i > 0 ? 'border-t border-line' : undefined}>
                 <div className="flex items-center gap-3 px-4 py-3">
                   <span className="grid h-9 w-9 shrink-0 place-items-center rounded-inner bg-accent-soft text-accent-strong">
@@ -166,7 +199,7 @@ export default async function MerchantHomePage({
 
         {/* AI Tools (docs/10 — 실호출 없음, 입구만) */}
         <section className="mt-6">
-          <SectionHeader title={t('aiTools.section')} />
+          <SectionHeader title={t('aiTools.section')} href="/ai-tools" />
           <ul className="mt-3 grid grid-cols-3 gap-2">
             {[
               { icon: ImageIcon, label: t('aiTools.menuPoster'), href: '/ai-tools/menu-poster' },
@@ -194,9 +227,31 @@ export default async function MerchantHomePage({
 
         {/* 공동구매 (docs/07 A-5) */}
         <section className="mt-6">
-          <SectionHeader title={t('groupBuy.section')} sub={t('groupBuy.sectionSub')} />
+          <SectionHeader
+            title={t('groupBuy.section')}
+            sub={t('groupBuy.sectionSub')}
+            href="/groupbuy"
+          />
           <ul className="mt-3 flex flex-col gap-3">
-            {GROUP_BUYS.map((gb) => (
+            {(groupBuyPosts.length
+              ? groupBuyPosts.map((p) => ({
+                  id: p.id,
+                  title: p.title,
+                  image: p.imageURL ?? GROUP_BUYS[0]!.image,
+                  meta: p.meta,
+                  real: true as const,
+                }))
+              : GROUP_BUYS.map((g) => ({
+                  id: g.id,
+                  title: g.title,
+                  image: g.image,
+                  meta: '',
+                  real: false as const,
+                  daysLeft: g.daysLeft,
+                  participants: g.participants,
+                  discountRate: g.discountRate,
+                }))
+            ).map((gb) => (
               <li
                 key={gb.id}
                 className="flex items-center gap-3 rounded-card border border-line bg-surface p-3"
@@ -207,13 +262,16 @@ export default async function MerchantHomePage({
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-label text-content">{gb.title}</p>
                   <p className="mt-0.5 text-caption text-content-muted">
-                    {t('groupBuy.deadline', { days: gb.daysLeft })} ·{' '}
-                    {t('groupBuy.participants', { count: gb.participants })}
+                    {gb.real
+                      ? gb.meta
+                      : `${t('groupBuy.deadline', { days: gb.daysLeft })} · ${t('groupBuy.participants', { count: gb.participants })}`}
                   </p>
                 </div>
-                <span className="shrink-0 rounded-chip bg-accent-soft px-2 py-1 text-label text-accent-strong">
-                  {t('groupBuy.discountUpTo', { rate: gb.discountRate })}
-                </span>
+                {!gb.real && (
+                  <span className="shrink-0 rounded-chip bg-accent-soft px-2 py-1 text-label text-accent-strong">
+                    {t('groupBuy.discountUpTo', { rate: gb.discountRate })}
+                  </span>
+                )}
               </li>
             ))}
           </ul>
@@ -225,16 +283,16 @@ export default async function MerchantHomePage({
   )
 }
 
-/** 퀵액션 6칸 (docs/07 A-3). 익명방만 실화면이 있고 나머지는 홈 내 섹션으로 스크롤 대신 표시만. */
+/** 퀵액션 6칸 (docs/07 A-3) — 여섯 칸 모두 실제 화면으로 간다 (사용자 확정 사양). */
 async function QuickActions() {
   const t = await getTranslations()
   const items = [
     { icon: MessagesSquare, label: t('merchant.quick.anonymous'), href: '/anonymous' },
-    { icon: HomeIcon, label: t('merchant.quick.realty') },
-    { icon: Landmark, label: t('merchant.quick.support') },
-    { icon: ShoppingCart, label: t('merchant.quick.groupbuy') },
+    { icon: HomeIcon, label: t('merchant.quick.realty'), href: '/realty' },
+    { icon: Landmark, label: t('merchant.quick.support'), href: '/support' },
+    { icon: ShoppingCart, label: t('merchant.quick.groupbuy'), href: '/groupbuy' },
     { icon: Sparkles, label: t('merchant.quick.aitools'), href: '/ai-tools' },
-    { icon: Share2, label: t('merchant.quick.share') },
+    { icon: Share2, label: t('merchant.quick.share'), href: '/share' },
   ]
 
   // ref-02 는 모바일에서도 6칸 한 줄이다.
