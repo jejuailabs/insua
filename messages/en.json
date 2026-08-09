@@ -166,7 +166,8 @@
       "menuPrice": "Price (KRW)",
       "generating": "Generating AI hero card… (up to 30s)",
       "generatedWithCard": "Contact saved + hero card & landing generated",
-      "subCategory": "Sub-category (restaurant)"
+      "subCategory": "Sub-category (restaurant)",
+      "consent": "Consent"
     },
     "stats": {
       "title": "Stats",
@@ -202,7 +203,12 @@
     "saving": "Saving…",
     "transcriptDone": "Transcription done",
     "transcriptFailed": "Transcription failed. You can retry from the log",
-    "micDenied": "Microphone unavailable. Check browser permissions"
+    "micDenied": "Microphone unavailable. Check browser permissions",
+    "editContact": "Edit customer",
+    "deleteContact": "Delete customer",
+    "deleteConfirm": "Delete",
+    "deleteWarning": "Consultation logs are deleted too and cannot be restored. Any public page made from this customer becomes private.",
+    "editShort": "Edit"
   },
   "merchant": {
     "spaceName": "A space just for local owners",

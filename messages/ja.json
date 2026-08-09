@@ -166,7 +166,8 @@
       "menuPrice": "価格(ウォン)",
       "generating": "AI カード生成中… (最大30秒)",
       "generatedWithCard": "顧客登録 + カードとLPを生成しました",
-      "subCategory": "細分類 (飲食店)"
+      "subCategory": "細分類 (飲食店)",
+      "consent": "同意項目"
     },
     "stats": {
       "title": "統計",
@@ -202,7 +203,12 @@
     "saving": "保存中…",
     "transcriptDone": "整理が完了しました",
     "transcriptFailed": "整理に失敗しました。相談ログから再試行できます",
-    "micDenied": "マイクを使用できません。ブラウザの権限を確認してください"
+    "micDenied": "マイクを使用できません。ブラウザの権限を確認してください",
+    "editContact": "顧客カード編集",
+    "deleteContact": "顧客カード削除",
+    "deleteConfirm": "削除する",
+    "deleteWarning": "相談ログも一緒に削除され、元に戻せません。この顧客から作った公開ページは非公開になります。",
+    "editShort": "編集"
   },
   "merchant": {
     "spaceName": "個人店主だけの空間",

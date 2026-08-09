@@ -166,7 +166,8 @@
       "menuPrice": "가격(원)",
       "generating": "AI 히어로 카드 생성 중… (최대 30초)",
       "generatedWithCard": "고객 등록 + 히어로 카드·랜딩페이지 생성 완료",
-      "subCategory": "세부 업종 (식당)"
+      "subCategory": "세부 업종 (식당)",
+      "consent": "동의 항목"
     },
     "stats": {
       "title": "통계",
@@ -202,7 +203,12 @@
     "saving": "저장 중…",
     "transcriptDone": "정리를 마쳤습니다",
     "transcriptFailed": "정리에 실패했습니다. 상담로그에서 다시 시도할 수 있습니다",
-    "micDenied": "마이크를 쓸 수 없습니다. 브라우저 권한을 확인해주세요"
+    "micDenied": "마이크를 쓸 수 없습니다. 브라우저 권한을 확인해주세요",
+    "editContact": "고객카드 수정",
+    "deleteContact": "고객카드 삭제",
+    "deleteConfirm": "삭제합니다",
+    "deleteWarning": "상담로그까지 함께 지워지고 되돌릴 수 없습니다. 이 고객으로 만든 공개 페이지가 있으면 비공개로 바뀝니다.",
+    "editShort": "수정"
   },
   "merchant": {
     "spaceName": "소상공인들만의 공간",

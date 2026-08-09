@@ -1,7 +1,7 @@
 'use client'
 
 // 이 lucide 버전에는 브랜드 아이콘(Instagram)이 없다. 인스타는 Camera 로 대신한다.
-import { Camera, Globe, MessageCircle, Phone, RefreshCw, Sparkles } from 'lucide-react'
+import { Camera, Globe, MessageCircle, Pencil, Phone, RefreshCw, Sparkles } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
@@ -33,6 +33,7 @@ export function PersonCard({
   selected = false,
   onToggleSelect,
   onOpenLog,
+  onEdit,
 }: {
   contact: Contact
   /** 단체 문자 선택 모드 (docs/06 §3) */
@@ -40,6 +41,7 @@ export function PersonCard({
   selected?: boolean
   onToggleSelect?: () => void
   onOpenLog?: () => void
+  onEdit?: () => void
 }) {
   const t = useTranslations('crm')
   const tMerchant = useTranslations('merchant')
@@ -194,6 +196,18 @@ export function PersonCard({
                 {tMerchant('regenerateSeo')}
               </button>
             )}
+
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation()
+                onEdit?.()
+              }}
+              className="flex items-center justify-center gap-1 rounded-chip border border-line px-2 py-1.5 text-center text-micro text-content-muted"
+            >
+              <Pencil size={12} aria-hidden />
+              {t('editShort')}
+            </button>
 
             <button
               type="button"

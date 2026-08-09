@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { generateHeroImage, generateStoreSeoCopy } from '@/lib/ai/openai'
 import { requireSession } from '@/lib/auth/session'
+import { FieldValue } from 'firebase-admin/firestore'
 import { getAdminDb } from '@/lib/firebase/admin'
 import { uploadToStorage } from '@/lib/stores/data'
 import { TIER_CYCLE_DAYS, TIERS, type InteractionType, type Tier } from './types'
@@ -502,6 +503,97 @@ export async function askCrmAssistant(
     return { ok: true, answer }
   } catch (error) {
     console.error('[crm] askCrmAssistant failed:', (error as Error).message)
+    return { ok: false, code: 'FAILED' }
+  }
+}
+
+/**
+ * 고객카드 수정 (사용자 확정 사양) — 기본 정보와 동의 상태를 고친다.
+ * 사진·매장 정보는 각자의 경로가 따로 있으므로 여기서는 다루지 않는다.
+ * 소유 설계사(또는 관리자)만. 주소가 바뀌면 좌표 캐시를 버려 다시 지오코딩되게 한다.
+ */
+export async function updateContact(form: FormData): Promise<ActionResult> {
+  const contactId = String(form.get('contactId') ?? '')
+  const name = String(form.get('name') ?? '').trim()
+  if (!contactId || !name) return { ok: false, code: 'INVALID' }
+
+  try {
+    const { uid, isAdmin } = await requireAgent()
+    const db = getAdminDb()
+    const ref = db.collection('contacts').doc(contactId)
+    const snap = await ref.get()
+    if (!snap.exists) return { ok: false, code: 'INVALID' }
+    if (snap.data()!.ownerAgentId !== uid && !isAdmin) return { ok: false, code: 'FAILED' }
+
+    const str = (key: string) => String(form.get(key) ?? '').trim()
+    const tier: Tier = TIERS.includes(form.get('tier') as Tier) ? (form.get('tier') as Tier) : 'B'
+    const address = str('address')
+    const prevAddress = (snap.data()!.address as string) ?? ''
+
+    await ref.update({
+      name,
+      company: str('company'),
+      position: str('position'),
+      phone: str('phone'),
+      tier,
+      cycleDays: TIER_CYCLE_DAYS[tier],
+      note: str('note'),
+      address,
+      // 주소가 바뀌면 옛 좌표는 거짓말이 된다 — 지워서 다음 조회 때 다시 찍게 한다
+      ...(address !== prevAddress
+        ? { lat: FieldValue.delete(), lng: FieldValue.delete() }
+        : {}),
+      consent: {
+        dataSharing: form.get('consentShare') === 'on',
+        portrait: form.get('consentPortrait') === 'on',
+        recording: form.get('consentRecording') === 'on',
+      },
+      updatedAt: new Date(),
+    })
+
+    revalidatePath('/', 'layout')
+    return { ok: true, id: contactId }
+  } catch (error) {
+    console.error('[crm] updateContact failed:', (error as Error).message)
+    return { ok: false, code: 'FAILED' }
+  }
+}
+
+/**
+ * 고객카드 삭제 (사용자 확정 사양).
+ * 상담로그 하위 컬렉션까지 함께 지운다 — 문서만 지우면 로그가 고아로 남는다.
+ * 이 고객으로 만든 공개 매장(랜딩)은 **자동으로 비공개 처리**한다.
+ * 근거가 사라진 페이지가 검색에 계속 노출되면 안 된다.
+ */
+export async function deleteContact(contactId: string): Promise<ActionResult> {
+  if (!contactId) return { ok: false, code: 'INVALID' }
+
+  try {
+    const { uid, isAdmin } = await requireAgent()
+    const db = getAdminDb()
+    const ref = db.collection('contacts').doc(contactId)
+    const snap = await ref.get()
+    if (!snap.exists) return { ok: false, code: 'INVALID' }
+    if (snap.data()!.ownerAgentId !== uid && !isAdmin) return { ok: false, code: 'FAILED' }
+
+    const storeId = snap.data()!.storeId as string | null
+    if (storeId) {
+      await db
+        .collection('stores')
+        .doc(storeId)
+        .set({ isPublic: false, status: 'hidden', updatedAt: new Date() }, { merge: true })
+    }
+
+    const logs = await ref.collection('interactions').get()
+    const batch = db.batch()
+    logs.docs.forEach((doc) => batch.delete(doc.ref))
+    batch.delete(ref)
+    await batch.commit()
+
+    revalidatePath('/', 'layout')
+    return { ok: true }
+  } catch (error) {
+    console.error('[crm] deleteContact failed:', (error as Error).message)
     return { ok: false, code: 'FAILED' }
   }
 }

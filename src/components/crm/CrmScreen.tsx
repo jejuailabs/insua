@@ -20,6 +20,7 @@ import { setNextContactDate } from '@/lib/crm/actions'
 import { NewContactForm } from './NewContactForm'
 import { PersonCard } from './PersonCard'
 import { FeedPostButton } from '@/components/feed/FeedPostButton'
+import { EditContactModal } from './EditContactModal'
 import { RecordConsultModal } from './RecordConsultModal'
 import { PinMap } from '@/components/map/PinMap'
 import { Modal } from '@/components/ui/Modal'
@@ -52,6 +53,7 @@ export function CrmScreen({ contacts }: { contacts: Contact[] }) {
   const [formOpen, setFormOpen] = useState(false)
   const [mapOpen, setMapOpen] = useState(false)
   const [recordOpen, setRecordOpen] = useState(false)
+  const [editingId, setEditingId] = useState<string | null>(null)
   const [calendarOpen, setCalendarOpen] = useState(false)
   const [toast, setToast] = useState<string | null>(null)
 
@@ -265,6 +267,7 @@ export function CrmScreen({ contacts }: { contacts: Contact[] }) {
             selectable={selecting}
             selected={selected.has(contact.id)}
             onToggleSelect={() => toggleSelect(contact.id)}
+            onEdit={() => setEditingId(contact.id)}
             onOpenLog={() => router.push(`/${locale}/interactions?contactId=${contact.id}`)}
           />
         ))}
@@ -332,6 +335,12 @@ export function CrmScreen({ contacts }: { contacts: Contact[] }) {
       )}
 
       <NewContactForm open={formOpen} onClose={() => setFormOpen(false)} />
+
+      <EditContactModal
+        contact={contacts.find((c) => c.id === editingId) ?? null}
+        open={editingId !== null}
+        onClose={() => setEditingId(null)}
+      />
 
       <RecordConsultModal
         open={recordOpen}
