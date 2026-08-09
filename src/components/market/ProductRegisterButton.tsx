@@ -17,6 +17,7 @@ export function ProductRegisterButton() {
   const fileRef = useRef<HTMLInputElement>(null)
   const [open, setOpen] = useState(false)
   const [preview, setPreview] = useState<string | null>(null)
+  const [delivery, setDelivery] = useState(false)
   const [pending, startTransition] = useTransition()
   const [error, setError] = useState(false)
 
@@ -35,6 +36,7 @@ export function ProductRegisterButton() {
       }
       form.reset()
       setPreview(null)
+      setDelivery(false)
       setOpen(false)
       router.refresh()
     })
@@ -107,6 +109,29 @@ export function ProductRegisterButton() {
             rows={3}
             className={cn(field, 'min-h-20 py-3')}
           />
+
+          {/* 찾는 장소 + 배달 (사용자 확정 사양) — 표기까지만, 배차·정산 없음 */}
+          <input name="pickupPlace" placeholder={t('pickupPlace')} className={field} />
+
+          <label className="flex min-h-11 items-center justify-between gap-3 rounded-chip border border-line px-4">
+            <span className="text-body text-content">{t('deliveryAvailable')}</span>
+            <input
+              type="checkbox"
+              name="deliveryAvailable"
+              checked={delivery}
+              onChange={(e) => setDelivery(e.target.checked)}
+              className="h-5 w-5 accent-[var(--accent-strong)]"
+            />
+          </label>
+
+          {delivery && (
+            <input
+              name="deliveryFee"
+              inputMode="numeric"
+              placeholder={t('deliveryFee')}
+              className={field}
+            />
+          )}
 
           {error && (
             <p role="alert" className="text-caption text-danger">

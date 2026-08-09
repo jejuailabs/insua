@@ -147,6 +147,9 @@ export type MarketItem = {
   price: number
   image: string
   best?: boolean
+  /** 배달 가능 유무 (사용자 확정 사양) — 카드에 칩으로 한눈에 보인다. */
+  deliveryAvailable?: boolean
+  deliveryFee?: number
 }
 
 const tangerine: MarketItem = {

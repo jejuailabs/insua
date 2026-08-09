@@ -1,4 +1,4 @@
-import { ChevronLeft, MessageCircle, Phone } from 'lucide-react'
+import { ChevronLeft, MapPin, MessageCircle, Phone, Truck } from 'lucide-react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
@@ -64,6 +64,36 @@ export default async function ProductDetailPage({
         <p className="mt-2 text-caption text-content-muted">
           {t('market.soldBy')} · {product.sellerName}
         </p>
+      )}
+
+      {/* 찾는 장소 · 배달 (사용자 확정 사양) — 표기 전용, 배차·정산 없음 */}
+      {(product.pickupPlace || product.deliveryAvailable) && (
+        <dl className="mt-4 flex flex-col gap-2 rounded-inner border border-line bg-surface p-3">
+          {product.pickupPlace && (
+            <div className="flex items-start gap-2">
+              <dt className="flex w-24 shrink-0 items-center gap-1.5 text-caption text-content-muted">
+                <MapPin size={14} aria-hidden className="text-accent-strong" />
+                {t('market.pickupPlace')}
+              </dt>
+              <dd className="min-w-0 flex-1 text-label text-content">{product.pickupPlace}</dd>
+            </div>
+          )}
+          <div className="flex items-start gap-2">
+            <dt className="flex w-24 shrink-0 items-center gap-1.5 text-caption text-content-muted">
+              <Truck size={14} aria-hidden className="text-accent-strong" />
+              {t('market.delivery')}
+            </dt>
+            <dd className="tabular min-w-0 flex-1 text-label text-content">
+              {product.deliveryAvailable
+                ? product.deliveryFee > 0
+                  ? t('market.deliveryFeeValue', {
+                      amount: product.deliveryFee.toLocaleString(),
+                    })
+                  : t('market.deliveryFree')
+                : t('market.deliveryUnavailable')}
+            </dd>
+          </div>
+        </dl>
       )}
 
       {product.desc && (

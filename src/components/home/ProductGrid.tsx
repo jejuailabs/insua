@@ -1,6 +1,6 @@
 'use client'
 
-import { Heart, ShoppingCart } from 'lucide-react'
+import { Heart, ShoppingCart, Truck } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -87,6 +87,17 @@ export function ProductGrid({
               >
                 {item.sub}
               </p>
+              {/* 배달 칩 (사용자 확정 사양) — 가능할 때만, 배달비까지 한눈에 */}
+              {item.deliveryAvailable && (
+                <span className="mt-1 inline-flex items-center gap-1 rounded-pill bg-accent-soft px-2 py-0.5 text-micro text-accent-strong">
+                  <Truck size={11} aria-hidden />
+                  <span className="tabular">
+                    {item.deliveryFee
+                      ? t('market.deliveryFeeValue', { amount: item.deliveryFee.toLocaleString() })
+                      : t('market.deliveryFree')}
+                  </span>
+                </span>
+              )}
               <div className="mt-1.5 flex items-center justify-between gap-1">
                 <span
                   className={cn(

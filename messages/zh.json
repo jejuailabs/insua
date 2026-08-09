@@ -442,7 +442,7 @@
   },
   "market": {
     "register": "登记商品",
-    "registerHint": "仅限设计师·管理员",
+    "registerHint": "仅规划师·商户·管理员可登记",
     "name": "商品名",
     "price": "价格(韩元)",
     "desc": "商品说明",
@@ -453,7 +453,14 @@
     "inquiryCall": "电话咨询",
     "inquiryKakao": "KakaoTalk 咨询",
     "soldBy": "卖家",
-    "empty": "暂无商品"
+    "empty": "暂无商品",
+    "pickupPlace": "自取地点",
+    "delivery": "配送",
+    "deliveryAvailable": "可配送",
+    "deliveryFee": "配送费(韩元)",
+    "deliveryFeeValue": "配送费 {amount}韩元",
+    "deliveryFree": "免配送费",
+    "deliveryUnavailable": "不可配送(仅自取)"
   },
   "feed": {
     "liveSection": "实时本地动态",

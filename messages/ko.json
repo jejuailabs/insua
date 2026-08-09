@@ -442,7 +442,7 @@
   },
   "market": {
     "register": "상품 등록",
-    "registerHint": "설계사·관리자만 등록할 수 있습니다",
+    "registerHint": "설계사·소상공인·관리자만 등록할 수 있습니다",
     "name": "상품명",
     "price": "가격(원)",
     "desc": "상품 설명",
@@ -453,7 +453,14 @@
     "inquiryCall": "전화 문의",
     "inquiryKakao": "카카오톡 문의",
     "soldBy": "판매",
-    "empty": "등록된 상품이 없습니다"
+    "empty": "등록된 상품이 없습니다",
+    "pickupPlace": "찾는 장소",
+    "delivery": "배달",
+    "deliveryAvailable": "배달 가능",
+    "deliveryFee": "배달비(원)",
+    "deliveryFeeValue": "배달비 {amount}원",
+    "deliveryFree": "배달비 무료",
+    "deliveryUnavailable": "배달 불가 (직접 수령)"
   },
   "feed": {
     "liveSection": "실시간 로컬 소식",

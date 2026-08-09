@@ -28,6 +28,12 @@ export async function createProduct(form: FormData): Promise<ActionResult> {
       photo.type || 'image/jpeg',
     )
 
+    // 배달 정보는 '표기'까지다 — 배차·정산이 붙는 배달 플랫폼은 스코프 밖 (CLAUDE.md §1)
+    const deliveryAvailable = form.get('deliveryAvailable') === 'on'
+    const deliveryFee = deliveryAvailable
+      ? Math.max(0, Number(String(form.get('deliveryFee') ?? '')) || 0)
+      : 0
+
     await ref.set({
       name,
       price,
@@ -37,6 +43,9 @@ export async function createProduct(form: FormData): Promise<ActionResult> {
       sellerUid: session.uid,
       sellerName: session.email ?? '',
       phone: String(form.get('phone') ?? '').trim(),
+      pickupPlace: String(form.get('pickupPlace') ?? '').trim(),
+      deliveryAvailable,
+      deliveryFee,
       best: false,
       status: 'active',
       createdAt: new Date(),

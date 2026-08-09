@@ -14,6 +14,11 @@ export type Product = MarketItem & {
   desc: string
   sellerName: string
   phone: string
+  /** 찾는 장소 (사용자 확정 사양) — 직접 수령 위치. */
+  pickupPlace: string
+  /** 배달 가능 유무 + 배달비 (표기 전용, 배차·정산 없음). */
+  deliveryAvailable: boolean
+  deliveryFee: number
   createdAt: string | null
   real: boolean
 }
@@ -29,6 +34,9 @@ function toProduct(id: string, d: FirebaseFirestore.DocumentData): Product {
     desc: (d.desc as string) ?? '',
     sellerName: (d.sellerName as string) ?? '',
     phone: (d.phone as string) ?? '',
+    pickupPlace: (d.pickupPlace as string) ?? '',
+    deliveryAvailable: d.deliveryAvailable === true,
+    deliveryFee: (d.deliveryFee as number) ?? 0,
     createdAt: d.createdAt instanceof Timestamp ? d.createdAt.toDate().toISOString() : null,
     real: true,
   }
@@ -54,6 +62,9 @@ export async function listProducts(): Promise<Product[]> {
       desc: item.sub,
       sellerName: '',
       phone: '',
+      pickupPlace: '',
+      deliveryAvailable: false,
+      deliveryFee: 0,
       createdAt: null,
       real: false,
     }))

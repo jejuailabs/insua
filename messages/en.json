@@ -442,7 +442,7 @@
   },
   "market": {
     "register": "Add product",
-    "registerHint": "Agents and admins only",
+    "registerHint": "Only agents, merchants and admins can register",
     "name": "Product name",
     "price": "Price (KRW)",
     "desc": "Description",
@@ -453,7 +453,14 @@
     "inquiryCall": "Call",
     "inquiryKakao": "KakaoTalk",
     "soldBy": "Seller",
-    "empty": "No products yet"
+    "empty": "No products yet",
+    "pickupPlace": "Pickup place",
+    "delivery": "Delivery",
+    "deliveryAvailable": "Delivery available",
+    "deliveryFee": "Delivery fee (KRW)",
+    "deliveryFeeValue": "Delivery {amount} KRW",
+    "deliveryFree": "Free delivery",
+    "deliveryUnavailable": "Pickup only"
   },
   "feed": {
     "liveSection": "Live local feed",

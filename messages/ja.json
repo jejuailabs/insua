@@ -442,7 +442,7 @@
   },
   "market": {
     "register": "商品登録",
-    "registerHint": "プランナー·管理者のみ",
+    "registerHint": "プランナー·店舗·管理者のみ登録できます",
     "name": "商品名",
     "price": "価格(ウォン)",
     "desc": "商品説明",
@@ -453,7 +453,14 @@
     "inquiryCall": "電話で問い合わせ",
     "inquiryKakao": "カカオトークで問い合わせ",
     "soldBy": "販売者",
-    "empty": "商品がまだありません"
+    "empty": "商品がまだありません",
+    "pickupPlace": "受け取り場所",
+    "delivery": "配達",
+    "deliveryAvailable": "配達可能",
+    "deliveryFee": "配達料(ウォン)",
+    "deliveryFeeValue": "配達料 {amount}ウォン",
+    "deliveryFree": "配達料無料",
+    "deliveryUnavailable": "配達不可(直接受け取り)"
   },
   "feed": {
     "liveSection": "リアルタイム地元フィード",
