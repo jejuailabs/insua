@@ -15,7 +15,8 @@ import {
 } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useTransition } from 'react'
+import { setNextContactDate } from '@/lib/crm/actions'
 import { NewContactForm } from './NewContactForm'
 import { PersonCard } from './PersonCard'
 import { FeedPostButton } from '@/components/feed/FeedPostButton'
@@ -294,6 +295,19 @@ export function CrmScreen({ contacts }: { contacts: Contact[] }) {
             <button
               type="button"
               disabled={!selected.size}
+              onClick={() => {
+                // 기기 문자앱으로 바로 — 소량 발송용. 대량 발송 대행은 API 계약 후 (docs/06 §3)
+                const numbers = selectedContacts.map((c) => c.phone).filter(Boolean)
+                const sep = /iPhone|iPad|iPod/.test(navigator.userAgent) ? '&' : '?'
+                window.location.href = `sms:${numbers.join(',')}${sep}body=`
+              }}
+              className="min-h-11 rounded-chip border border-line px-4 text-label text-content disabled:opacity-50"
+            >
+              {t('crm.openSmsApp')}
+            </button>
+            <button
+              type="button"
+              disabled={!selected.size}
               onClick={copySelected}
               className="min-h-11 rounded-chip bg-accent-strong px-4 text-label text-accent-on disabled:opacity-50"
             >
@@ -367,12 +381,34 @@ function FilterChip({
   )
 }
 
-/** 연락 예정일 월간 뷰 (docs/06 §3). 예정 고객이 있는 날에 점 + 이름. */
+/**
+ * 연락 예정일 월간 뷰 (docs/06 §3).
+ * **날짜를 누르면 일정 등록** (사용자 확정 사양) — 고객을 골라 그 날짜로 연락 예정일을 잡는다.
+ */
 export function CalendarMonth({ contacts }: { contacts: Contact[] }) {
+  const t = useTranslations('crm')
+  const router = useRouter()
+  const [pending, startTransition] = useTransition()
+  const [selectedDay, setSelectedDay] = useState<number | null>(null)
+  const [toast, setToast] = useState<string | null>(null)
   const [base, setBase] = useState(() => {
     const d = new Date()
     return new Date(d.getFullYear(), d.getMonth(), 1)
   })
+
+  function assign(contactId: string) {
+    if (selectedDay === null || pending) return
+    const date = new Date(base.getFullYear(), base.getMonth(), selectedDay, 9, 0, 0)
+    startTransition(async () => {
+      const result = await setNextContactDate(contactId, date.toISOString())
+      if (result.ok) {
+        setToast(t('dueSet'))
+        setTimeout(() => setToast(null), 2000)
+        setSelectedDay(null)
+        router.refresh()
+      }
+    })
+  }
 
   const year = base.getFullYear()
   const month = base.getMonth()
@@ -422,26 +458,70 @@ export function CalendarMonth({ contacts }: { contacts: Contact[] }) {
           const day = i + 1
           const due = dueByDay[day]
           return (
-            <span
+            <button
               key={day}
+              type="button"
+              onClick={() => setSelectedDay(selectedDay === day ? null : day)}
               className={cn(
                 'flex min-h-11 flex-col items-center gap-0.5 rounded-chip py-1 text-caption',
-                isThisMonth && today.getDate() === day
-                  ? 'bg-accent-soft text-accent-strong'
-                  : 'text-content',
+                selectedDay === day
+                  ? 'bg-accent-strong text-accent-on'
+                  : isThisMonth && today.getDate() === day
+                    ? 'bg-accent-soft text-accent-strong'
+                    : 'text-content hover:bg-surface-2',
               )}
             >
               {day}
               {due && (
                 <span className="flex items-center gap-0.5">
                   <span className="h-1.5 w-1.5 rounded-pill bg-danger" />
-                  <span className="text-micro text-content-muted">{due}</span>
+                  <span
+                    className={cn(
+                      'text-micro',
+                      selectedDay === day ? 'text-accent-on' : 'text-content-muted',
+                    )}
+                  >
+                    {due}
+                  </span>
                 </span>
               )}
-            </span>
+            </button>
           )
         })}
       </div>
+
+      {/* 날짜 선택 → 고객 지정 (사용자 확정 사양) */}
+      {selectedDay !== null && (
+        <div className="mt-3 rounded-inner border border-line bg-surface-2 p-3">
+          <p className="text-label text-content">
+            {t('assignDue')} — {base.getFullYear()}.{String(base.getMonth() + 1).padStart(2, '0')}.
+            {String(selectedDay).padStart(2, '0')}
+          </p>
+          <p className="mt-0.5 text-micro text-content-muted">{t('pickContact')}</p>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {contacts.map((contact) => (
+              <button
+                key={contact.id}
+                type="button"
+                disabled={pending}
+                onClick={() => assign(contact.id)}
+                className="rounded-chip border border-line bg-surface px-2.5 py-1.5 text-label text-content hover:border-accent disabled:opacity-50"
+              >
+                {contact.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {toast && (
+        <p
+          role="status"
+          className="fixed bottom-24 left-1/2 z-50 -translate-x-1/2 rounded-pill bg-content px-4 py-2 text-label text-surface shadow-card"
+        >
+          {toast}
+        </p>
+      )}
     </div>
   )
 }

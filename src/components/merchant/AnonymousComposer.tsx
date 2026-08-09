@@ -29,7 +29,7 @@ export function AnonymousComposer() {
 
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 flex justify-center">
-      <div className="pointer-events-auto w-full max-w-md border-t border-line bg-surface pb-[env(safe-area-inset-bottom)] lg:border-x">
+      <div className="pointer-events-auto w-full max-w-md border-t border-line bg-surface pb-[env(safe-area-inset-bottom)] lg:max-w-2xl lg:border-x">
         <div className="mx-auto flex max-w-md items-center gap-2 px-4 py-3">
           <input
             value={body}

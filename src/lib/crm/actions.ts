@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { aiAvailable, generateHeroImage } from '@/lib/ai/openai'
+import { generateHeroImage } from '@/lib/ai/openai'
 import { requireSession } from '@/lib/auth/session'
 import { getAdminDb } from '@/lib/firebase/admin'
 import { uploadToStorage } from '@/lib/stores/data'
@@ -153,13 +153,9 @@ export async function createContactWithCard(
       updatedAt: now,
     })
 
-    // 동의 + 재료가 다 있으면 히어로 카드·랜딩까지 바로 (사용자 확정 사양)
-    if (consent.dataSharing && storeDraft.name && photoURL && aiAvailable()) {
-      const result = await generateHeroForContact(ref.id)
-      revalidatePath('/', 'layout')
-      return result.ok ? { ok: true, id: ref.id, storeId: result.id } : { ok: true, id: ref.id } // 카드 생성 실패해도 고객 등록은 성공 — 버튼으로 재시도
-    }
-
+    // AI 생성은 여기서 하지 않는다 (사용자 확정 사양 v2, 2026-08-09):
+    // 등록은 항상 즉시 완료되고, 히어로 카드·랜딩은 고객카드의 [히어로 카드 만들기]
+    // 버튼으로 저장된 사진·정보를 기반으로 생성한다.
     revalidatePath('/', 'layout')
     return { ok: true, id: ref.id }
   } catch (error) {
@@ -270,6 +266,32 @@ export async function generateHeroForContact(contactId: string): Promise<ActionR
     return { ok: true, id: storeRef.id }
   } catch (error) {
     console.error('[crm] generateHeroForContact failed:', (error as Error).message)
+    return { ok: false, code: 'FAILED' }
+  }
+}
+
+/**
+ * 캘린더 일정 등록 (사용자 확정 사양) — 날짜를 골라 고객의 다음 연락 예정일을 잡는다.
+ * 이 화면의 "일정"은 연락 예정일이다 (docs/06 §3).
+ */
+export async function setNextContactDate(
+  contactId: string,
+  dateIso: string,
+): Promise<ActionResult> {
+  const date = new Date(dateIso)
+  if (!contactId || Number.isNaN(date.getTime())) return { ok: false, code: 'INVALID' }
+
+  try {
+    const { uid } = await requireAgent()
+    const ref = getAdminDb().collection('contacts').doc(contactId)
+    const snap = await ref.get()
+    if (!snap.exists || snap.data()!.ownerAgentId !== uid) return { ok: false, code: 'FAILED' }
+
+    await ref.update({ nextContactDueAt: date, updatedAt: new Date() })
+    revalidatePath('/', 'layout')
+    return { ok: true }
+  } catch (error) {
+    console.error('[crm] setNextContactDate failed:', (error as Error).message)
     return { ok: false, code: 'FAILED' }
   }
 }

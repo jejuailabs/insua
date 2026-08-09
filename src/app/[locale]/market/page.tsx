@@ -1,5 +1,4 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
-import { consumerRail } from '@/components/home/consumerRail'
 import { ProductGrid } from '@/components/home/ProductGrid'
 import { SideRail } from '@/components/layout/SideRail'
 import { ProductRegisterButton } from '@/components/market/ProductRegisterButton'
@@ -23,9 +22,9 @@ export default async function MarketPage({ params }: { params: Promise<{ locale:
 
   return (
     <div className="flex">
-      <SideRail items={consumerRail('market', '/')} />
+      <SideRail variant="consumer" active="market" homeHref="/" />
 
-      <main className="mx-auto w-full max-w-md flex-1 px-4 pt-4 pb-10">
+      <main className="mx-auto w-full max-w-md flex-1 px-4 pt-4 pb-10 lg:max-w-xl">
         <div className="flex items-center justify-between">
           <h1 className="text-display text-content">{t('nav.market')}</h1>
           {canRegister && <ProductRegisterButton />}

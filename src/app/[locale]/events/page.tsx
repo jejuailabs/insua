@@ -1,6 +1,5 @@
 import { Gift } from 'lucide-react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
-import { consumerRail } from '@/components/home/consumerRail'
 import { SideRail } from '@/components/layout/SideRail'
 
 /** 이벤트 (docs/08 §3) — 공개. 실데이터 전이라 빈 상태만. */
@@ -11,9 +10,9 @@ export default async function EventsPage({ params }: { params: Promise<{ locale:
 
   return (
     <div className="flex">
-      <SideRail items={consumerRail('events', '/')} />
+      <SideRail variant="consumer" active="events" homeHref="/" />
 
-      <main className="mx-auto w-full max-w-md flex-1 px-4 pt-4 pb-10">
+      <main className="mx-auto w-full max-w-md flex-1 px-4 pt-4 pb-10 lg:max-w-xl">
         <h1 className="text-display text-content">{t('nav.events')}</h1>
 
         <div className="mt-6 flex flex-col items-center gap-3 rounded-card border border-line bg-surface p-10 text-center">

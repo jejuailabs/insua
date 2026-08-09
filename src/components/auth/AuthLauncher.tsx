@@ -4,12 +4,15 @@ import { LogIn, ArrowRight, ShieldCheck } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { getMyAccess } from '@/lib/auth/setRole'
-import { completeRedirectSignIn, signInWithGoogle } from '@/lib/auth/signIn'
+import { getMyAccess, setRole } from '@/lib/auth/setRole'
+import {
+  completeRedirectSignIn,
+  refreshSessionAfterClaimChange,
+  signInWithGoogle,
+} from '@/lib/auth/signIn'
 import { cn } from '@/lib/utils/cn'
 import { ROLE_HOME, type Role } from '@/types/user'
 import { Modal } from '@/components/ui/Modal'
-import { RoleCards } from './RoleCards'
 
 type ErrorKey = 'popupBlocked' | 'network' | 'forbidden'
 
@@ -42,18 +45,11 @@ export function AuthLauncher({
 }) {
   const t = useTranslations('auth')
   const tAdmin = useTranslations('admin')
-  const tOnboarding = useTranslations('onboarding')
   const router = useRouter()
   const locale = useLocale()
 
   // ?login=1 로 돌아온 비로그인 사용자는 로그인 모달이 바로 열린다.
   const [loginOpen, setLoginOpen] = useState(initialLoginOpen && !signedIn)
-  // 최초 가입 직후(로그인 O, 역할 X)에는 역할 선택이 바로 이어진다.
-  // **어드민은 예외** — 역할을 고르는 존재가 아니라 콘솔로 간다 (docs/09).
-  // 파생값으로 계산해 역할이 정해지면 자동으로 닫힌다.
-  const [roleDismissed, setRoleDismissed] = useState(false)
-  const [rolePicking, setRolePicking] = useState(false)
-  const roleOpen = rolePicking || (signedIn && !role && !isAdmin && !roleDismissed)
   const [busy, setBusy] = useState(false)
   const [errorKey, setErrorKey] = useState<ErrorKey | null>(null)
 
@@ -74,20 +70,32 @@ export function AuthLauncher({
 
       // 세션 쿠키가 생겼으니 이제 서버에 권한을 물어본다.
       const access = await getMyAccess()
-      setLoginOpen(false)
-      setBusy(false)
 
       if (access.isAdmin && !access.role) {
+        setLoginOpen(false)
+        setBusy(false)
         router.replace(`/${locale}/admin`)
         router.refresh()
         return
       }
-      if (access.role) {
-        router.replace(`/${locale}${ROLE_HOME[access.role]}`)
+
+      // 역할 선택 화면은 없다 (사용자 확정 사양 v2):
+      // 신규 가입자는 자동으로 일반인(consumer)이 된다. 소상공인은 마이페이지에서
+      // 신청하고, 설계사는 관리자가 콘솔에서 부여한다.
+      if (!access.role) {
+        await setRole('consumer')
+        await refreshSessionAfterClaimChange()
+        setLoginOpen(false)
+        setBusy(false)
+        router.replace(`/${locale}${ROLE_HOME.consumer}`)
         router.refresh()
         return
       }
-      setRolePicking(true)
+
+      setLoginOpen(false)
+      setBusy(false)
+      router.replace(`/${locale}${ROLE_HOME[access.role]}`)
+      router.refresh()
     } catch (error) {
       setErrorKey(toErrorKey(error))
       setBusy(false)
@@ -97,8 +105,7 @@ export function AuthLauncher({
   function handleFabClick() {
     if (!signedIn) return setLoginOpen(true)
     if (isAdmin && !role) return router.push(`/${locale}/admin`)
-    if (!role) return setRolePicking(true)
-    router.push(`/${locale}${ROLE_HOME[role]}`)
+    router.push(`/${locale}${ROLE_HOME[role ?? 'consumer']}`)
   }
 
   const label = signedIn
@@ -147,18 +154,6 @@ export function AuthLauncher({
             </p>
           )}
         </div>
-      </Modal>
-
-      <Modal
-        open={roleOpen}
-        onClose={() => {
-          setRolePicking(false)
-          setRoleDismissed(true)
-        }}
-        title={tOnboarding('title')}
-        description={tOnboarding('subtitle')}
-      >
-        <RoleCards locale={locale} />
       </Modal>
     </>
   )

@@ -1,7 +1,6 @@
 import { Bell } from 'lucide-react'
 import { AdminPeekBanner } from '@/components/admin/AdminPeekBanner'
 import { setRequestLocale } from 'next-intl/server'
-import { consumerRail } from '@/components/home/consumerRail'
 import { LiveFeed } from '@/components/feed/LiveFeed'
 import { FeedShowcase } from '@/components/home/FeedShowcase'
 import { RadiusChips } from '@/components/home/RadiusChips'
@@ -24,9 +23,9 @@ export default async function FeedPage({ params }: { params: Promise<{ locale: s
 
   return (
     <div className="flex">
-      <SideRail items={consumerRail('home', '/feed')} />
+      <SideRail variant="consumer" active="home" homeHref="/feed" />
 
-      <main className="mx-auto w-full max-w-md flex-1 px-4 pt-4 pb-10">
+      <main className="mx-auto w-full max-w-md flex-1 px-4 pt-4 pb-10 lg:max-w-xl">
         <AdminPeekBanner />
         <header className="flex items-start justify-between">
           <h1 className="text-display leading-[0.95] tracking-[-0.04em] text-accent-strong">

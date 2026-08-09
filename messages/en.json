@@ -36,7 +36,8 @@
     "myPage": "My page",
     "notifications": "Alerts",
     "write": "Post",
-    "myInfo": "Profile"
+    "myInfo": "Profile",
+    "menu": "Menu"
   },
   "auth": {
     "signInWithGoogle": "Continue with Google",
@@ -153,7 +154,7 @@
       "ownerPhoto": "Owner photo",
       "menuPhoto": "Signature menu photo",
       "storeSection": "Store info (hero card source)",
-      "storeSectionHint": "With data-sharing consent, a hero card and landing page are generated on save.",
+      "storeSectionHint": "This info is only saved. Generate the hero card & landing later from the contact card button.",
       "storeName": "Store name",
       "storeTagline": "Tagline",
       "storeCategory": "Category",
@@ -186,7 +187,11 @@
     "assistant": "CRM assistant",
     "assistantHint": "Ask about your contacts and logs. e.g. \"Who should I call this week?\"",
     "assistantPlaceholder": "Ask anything",
-    "aiBadge": "AI generated"
+    "aiBadge": "AI generated",
+    "assignDue": "Schedule contact on this date",
+    "pickContact": "Pick a customer to set their next-contact date",
+    "dueSet": "Scheduled",
+    "openSmsApp": "Open SMS app"
   },
   "merchant": {
     "spaceName": "A space just for local owners",
@@ -230,7 +235,8 @@
     "moveUp": "Move up",
     "moveDown": "Move down",
     "toggleVisibility": "Toggle visibility",
-    "enterAnonymous": "Enter anonymous room"
+    "enterAnonymous": "Enter anonymous room",
+    "viewLargeMap": "Open large map"
   },
   "anonymous": {
     "roomName": "Being a boss hurts",
@@ -365,7 +371,11 @@
     "regionSeogwipo": "Seogwipo-si",
     "eventsEmpty": "No events running",
     "viewCard": "Cards",
-    "viewList": "List"
+    "viewList": "List",
+    "applyMerchant": "Apply as merchant",
+    "applyMerchantDesc": "Run a shop? Apply to switch to a merchant account. Switched after admin approval.",
+    "applyDone": "Applied. You will be switched after approval.",
+    "applyPending": "Merchant application under review"
   },
   "admin": {
     "title": "Admin",

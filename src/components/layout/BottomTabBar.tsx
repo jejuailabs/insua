@@ -18,7 +18,7 @@ export async function BottomTabBar() {
     <nav className="pointer-events-none fixed inset-x-0 bottom-0 z-30 flex justify-center">
       <div
         className={cn(
-          'pointer-events-auto w-full max-w-md border-t border-line bg-surface',
+          'pointer-events-auto w-full max-w-md border-t border-line bg-surface lg:max-w-2xl',
           'pb-[env(safe-area-inset-bottom)] lg:border-x',
         )}
       >

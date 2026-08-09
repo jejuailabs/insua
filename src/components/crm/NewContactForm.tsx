@@ -53,7 +53,7 @@ export function NewContactForm({ open, onClose }: { open: boolean; onClose: () =
         setError(true)
         return
       }
-      setDone(result.storeId ? 'card' : 'plain')
+      setDone('plain')
       form.reset()
       setOwnerPreview(null)
       setMenuPreview(null)
@@ -247,7 +247,7 @@ export function NewContactForm({ open, onClose }: { open: boolean; onClose: () =
           disabled={pending}
           className="min-h-12 rounded-chip bg-accent-strong text-label text-accent-on transition-opacity disabled:opacity-60"
         >
-          {pending ? (consentShare ? t('generating') : t('saving')) : t('submit')}
+          {pending ? t('saving') : t('submit')}
         </button>
       </form>
     </Modal>

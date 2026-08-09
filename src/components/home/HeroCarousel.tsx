@@ -1,8 +1,9 @@
 'use client'
 
 import { ChevronLeft, ChevronRight, Heart, Star } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useCallback, useRef, useState } from 'react'
 import type { Hero, Perk } from '@/lib/mock/home'
 import { cn } from '@/lib/utils/cn'
@@ -34,8 +35,12 @@ export function HeroCarousel({
   onCouponClick?: (hero: Hero, rate: number) => void
 }) {
   const t = useTranslations()
+  const router = useRouter()
+  const locale = useLocale()
   const [index, setIndexRaw] = useState(0)
   const count = heroes.length
+  /** 스와이프 직후 발생하는 click 을 카드 이동으로 오인하지 않게 막는다 */
+  const draggedRef = useRef(false)
 
   const setIndex = useCallback(
     (next: number | ((i: number) => number)) => {
@@ -63,7 +68,18 @@ export function HeroCarousel({
     dragStart.current = null
     if (start === null) return
     const dx = e.clientX - start
-    if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1)
+    draggedRef.current = Math.abs(dx) > 40
+    if (draggedRef.current) go(dx < 0 ? 1 : -1)
+  }
+
+  /** 카드 탭 (사용자 확정 사양) — 가운데 카드는 랜딩으로, 옆 카드는 그 카드로 포커스. */
+  function handleCardClick(heroId: string, offset: number, i: number) {
+    if (draggedRef.current) {
+      draggedRef.current = false
+      return
+    }
+    if (offset === 0) router.push(`/${locale}/s/${heroId}`)
+    else setIndex(i)
   }
 
   return (
@@ -93,8 +109,9 @@ export function HeroCarousel({
             <article
               key={hero.id}
               aria-hidden={!active}
+              onClick={() => handleCardClick(hero.id, offset, i)}
               className={cn(
-                'absolute inset-0 overflow-hidden rounded-card border',
+                'absolute inset-0 cursor-pointer overflow-hidden rounded-card border',
                 'transition-[transform,opacity] duration-400 ease-out will-change-transform',
                 active ? 'border-accent shadow-card' : 'border-line',
                 far && 'pointer-events-none',

@@ -75,24 +75,62 @@ export async function setMyAgent(agentCode: string, consented: boolean): Promise
   }
 }
 
+/**
+ * 소상공인 전환 신청 (사용자 확정 사양) — 역할 변경은 관리자 승인으로만.
+ * 신청은 merchantApplications 에 쌓이고, 관리자가 콘솔 회원 탭에서 역할을 바꿔 승인한다.
+ */
+export async function applyMerchant(): Promise<ActionResult> {
+  try {
+    const session = await requireSession()
+    const db = getAdminDb()
+    const existing = await db
+      .collection('merchantApplications')
+      .where('uid', '==', session.uid)
+      .where('status', '==', 'pending')
+      .limit(1)
+      .get()
+    if (!existing.empty) return { ok: true }
+
+    await db.collection('merchantApplications').add({
+      uid: session.uid,
+      email: session.email,
+      status: 'pending',
+      createdAt: new Date(),
+    })
+    revalidatePath('/', 'layout')
+    return { ok: true }
+  } catch (error) {
+    console.error('[consumer] applyMerchant failed:', (error as Error).message)
+    return { ok: false, code: 'FAILED' }
+  }
+}
+
 /** 마이페이지에서 현재 상태를 읽는다 — 서버 검증 세션 기준. */
 export async function getMyConsumerProfile(): Promise<{
   email: string | null
   agentId: string | null
   savedStoreIds: string[]
+  merchantApplied: boolean
 } | null> {
   const session = await getSession()
   if (!session) return null
 
   const db = getAdminDb()
-  const [userSnap, savedSnap] = await Promise.all([
+  const [userSnap, savedSnap, applySnap] = await Promise.all([
     db.collection('users').doc(session.uid).get(),
     db.collection('users').doc(session.uid).collection('saved').get(),
+    db
+      .collection('merchantApplications')
+      .where('uid', '==', session.uid)
+      .where('status', '==', 'pending')
+      .limit(1)
+      .get(),
   ])
 
   return {
     email: session.email,
     agentId: (userSnap.data()?.agentId as string | null) ?? null,
     savedStoreIds: savedSnap.docs.map((d) => d.id),
+    merchantApplied: !applySnap.empty,
   }
 }

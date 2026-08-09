@@ -17,7 +17,7 @@ export default async function AnonymousPage({ params }: { params: Promise<{ loca
 
   return (
     <>
-      <main className="mx-auto max-w-md px-4 pt-2 pb-28">
+      <main className="mx-auto max-w-md px-4 pt-2 pb-28 lg:max-w-2xl">
         <AdminPeekBanner />
         <header className="relative flex min-h-11 items-center">
           <Link

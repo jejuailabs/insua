@@ -84,7 +84,7 @@ export function Composer({ onPost }: { onPost: (draft: DraftPost) => void }) {
   return (
     <>
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center">
-        <div className="pointer-events-auto w-full max-w-md border-t border-line bg-surface pb-[env(safe-area-inset-bottom)] shadow-card lg:border-x">
+        <div className="pointer-events-auto w-full max-w-md border-t border-line bg-surface pb-[env(safe-area-inset-bottom)] shadow-card lg:max-w-2xl lg:border-x">
           <div className="mx-auto max-w-md px-4 pt-3 pb-2">
             {anonymous && (
               <p className="mb-2 inline-block rounded-chip bg-surface-2 px-2 py-1 text-micro text-content-muted">

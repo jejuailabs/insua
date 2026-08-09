@@ -1,7 +1,6 @@
 import { Star } from 'lucide-react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import Image from 'next/image'
-import { consumerRail } from '@/components/home/consumerRail'
 import { SideRail } from '@/components/layout/SideRail'
 import { Link } from '@/lib/i18n/navigation'
 import { listHeroes } from '@/lib/stores/data'
@@ -17,9 +16,9 @@ export default async function HeroesPage({ params }: { params: Promise<{ locale:
 
   return (
     <div className="flex">
-      <SideRail items={consumerRail('heroes', '/')} />
+      <SideRail variant="consumer" active="heroes" homeHref="/" />
 
-      <main className="mx-auto w-full max-w-md flex-1 px-4 pt-4 pb-10">
+      <main className="mx-auto w-full max-w-md flex-1 px-4 pt-4 pb-10 lg:max-w-xl">
         <h1 className="text-display text-content">{t('nav.heroes')}</h1>
 
         <ul className="mt-4 grid grid-cols-2 gap-3">

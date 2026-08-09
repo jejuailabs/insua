@@ -42,7 +42,7 @@ export default async function MerchantHomePage({
 
   return (
     <>
-      <main className="mx-auto max-w-md px-4 pt-4 pb-32">
+      <main className="mx-auto max-w-md px-4 pt-4 pb-32 lg:max-w-2xl">
         <AdminPeekBanner />
         <header className="flex items-center justify-between">
           <p className="text-subtitle text-content">{t('merchant.spaceName')}</p>

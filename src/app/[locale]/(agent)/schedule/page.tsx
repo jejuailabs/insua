@@ -1,6 +1,5 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { AdminPeekBanner } from '@/components/admin/AdminPeekBanner'
-import { agentRail } from '@/components/crm/agentRail'
 import { CalendarMonth } from '@/components/crm/CrmScreen'
 import { SideRail } from '@/components/layout/SideRail'
 import { requireRolePage } from '@/lib/auth/guards'
@@ -17,7 +16,7 @@ export default async function SchedulePage({ params }: { params: Promise<{ local
 
   return (
     <div className="flex">
-      <SideRail items={agentRail('schedule')} />
+      <SideRail variant="agent" active="schedule" />
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-4">
         <AdminPeekBanner />
         <h1 className="text-display text-content">{t('nav.schedule')}</h1>

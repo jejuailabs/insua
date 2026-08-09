@@ -36,7 +36,8 @@
     "myPage": "我的",
     "notifications": "通知",
     "write": "发布",
-    "myInfo": "我的信息"
+    "myInfo": "我的信息",
+    "menu": "菜单"
   },
   "auth": {
     "signInWithGoogle": "使用 Google 继续",
@@ -153,7 +154,7 @@
       "ownerPhoto": "店主照片",
       "menuPhoto": "招牌菜照片",
       "storeSection": "店铺信息 (卡片素材)",
-      "storeSectionHint": "已同意信息共享的客户, 保存时会自动生成主打卡片和落地页。",
+      "storeSectionHint": "此信息仅保存。主打卡片和落地页可在登记后通过客户卡按钮生成。",
       "storeName": "店名",
       "storeTagline": "一句话介绍",
       "storeCategory": "行业",
@@ -186,7 +187,11 @@
     "assistant": "CRM 助手",
     "assistantHint": "询问您的客户和记录。例: \"本周该联系谁?\"",
     "assistantPlaceholder": "随便问",
-    "aiBadge": "AI 生成"
+    "aiBadge": "AI 生成",
+    "assignDue": "在此日期安排联系",
+    "pickContact": "选择客户即可将其下次联系日定为该日期",
+    "dueSet": "已安排",
+    "openSmsApp": "打开短信应用"
   },
   "merchant": {
     "spaceName": "小微店主的专属空间",
@@ -230,7 +235,8 @@
     "moveUp": "上移",
     "moveDown": "下移",
     "toggleVisibility": "切换显示",
-    "enterAnonymous": "进入匿名房"
+    "enterAnonymous": "进入匿名房",
+    "viewLargeMap": "查看大地图"
   },
   "anonymous": {
     "roomName": "当老板真不容易",
@@ -365,7 +371,11 @@
     "regionSeogwipo": "西归浦市",
     "eventsEmpty": "暂无进行中的活动",
     "viewCard": "卡片",
-    "viewList": "列表"
+    "viewList": "列表",
+    "applyMerchant": "申请成为商户",
+    "applyMerchantDesc": "经营店铺? 申请转换为商户账号, 管理员批准后生效。",
+    "applyDone": "已申请, 批准后转换。",
+    "applyPending": "商户转换申请审核中"
   },
   "admin": {
     "title": "管理员",

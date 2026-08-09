@@ -1,6 +1,5 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { AdminPeekBanner } from '@/components/admin/AdminPeekBanner'
-import { agentRail } from '@/components/crm/agentRail'
 import { InteractionsScreen } from '@/components/crm/InteractionsScreen'
 import { SideRail } from '@/components/layout/SideRail'
 import { requireRolePage } from '@/lib/auth/guards'
@@ -30,7 +29,7 @@ export default async function InteractionsPage({
 
   return (
     <div className="flex">
-      <SideRail items={agentRail('interactions')} />
+      <SideRail variant="agent" active="interactions" />
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-4">
         <AdminPeekBanner />
         <h1 className="mb-4 text-display text-content">{t('interactions')}</h1>

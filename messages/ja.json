@@ -36,7 +36,8 @@
     "myPage": "マイページ",
     "notifications": "お知らせ",
     "write": "投稿",
-    "myInfo": "マイ情報"
+    "myInfo": "マイ情報",
+    "menu": "メニュー"
   },
   "auth": {
     "signInWithGoogle": "Google で続ける",
@@ -153,7 +154,7 @@
       "ownerPhoto": "店主の写真",
       "menuPhoto": "看板メニューの写真",
       "storeSection": "店舗情報 (カード素材)",
-      "storeSectionHint": "情報共有に同意した顧客は、保存と同時にヒーローカードとLPが自動生成されます。",
+      "storeSectionHint": "この情報は保存のみ。カードとLPは登録後、顧客カードのボタンで生成します。",
       "storeName": "店名",
       "storeTagline": "ひとこと紹介",
       "storeCategory": "業種",
@@ -186,7 +187,11 @@
     "assistant": "CRM アシスタント",
     "assistantHint": "顧客や記録について質問できます。例: \"今週連絡すべき顧客は?\"",
     "assistantPlaceholder": "何でも質問",
-    "aiBadge": "AI 生成"
+    "aiBadge": "AI 生成",
+    "assignDue": "この日に連絡予定を設定",
+    "pickContact": "顧客を選ぶとその日が次回連絡日になります",
+    "dueSet": "設定しました",
+    "openSmsApp": "SMSアプリを開く"
   },
   "merchant": {
     "spaceName": "個人店主だけの空間",
@@ -230,7 +235,8 @@
     "moveUp": "上へ",
     "moveDown": "下へ",
     "toggleVisibility": "表示切替",
-    "enterAnonymous": "匿名ルームに入る"
+    "enterAnonymous": "匿名ルームに入る",
+    "viewLargeMap": "大きい地図を見る"
   },
   "anonymous": {
     "roomName": "店主はつらいよ",
@@ -365,7 +371,11 @@
     "regionSeogwipo": "西帰浦市",
     "eventsEmpty": "開催中のイベントはありません",
     "viewCard": "カード",
-    "viewList": "リスト"
+    "viewList": "リスト",
+    "applyMerchant": "事業者申請",
+    "applyMerchantDesc": "店舗を運営中なら事業者への切替を申請できます。承認後に切り替わります。",
+    "applyDone": "申請しました。承認後に切り替わります。",
+    "applyPending": "事業者切替を審査中"
   },
   "admin": {
     "title": "管理者",

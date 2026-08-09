@@ -2,7 +2,7 @@ import { CircleUser } from 'lucide-react'
 import { AdminPeekBanner } from '@/components/admin/AdminPeekBanner'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { AgentSection } from '@/components/consumer/AgentSection'
-import { consumerRail } from '@/components/home/consumerRail'
+import { ApplyMerchantButton } from '@/components/consumer/ApplyMerchantButton'
 import { LocaleSwitcher } from '@/components/layout/LocaleSwitcher'
 import { SideRail } from '@/components/layout/SideRail'
 import { SignOutButton } from '@/components/layout/SignOutButton'
@@ -22,9 +22,9 @@ export default async function MePage({ params }: { params: Promise<{ locale: str
 
   return (
     <div className="flex">
-      <SideRail items={consumerRail('me', '/feed')} />
+      <SideRail variant="consumer" active="me" homeHref="/feed" />
 
-      <main className="mx-auto flex w-full max-w-md flex-1 flex-col gap-4 px-4 pt-4 pb-10">
+      <main className="mx-auto flex w-full max-w-md flex-1 flex-col gap-4 px-4 pt-4 pb-10 lg:max-w-xl">
         <AdminPeekBanner />
         <h1 className="text-display text-content">{t('nav.myPage')}</h1>
 
@@ -39,6 +39,13 @@ export default async function MePage({ params }: { params: Promise<{ locale: str
         </section>
 
         <AgentSection currentAgentId={profile?.agentId ?? null} />
+
+        {/* 소상공인 전환 신청 — 역할 부여는 관리자 승인으로만 (사용자 확정 사양) */}
+        <section className="flex flex-col gap-2 rounded-card border border-line bg-surface p-4">
+          <h2 className="text-subtitle text-content">{t('consumer.applyMerchant')}</h2>
+          <p className="text-caption text-content-muted">{t('consumer.applyMerchantDesc')}</p>
+          <ApplyMerchantButton applied={profile?.merchantApplied ?? false} />
+        </section>
 
         <section className="flex flex-col gap-3 rounded-card border border-line bg-surface p-4">
           <h2 className="text-subtitle text-content">{t('nav.settings')}</h2>

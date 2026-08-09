@@ -2,6 +2,7 @@ import { Clock, MapPin, MessageSquareText, Star } from 'lucide-react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
+import { MapEmbed } from '@/components/store/MapEmbed'
 import { PublicActionBar } from '@/components/store/PublicActionBar'
 import { TierBadge } from '@/components/ui/TierBadge'
 import { MENU_SECTION_KEY } from '@/lib/mock/store'
@@ -94,7 +95,10 @@ export default async function PublicStorePage({
 
         <section className="mt-6">
           <h2 className="text-subtitle text-content">{t('merchant.storeIntro')}</h2>
-          <p className="mt-2 text-body whitespace-pre-line text-content">{store.intro}</p>
+          <div className="mt-2 flex gap-3">
+            <p className="flex-1 text-body whitespace-pre-line text-content">{store.intro}</p>
+            <MapEmbed address={store.address} />
+          </div>
         </section>
       </main>
 

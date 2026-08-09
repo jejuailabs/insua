@@ -38,14 +38,19 @@ export async function generateHeroImage(input: {
   form.append('quality', 'low')
   form.append('size', '1024x1536')
   form.append('output_format', 'webp')
+  // 사장 얼굴과 대표 메뉴가 화면을 지배해야 한다 (사용자 확정 사양) —
+  // 얼굴은 밝고 신뢰가는 미소로 또렷하게, 메뉴는 전경에 크게.
   form.append(
     'prompt',
-    `Vertical hero portrait of a local small-business owner in Jeju, Korea, for a "${input.category}" shop called "${input.storeName}" (${input.tagline}). ` +
-      `Recompose the provided owner photo into a warm editorial photograph: the owner smiling toward camera in their shop, filling the upper two thirds of the frame` +
+    `Vertical hero portrait for a local "${input.category}" shop called "${input.storeName}" (${input.tagline}) in Jeju, Korea. ` +
+      `THE TWO DOMINANT SUBJECTS: (1) the owner's face from the first provided photo — bright, warm, trustworthy smile, ` +
+      `looking straight at the camera, face large, sharp and well-lit in the upper half of the frame; ` +
       (input.menuPhoto
-        ? `, holding or presenting their signature item from the second provided photo`
-        : '') +
-      `. Photorealistic, warm natural light, shallow depth of field, soft cinematic amber color grading, clean background. ` +
+        ? `(2) the signature dish from the second provided photo — held proudly in the foreground at chest level, large, appetizing, in crisp focus. `
+        : `(2) their signature product presented proudly in the foreground, large and in crisp focus. `) +
+      `Waist-up composition, the face and the dish together fill most of the frame. ` +
+      `Background: their shop interior, softly blurred, warm natural light, cinematic amber grading. ` +
+      `Keep the owner's identity faithful to the photo. Photorealistic. ` +
       `No text, no logo, no watermark, no lettering anywhere in the image.`,
   )
   form.append(

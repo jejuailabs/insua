@@ -1,7 +1,6 @@
 import { Bell } from 'lucide-react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { AuthLauncher } from '@/components/auth/AuthLauncher'
-import { consumerRail } from '@/components/home/consumerRail'
 import { LiveFeed } from '@/components/feed/LiveFeed'
 import { FeedShowcase } from '@/components/home/FeedShowcase'
 import { RadiusChips } from '@/components/home/RadiusChips'
@@ -41,9 +40,9 @@ export default async function HomePage({
   return (
     <>
       <div className="flex">
-        <SideRail items={consumerRail('home', '/')} />
+        <SideRail variant="consumer" active="home" homeHref="/" />
 
-        <main className="mx-auto w-full max-w-md flex-1 px-4 pt-4 pb-28">
+        <main className="mx-auto w-full max-w-md flex-1 px-4 pt-4 pb-28 lg:max-w-xl">
           <header className="flex items-start justify-between">
             <h1 className="text-display leading-[0.95] tracking-[-0.04em] text-accent-strong">
               LOCAL

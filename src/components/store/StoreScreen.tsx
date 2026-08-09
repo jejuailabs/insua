@@ -6,7 +6,6 @@ import {
   Eye,
   EyeOff,
   GripVertical,
-  MapPin,
   ArrowDown,
   ArrowUp,
 } from 'lucide-react'
@@ -15,6 +14,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { Composer, type DraftPost } from './Composer'
+import { MapEmbed } from './MapEmbed'
 import { StoreHeroCard } from './StoreHeroCard'
 import { createFeedPost } from '@/lib/feed/actions'
 import { compressImage } from '@/lib/utils/compressImage'
@@ -86,7 +86,7 @@ export function StoreScreen({ stores, news = [] }: { stores: Store[]; news?: New
 
   return (
     <>
-      <main className="mx-auto max-w-md px-4 pt-2 pb-56">
+      <main className="mx-auto max-w-md px-4 pt-2 pb-56 lg:max-w-2xl">
         <header className="relative flex min-h-11 items-center justify-between">
           <button
             type="button"
@@ -207,17 +207,11 @@ function MenuGrid({ store }: { store: Store }) {
 }
 
 function AboutSection({ store }: { store: Store }) {
-  const t = useTranslations('merchant')
   return (
     <div className="mt-3 flex gap-3">
       <p className="flex-1 text-body whitespace-pre-line text-content">{store.intro}</p>
-      {/* 지도 SDK 미확정 (docs/01) — MapPlaceholder */}
-      <div className="grid aspect-[4/3] w-32 shrink-0 place-items-center rounded-inner border border-line bg-surface-2">
-        <span className="flex flex-col items-center gap-1 text-content-muted">
-          <MapPin size={20} aria-hidden className="text-accent-strong" />
-          <span className="text-micro">{t('viewMap')}</span>
-        </span>
-      </div>
+      {/* 임시: OSM 임베드. 트래픽 전 카카오맵 SDK 로 교체 예정 */}
+      <MapEmbed address={store.address} />
     </div>
   )
 }
