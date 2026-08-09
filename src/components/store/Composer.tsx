@@ -83,105 +83,107 @@ export function Composer({ onPost }: { onPost: (draft: DraftPost) => void }) {
 
   return (
     <>
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface pb-[env(safe-area-inset-bottom)] shadow-card">
-        <div className="mx-auto max-w-md px-4 pt-3 pb-2">
-          {anonymous && (
-            <p className="mb-2 inline-block rounded-chip bg-surface-2 px-2 py-1 text-micro text-content-muted">
-              {t('merchant.anonWriting')}
-            </p>
-          )}
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center">
+        <div className="pointer-events-auto w-full max-w-md border-t border-line bg-surface pb-[env(safe-area-inset-bottom)] shadow-card lg:border-x">
+          <div className="mx-auto max-w-md px-4 pt-3 pb-2">
+            {anonymous && (
+              <p className="mb-2 inline-block rounded-chip bg-surface-2 px-2 py-1 text-micro text-content-muted">
+                {t('merchant.anonWriting')}
+              </p>
+            )}
 
-          {imageUrl && (
-            <div className="relative mb-2 h-16 w-16 overflow-hidden rounded-inner border border-line">
-              {/* 로컬 blob 미리보기라 next/image 최적화 대상이 아니다 */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={imageUrl} alt="" className="h-full w-full object-cover" />
+            {imageUrl && (
+              <div className="relative mb-2 h-16 w-16 overflow-hidden rounded-inner border border-line">
+                {/* 로컬 blob 미리보기라 next/image 최적화 대상이 아니다 */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={imageUrl} alt="" className="h-full w-full object-cover" />
+                <button
+                  type="button"
+                  onClick={() => setImageUrl(null)}
+                  aria-label={t('common.delete')}
+                  className="absolute top-0.5 right-0.5 grid h-5 w-5 place-items-center rounded-pill bg-black/60 text-white"
+                >
+                  <X size={12} aria-hidden />
+                </button>
+              </div>
+            )}
+
+            <div className="flex items-center gap-2">
+              <input
+                ref={inputRef}
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleSend()
+                }}
+                placeholder={t('merchant.composerHint')}
+                className={cn(
+                  'min-h-11 flex-1 rounded-chip border bg-bg px-4 text-body text-content outline-none',
+                  anonymous ? 'border-line-strong' : 'border-line focus:border-accent',
+                )}
+              />
               <button
                 type="button"
-                onClick={() => setImageUrl(null)}
-                aria-label={t('common.delete')}
-                className="absolute top-0.5 right-0.5 grid h-5 w-5 place-items-center rounded-pill bg-black/60 text-white"
+                onClick={handleSend}
+                aria-label={t('nav.write')}
+                className="grid h-11 w-11 shrink-0 place-items-center rounded-pill bg-accent-strong text-accent-on transition-opacity disabled:opacity-50"
+                disabled={!text.trim() && !imageUrl}
               >
-                <X size={12} aria-hidden />
+                <Send size={18} aria-hidden />
               </button>
             </div>
-          )}
 
-          <div className="flex items-center gap-2">
-            <input
-              ref={inputRef}
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') handleSend()
-              }}
-              placeholder={t('merchant.composerHint')}
-              className={cn(
-                'min-h-11 flex-1 rounded-chip border bg-bg px-4 text-body text-content outline-none',
-                anonymous ? 'border-line-strong' : 'border-line focus:border-accent',
-              )}
-            />
-            <button
-              type="button"
-              onClick={handleSend}
-              aria-label={t('nav.write')}
-              className="grid h-11 w-11 shrink-0 place-items-center rounded-pill bg-accent-strong text-accent-on transition-opacity disabled:opacity-50"
-              disabled={!text.trim() && !imageUrl}
-            >
-              <Send size={18} aria-hidden />
-            </button>
+            <div className="mt-2 flex items-start justify-around">
+              <button type="button" onClick={focusText} className={toolClass(!anonymous)}>
+                <Type size={18} aria-hidden />
+                <span className="text-micro">{t('merchant.composer.text')}</span>
+              </button>
+              <button
+                type="button"
+                onClick={openPhotoPicker}
+                className={toolClass(Boolean(imageUrl))}
+              >
+                <ImageIcon size={18} aria-hidden />
+                <span className="text-micro">{t('merchant.composer.photo')}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => showToast(t('common.comingSoon'))}
+                className={toolClass(false)}
+              >
+                <Mic size={18} aria-hidden />
+                <span className="text-micro">{t('merchant.composer.voice')}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setAnonymous((v) => !v)}
+                className={toolClass(anonymous)}
+              >
+                <MessageSquareText size={18} aria-hidden />
+                <span className="text-micro">{t('merchant.composer.anonymous')}</span>
+              </button>
+            </div>
+
+            <div className="mt-1 flex justify-center">
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label={t('common.close')}
+                className="grid h-9 w-9 place-items-center rounded-pill bg-content text-surface"
+              >
+                <X size={16} aria-hidden />
+              </button>
+            </div>
           </div>
 
-          <div className="mt-2 flex items-start justify-around">
-            <button type="button" onClick={focusText} className={toolClass(!anonymous)}>
-              <Type size={18} aria-hidden />
-              <span className="text-micro">{t('merchant.composer.text')}</span>
-            </button>
-            <button
-              type="button"
-              onClick={openPhotoPicker}
-              className={toolClass(Boolean(imageUrl))}
-            >
-              <ImageIcon size={18} aria-hidden />
-              <span className="text-micro">{t('merchant.composer.photo')}</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => showToast(t('common.comingSoon'))}
-              className={toolClass(false)}
-            >
-              <Mic size={18} aria-hidden />
-              <span className="text-micro">{t('merchant.composer.voice')}</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setAnonymous((v) => !v)}
-              className={toolClass(anonymous)}
-            >
-              <MessageSquareText size={18} aria-hidden />
-              <span className="text-micro">{t('merchant.composer.anonymous')}</span>
-            </button>
-          </div>
-
-          <div className="mt-1 flex justify-center">
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              aria-label={t('common.close')}
-              className="grid h-9 w-9 place-items-center rounded-pill bg-content text-surface"
-            >
-              <X size={16} aria-hidden />
-            </button>
-          </div>
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => pickPhoto(e.target.files?.[0])}
+          />
         </div>
-
-        <input
-          ref={fileRef}
-          type="file"
-          accept="image/*"
-          className="hidden"
-          onChange={(e) => pickPhoto(e.target.files?.[0])}
-        />
       </div>
 
       <Modal

@@ -17,6 +17,7 @@ import { useState } from 'react'
 import { Composer, type DraftPost } from './Composer'
 import { StoreHeroCard } from './StoreHeroCard'
 import { createFeedPost } from '@/lib/feed/actions'
+import { compressImage } from '@/lib/utils/compressImage'
 import { createAnonymousPost } from '@/lib/merchant/actions'
 import { MENU_SECTION_KEY, type ModuleId, type Store } from '@/lib/mock/store'
 import { cn } from '@/lib/utils/cn'
@@ -66,12 +67,15 @@ export function StoreScreen({ stores, news = [] }: { stores: Store[]; news?: New
       void createAnonymousPost(draft.text).then(() => router.refresh())
       return
     }
-    const form = new FormData()
-    form.set('body', draft.text)
-    form.set('storeId', store.id)
-    form.set('authorName', store.name)
-    if (draft.file) form.set('photo', draft.file)
-    void createFeedPost(form).then(() => router.refresh())
+    void (async () => {
+      const form = new FormData()
+      form.set('body', draft.text)
+      form.set('storeId', store.id)
+      form.set('authorName', store.name)
+      if (draft.file) form.set('photo', await compressImage(draft.file))
+      await createFeedPost(form)
+      router.refresh()
+    })()
   }
 
   const sectionTitle: Record<ModuleId, string> = {

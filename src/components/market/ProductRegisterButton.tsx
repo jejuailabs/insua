@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useRef, useState, useTransition } from 'react'
 import { Modal } from '@/components/ui/Modal'
 import { createProduct } from '@/lib/market/actions'
+import { compressImage } from '@/lib/utils/compressImage'
 import { cn } from '@/lib/utils/cn'
 
 /** 상품 등록 (설계사·관리자 전용) — 사진·가격·텍스트 → 마켓 즉시 노출. */
@@ -24,7 +25,10 @@ export function ProductRegisterButton() {
     if (!form || pending) return
     setError(false)
     startTransition(async () => {
-      const result = await createProduct(new FormData(form))
+      const data = new FormData(form)
+      const photo = data.get('photo')
+      if (photo instanceof File && photo.size > 0) data.set('photo', await compressImage(photo))
+      const result = await createProduct(data)
       if (!result.ok) {
         setError(true)
         return

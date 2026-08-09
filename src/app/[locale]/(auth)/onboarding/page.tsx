@@ -9,7 +9,7 @@ export default async function OnboardingPage({ params }: { params: Promise<{ loc
   setRequestLocale(locale)
 
   const session = await getSession()
-  if (!session) redirect({ href: '/login', locale })
+  if (!session) redirect({ href: '/?login=1', locale })
   // 이미 역할이 있으면 다시 고르게 하지 않는다. 서버에서 막는 게 요점이다 (docs/03 §3).
   else if (session.role) redirect({ href: ROLE_HOME[session.role], locale })
 

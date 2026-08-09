@@ -28,36 +28,38 @@ export function AnonymousComposer() {
   }
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-surface pb-[env(safe-area-inset-bottom)]">
-      <div className="mx-auto flex max-w-md items-center gap-2 px-4 py-3">
-        <input
-          value={body}
-          onChange={(e) => setBody(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') submit()
-          }}
-          placeholder={t('writePlaceholder')}
-          className="min-h-11 flex-1 rounded-chip border border-line bg-bg px-4 text-body text-content outline-none focus:border-accent"
-        />
-        <button
-          type="button"
-          onClick={submit}
-          disabled={!body.trim() || pending}
-          aria-label={t('post')}
-          className="grid h-11 w-11 shrink-0 place-items-center rounded-pill bg-accent-strong text-accent-on disabled:opacity-50"
-        >
-          <Send size={18} aria-hidden />
-        </button>
-      </div>
+    <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 flex justify-center">
+      <div className="pointer-events-auto w-full max-w-md border-t border-line bg-surface pb-[env(safe-area-inset-bottom)] lg:border-x">
+        <div className="mx-auto flex max-w-md items-center gap-2 px-4 py-3">
+          <input
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') submit()
+            }}
+            placeholder={t('writePlaceholder')}
+            className="min-h-11 flex-1 rounded-chip border border-line bg-bg px-4 text-body text-content outline-none focus:border-accent"
+          />
+          <button
+            type="button"
+            onClick={submit}
+            disabled={!body.trim() || pending}
+            aria-label={t('post')}
+            className="grid h-11 w-11 shrink-0 place-items-center rounded-pill bg-accent-strong text-accent-on disabled:opacity-50"
+          >
+            <Send size={18} aria-hidden />
+          </button>
+        </div>
 
-      {toast && (
-        <p
-          role="status"
-          className="fixed bottom-24 left-1/2 z-50 -translate-x-1/2 rounded-pill bg-content px-4 py-2 text-label text-surface shadow-card"
-        >
-          {toast}
-        </p>
-      )}
+        {toast && (
+          <p
+            role="status"
+            className="fixed bottom-24 left-1/2 z-50 -translate-x-1/2 rounded-pill bg-content px-4 py-2 text-label text-surface shadow-card"
+          >
+            {toast}
+          </p>
+        )}
+      </div>
     </div>
   )
 }

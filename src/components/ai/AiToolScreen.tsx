@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useRef, useState, useTransition } from 'react'
 import { addMenuTemplate, runAiTool } from '@/lib/ai/toolActions'
+import { compressImage } from '@/lib/utils/compressImage'
 import type { AiJobView, AiToolId, MenuTemplate } from '@/lib/ai/tools'
 import { cn } from '@/lib/utils/cn'
 
@@ -60,10 +61,10 @@ export function AiToolScreen({
       form.set('menuName', menuName)
       form.set('price', price)
     }
-    if (image1 && fittingStage !== 'wear') form.set('image1', image1)
-    if (image2) form.set('image2', image2)
-
     startTransition(async () => {
+      // Vercel 요청 한도(4.5MB) 안으로 — 업로드 전 압축
+      if (image1 && fittingStage !== 'wear') form.set('image1', await compressImage(image1))
+      if (image2) form.set('image2', await compressImage(image2))
       const res = await runAiTool(form)
       if (!res.ok) {
         setFailed(true)

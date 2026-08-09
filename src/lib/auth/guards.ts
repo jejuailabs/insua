@@ -16,7 +16,8 @@ export async function requireRolePage(locale: string, allowed: readonly Role[]):
 
   // redirect() 는 never 를 반환하지만 구조분해로 가져온 식별자라 TS 가 흐름을 좁히지 못한다.
   // `return` 을 붙이면 never 가 반환 타입에 흡수돼 좁히기 없이도 타입이 맞는다.
-  if (!session) return redirect({ href: '/login', locale })
+  // 로그인 전용 화면은 없다 — 메인 + 로그인 모달로 보낸다.
+  if (!session) return redirect({ href: '/?login=1', locale })
 
   // 어드민은 모든 역할 화면을 열람할 수 있다 (docs/09 §1 — 화면별 보기).
   // 화면 상단에 AdminPeekBanner 가 "관리자 권한으로 보고 있습니다"를 상시 표시한다.

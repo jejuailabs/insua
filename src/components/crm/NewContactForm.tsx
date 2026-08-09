@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useRef, useState, useTransition } from 'react'
 import { Modal } from '@/components/ui/Modal'
 import { createContactWithCard } from '@/lib/crm/actions'
+import { compressImage } from '@/lib/utils/compressImage'
 import { TIER_CYCLE_DAYS, TIERS, type Tier } from '@/lib/crm/types'
 import { cn } from '@/lib/utils/cn'
 
@@ -41,6 +42,12 @@ export function NewContactForm({ open, onClose }: { open: boolean; onClose: () =
     setError(false)
 
     startTransition(async () => {
+      // Vercel 요청 한도(4.5MB) 안으로 — 업로드 전 압축 (docs/07 B-5)
+      for (const key of ['ownerPhoto', 'menuPhoto'] as const) {
+        const file = data.get(key)
+        if (file instanceof File && file.size > 0) data.set(key, await compressImage(file))
+        else data.delete(key)
+      }
       const result = await createContactWithCard(data)
       if (!result.ok) {
         setError(true)

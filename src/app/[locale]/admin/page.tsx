@@ -31,7 +31,7 @@ export default async function AdminPage({
   setRequestLocale(locale)
 
   const session = await getSession()
-  if (!session) return redirect({ href: '/login', locale })
+  if (!session) return redirect({ href: '/?login=1', locale })
   if (!session.isAdmin) {
     return redirect({ href: session.role ? ROLE_HOME[session.role] : '/onboarding', locale })
   }

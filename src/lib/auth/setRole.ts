@@ -53,3 +53,9 @@ export async function getMyRole(): Promise<Role | null> {
   const session = await getSession()
   return session?.role ?? null
 }
+
+/** 로그인 직후 분기용 — 어드민은 역할 선택 없이 콘솔로 보낸다. */
+export async function getMyAccess(): Promise<{ role: Role | null; isAdmin: boolean }> {
+  const session = await getSession()
+  return { role: session?.role ?? null, isAdmin: session?.isAdmin === true }
+}

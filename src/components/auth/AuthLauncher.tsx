@@ -1,10 +1,10 @@
 'use client'
 
-import { LogIn, ArrowRight } from 'lucide-react'
+import { LogIn, ArrowRight, ShieldCheck } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { getMyRole } from '@/lib/auth/setRole'
+import { getMyAccess } from '@/lib/auth/setRole'
 import { completeRedirectSignIn, signInWithGoogle } from '@/lib/auth/signIn'
 import { cn } from '@/lib/utils/cn'
 import { ROLE_HOME, type Role } from '@/types/user'
@@ -23,26 +23,45 @@ function toErrorKey(error: unknown): ErrorKey {
  * 메인 우측 하단 플로팅 버튼 + 로그인/역할선택 모달 (docs/03 §1·§2).
  *
  * 메인은 로그인 없이도 다 보인다. 로그인은 이 버튼에서만 시작하고, 화면을 갈아엎지 않는다.
- * 흐름: 로그인 모달 → 구글 → 역할 없으면 역할 모달 → 역할별 홈.
+ * 흐름: 로그인 모달 → 구글 → (어드민이면 콘솔로) → 역할 없으면 역할 모달 → 역할별 홈.
+ * 보호 화면에 비로그인으로 접근하면 `?login=1` 로 돌아와 로그인 모달이 바로 열린다.
  *
- * `role` 은 **서버가 세션 쿠키를 검증해서 내려준 값**이다. 화면 분기용일 뿐,
+ * `role`/`isAdmin` 은 **서버가 세션 쿠키를 검증해서 내려준 값**이다. 화면 분기용일 뿐,
  * 실제 권한은 서버와 Security Rules 가 다시 본다 (CLAUDE.md §3-2).
  */
-export function AuthLauncher({ signedIn, role }: { signedIn: boolean; role: Role | null }) {
+export function AuthLauncher({
+  signedIn,
+  role,
+  isAdmin = false,
+  initialLoginOpen = false,
+}: {
+  signedIn: boolean
+  role: Role | null
+  isAdmin?: boolean
+  initialLoginOpen?: boolean
+}) {
   const t = useTranslations('auth')
+  const tAdmin = useTranslations('admin')
   const tOnboarding = useTranslations('onboarding')
   const router = useRouter()
   const locale = useLocale()
 
-  const [loginOpen, setLoginOpen] = useState(false)
-  // 최초 가입 직후(로그인 O, 역할 X)에는 역할 선택이 바로 이어진다 (사용자 확정 사양).
-  // 파생값으로 계산한다 — 로그인 상태 + 역할 없음 + 사용자가 닫지 않았을 때만 열린다.
-  // 역할이 정해져 프롭이 갱신되면 조건이 깨져 자동으로 닫힌다.
+  // ?login=1 로 돌아온 비로그인 사용자는 로그인 모달이 바로 열린다.
+  const [loginOpen, setLoginOpen] = useState(initialLoginOpen && !signedIn)
+  // 최초 가입 직후(로그인 O, 역할 X)에는 역할 선택이 바로 이어진다.
+  // **어드민은 예외** — 역할을 고르는 존재가 아니라 콘솔로 간다 (docs/09).
+  // 파생값으로 계산해 역할이 정해지면 자동으로 닫힌다.
   const [roleDismissed, setRoleDismissed] = useState(false)
   const [rolePicking, setRolePicking] = useState(false)
-  const roleOpen = rolePicking || (signedIn && !role && !roleDismissed)
+  const roleOpen = rolePicking || (signedIn && !role && !isAdmin && !roleDismissed)
   const [busy, setBusy] = useState(false)
   const [errorKey, setErrorKey] = useState<ErrorKey | null>(null)
+
+  function closeLogin() {
+    setLoginOpen(false)
+    // ?login=1 을 지워 새로고침 시 모달이 다시 열리지 않게 한다.
+    if (initialLoginOpen) router.replace(`/${locale}`)
+  }
 
   async function handleSignIn() {
     setBusy(true)
@@ -53,13 +72,18 @@ export function AuthLauncher({ signedIn, role }: { signedIn: boolean; role: Role
       const outcome = resumed ?? (await signInWithGoogle())
       if (outcome.status === 'redirecting') return // 페이지가 떠난다
 
-      // 세션 쿠키가 생겼으니 이제 서버에 역할을 물어본다.
-      const current = await getMyRole()
+      // 세션 쿠키가 생겼으니 이제 서버에 권한을 물어본다.
+      const access = await getMyAccess()
       setLoginOpen(false)
       setBusy(false)
 
-      if (current) {
-        router.replace(`/${locale}${ROLE_HOME[current]}`)
+      if (access.isAdmin && !access.role) {
+        router.replace(`/${locale}/admin`)
+        router.refresh()
+        return
+      }
+      if (access.role) {
+        router.replace(`/${locale}${ROLE_HOME[access.role]}`)
         router.refresh()
         return
       }
@@ -72,12 +96,19 @@ export function AuthLauncher({ signedIn, role }: { signedIn: boolean; role: Role
 
   function handleFabClick() {
     if (!signedIn) return setLoginOpen(true)
+    if (isAdmin && !role) return router.push(`/${locale}/admin`)
     if (!role) return setRolePicking(true)
     router.push(`/${locale}${ROLE_HOME[role]}`)
   }
 
-  const label = signedIn && role ? t('openApp') : t('loginCta')
-  const Icon = signedIn && role ? ArrowRight : LogIn
+  const label = signedIn
+    ? isAdmin && !role
+      ? tAdmin('title')
+      : role
+        ? t('openApp')
+        : t('loginCta')
+    : t('loginCta')
+  const Icon = signedIn ? (isAdmin && !role ? ShieldCheck : ArrowRight) : LogIn
 
   return (
     <>
@@ -96,12 +127,7 @@ export function AuthLauncher({ signedIn, role }: { signedIn: boolean; role: Role
         {label}
       </button>
 
-      <Modal
-        open={loginOpen}
-        onClose={() => setLoginOpen(false)}
-        title={t('title')}
-        description={t('subtitle')}
-      >
+      <Modal open={loginOpen} onClose={closeLogin} title={t('title')} description={t('subtitle')}>
         <div className="flex flex-col gap-3">
           <button
             type="button"

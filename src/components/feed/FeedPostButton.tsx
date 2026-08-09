@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useRef, useState, useTransition } from 'react'
 import { Modal } from '@/components/ui/Modal'
 import { createFeedPost } from '@/lib/feed/actions'
+import { compressImage } from '@/lib/utils/compressImage'
 
 /** 피드 글쓰기 (설계사 화면용) — 사진+글 → 메인 실시간 피드로. */
 export function FeedPostButton({ authorName }: { authorName?: string }) {
@@ -21,11 +22,11 @@ export function FeedPostButton({ authorName }: { authorName?: string }) {
 
   function submit() {
     if ((!body.trim() && !photo) || pending) return
-    const form = new FormData()
-    form.set('body', body)
-    if (photo) form.set('photo', photo)
-    if (authorName) form.set('authorName', authorName)
     startTransition(async () => {
+      const form = new FormData()
+      form.set('body', body)
+      if (photo) form.set('photo', await compressImage(photo))
+      if (authorName) form.set('authorName', authorName)
       const result = await createFeedPost(form)
       if (result.ok) {
         setBody('')

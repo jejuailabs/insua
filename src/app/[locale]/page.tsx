@@ -21,11 +21,18 @@ import { listHeroes } from '@/lib/stores/data'
  *
  * 세션을 읽으므로 정적 생성은 불가능하다. generateStaticParams 를 두지 않는다.
  */
-export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function HomePage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>
+  searchParams: Promise<{ login?: string }>
+}) {
   const { locale } = await params
   setRequestLocale(locale)
 
   const session = await getSession()
+  const { login } = await searchParams
   const profile = session ? await getMyConsumerProfile() : null
   const heroes = await listHeroes()
   const feedPosts = await listFeedPosts()
@@ -68,7 +75,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         </main>
       </div>
 
-      <AuthLauncher signedIn={Boolean(session)} role={session?.role ?? null} />
+      <AuthLauncher
+        signedIn={Boolean(session)}
+        role={session?.role ?? null}
+        isAdmin={session?.isAdmin === true}
+        initialLoginOpen={login === '1'}
+      />
     </>
   )
 }

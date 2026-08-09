@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { useRef, useState, useTransition } from 'react'
 import { TierBadge } from '@/components/ui/TierBadge'
 import { addInteraction, addMediaInteraction, transcribeInteraction } from '@/lib/crm/actions'
+import { compressImage } from '@/lib/utils/compressImage'
 import type { Contact, Interaction, InteractionType } from '@/lib/crm/types'
 import { cn } from '@/lib/utils/cn'
 
@@ -98,12 +99,12 @@ export function InteractionsScreen({
 
   function attachPhoto(file: File | undefined) {
     if (!file || !selected) return
-    const form = new FormData()
-    form.set('contactId', selected.id)
-    form.set('kind', 'image')
-    form.set('body', body.trim())
-    form.set('file', file)
     startTransition(async () => {
+      const form = new FormData()
+      form.set('contactId', selected.id)
+      form.set('kind', 'image')
+      form.set('body', body.trim())
+      form.set('file', await compressImage(file))
       const result = await addMediaInteraction(form)
       if (result.ok) {
         setBody('')

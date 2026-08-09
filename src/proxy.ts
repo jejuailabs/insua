@@ -37,10 +37,11 @@ export default function proxy(request: NextRequest) {
 
   if (needsAuth(path) && !request.cookies.get(SESSION_COOKIE)) {
     const url = request.nextUrl.clone()
+    // 로그인 전용 화면은 없다 — 메인으로 보내고 로그인 **모달**을 연다 (login=1).
     // 요청한 locale 을 유지한다. 기본 locale 로 보내면 영어 사용자가 한국어 화면으로 튕긴다.
-    url.pathname = `/${locale}/login`
+    url.pathname = `/${locale}`
     url.search = ''
-    url.searchParams.set('next', pathname)
+    url.searchParams.set('login', '1')
     return NextResponse.redirect(url)
   }
 
