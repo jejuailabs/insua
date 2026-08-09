@@ -81,10 +81,16 @@ export function InteractionsScreen({
         form.set('body', body.trim())
         form.set('file', new File([blob], 'recording.webm', { type: blob.type }))
         startTransition(async () => {
+          // 파일부터 저장하고(원본 보존) 곧바로 STT 를 이어 붙인다 (사용자 확정 사양).
+          // 정리에 실패해도 녹음 자체는 남는다 — 나중에 [텍스트로 정리]로 다시 시도.
           const result = await addMediaInteraction(form)
-          if (result.ok) {
-            setBody('')
-            showToast(t('crm.logSaved'))
+          if (!result.ok) return showToast(t('common.error'))
+          setBody('')
+          showToast(t('crm.transcribing'))
+          router.refresh()
+          if (result.id) {
+            const stt = await transcribeInteraction(selected.id, result.id)
+            showToast(stt.ok ? t('crm.transcriptDone') : t('crm.transcriptFailed'))
             router.refresh()
           }
         })

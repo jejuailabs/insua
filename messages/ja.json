@@ -184,7 +184,7 @@
     "recording": "録音中… タップで終了",
     "attachPhoto": "写真添付",
     "transcribe": "テキスト整理",
-    "transcribing": "整理中…",
+    "transcribing": "録音を保存しました。文字起こし中…",
     "transcriptTitle": "相談まとめ",
     "assistant": "CRM アシスタント",
     "assistantHint": "顧客や記録について質問できます。例: \"今週連絡すべき顧客は?\"",
@@ -195,7 +195,14 @@
     "dueSet": "設定しました",
     "openSmsApp": "SMSアプリを開く",
     "mapPinned": "顧客{total}名中{n}名を表示 · 住所があれば自動で追加されます",
-    "mapNoAddress": "住所が登録された顧客がありません。顧客登録時に住所を入れると地図に表示されます。"
+    "mapNoAddress": "住所が登録された顧客がありません。顧客登録時に住所を入れると地図に表示されます。",
+    "recordHint": "同意した顧客のみ録音できます。ファイルを保存してからすぐ文字起こしします。",
+    "recordTarget": "相談相手",
+    "recordStart": "録音開始",
+    "saving": "保存中…",
+    "transcriptDone": "整理が完了しました",
+    "transcriptFailed": "整理に失敗しました。相談ログから再試行できます",
+    "micDenied": "マイクを使用できません。ブラウザの権限を確認してください"
   },
   "merchant": {
     "spaceName": "個人店主だけの空間",

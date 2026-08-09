@@ -20,6 +20,7 @@ import { setNextContactDate } from '@/lib/crm/actions'
 import { NewContactForm } from './NewContactForm'
 import { PersonCard } from './PersonCard'
 import { FeedPostButton } from '@/components/feed/FeedPostButton'
+import { RecordConsultModal } from './RecordConsultModal'
 import { PinMap } from '@/components/map/PinMap'
 import { Modal } from '@/components/ui/Modal'
 import { overdueDays, TIERS, type Contact, type Tier } from '@/lib/crm/types'
@@ -50,6 +51,7 @@ export function CrmScreen({ contacts }: { contacts: Contact[] }) {
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [formOpen, setFormOpen] = useState(false)
   const [mapOpen, setMapOpen] = useState(false)
+  const [recordOpen, setRecordOpen] = useState(false)
   const [calendarOpen, setCalendarOpen] = useState(false)
   const [toast, setToast] = useState<string | null>(null)
 
@@ -127,8 +129,7 @@ export function CrmScreen({ contacts }: { contacts: Contact[] }) {
       icon: Mic,
       label: t('crm.recordConsult'),
       disabled: !anyRecordable,
-      onClick: () =>
-        showToast(anyRecordable ? t('common.comingSoon') : t('crm.recordNeedsConsent')),
+      onClick: () => (anyRecordable ? setRecordOpen(true) : showToast(t('crm.recordNeedsConsent'))),
     },
     { icon: Plus, label: t('crm.newContact'), onClick: () => setFormOpen(true) },
     { icon: CalendarDays, label: t('crm.calendar'), onClick: () => setCalendarOpen(true) },
@@ -331,6 +332,12 @@ export function CrmScreen({ contacts }: { contacts: Contact[] }) {
       )}
 
       <NewContactForm open={formOpen} onClose={() => setFormOpen(false)} />
+
+      <RecordConsultModal
+        open={recordOpen}
+        onClose={() => setRecordOpen(false)}
+        contacts={contacts.filter((c) => c.consent.recording)}
+      />
 
       <Modal open={mapOpen} onClose={() => setMapOpen(false)} title={t('crm.mapView')}>
         {/* 담당 고객을 주소 기준으로 지도에 찍는다 (사용자 확정 사양).

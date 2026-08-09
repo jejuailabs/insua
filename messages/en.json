@@ -184,7 +184,7 @@
     "recording": "Recording… tap to stop",
     "attachPhoto": "Attach photo",
     "transcribe": "Summarize to text",
-    "transcribing": "Summarizing…",
+    "transcribing": "Recording saved. Transcribing…",
     "transcriptTitle": "Consultation summary",
     "assistant": "CRM assistant",
     "assistantHint": "Ask about your contacts and logs. e.g. \"Who should I call this week?\"",
@@ -195,7 +195,14 @@
     "dueSet": "Scheduled",
     "openSmsApp": "Open SMS app",
     "mapPinned": "{n} of {total} customers shown · added automatically once an address exists",
-    "mapNoAddress": "No customer has an address yet. Add one when registering to see them here."
+    "mapNoAddress": "No customer has an address yet. Add one when registering to see them here.",
+    "recordHint": "Only consenting customers can be recorded. The file is saved first, then transcribed.",
+    "recordTarget": "Customer",
+    "recordStart": "Start recording",
+    "saving": "Saving…",
+    "transcriptDone": "Transcription done",
+    "transcriptFailed": "Transcription failed. You can retry from the log",
+    "micDenied": "Microphone unavailable. Check browser permissions"
   },
   "merchant": {
     "spaceName": "A space just for local owners",

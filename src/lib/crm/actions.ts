@@ -380,7 +380,7 @@ export async function addMediaInteraction(form: FormData): Promise<ActionResult>
       file.type || (kind === 'voice' ? 'audio/webm' : 'image/jpeg'),
     )
 
-    await contactRef.collection('interactions').add({
+    const logRef = await contactRef.collection('interactions').add({
       type: kind === 'voice' ? 'voice' : 'note',
       body: memo,
       ...(kind === 'voice' ? { audioUrl: url, transcript: null } : { imageUrl: url }),
@@ -392,7 +392,7 @@ export async function addMediaInteraction(form: FormData): Promise<ActionResult>
       updatedAt: now,
     })
     revalidatePath('/', 'layout')
-    return { ok: true }
+    return { ok: true, id: logRef.id }
   } catch (error) {
     console.error('[crm] addMediaInteraction failed:', (error as Error).message)
     return { ok: false, code: 'FAILED' }

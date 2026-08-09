@@ -184,7 +184,7 @@
     "recording": "录音中… 点击结束",
     "attachPhoto": "附加照片",
     "transcribe": "整理为文本",
-    "transcribing": "整理中…",
+    "transcribing": "录音已保存，正在转写…",
     "transcriptTitle": "咨询整理",
     "assistant": "CRM 助手",
     "assistantHint": "询问您的客户和记录。例: \"本周该联系谁?\"",
@@ -195,7 +195,14 @@
     "dueSet": "已安排",
     "openSmsApp": "打开短信应用",
     "mapPinned": "{total}位客户中显示{n}位 · 有地址即自动添加",
-    "mapNoAddress": "还没有登记地址的客户。登记客户时填写地址即可显示在地图上。"
+    "mapNoAddress": "还没有登记地址的客户。登记客户时填写地址即可显示在地图上。",
+    "recordHint": "仅可录音已同意的客户。先保存文件，随后立即转写文字。",
+    "recordTarget": "面谈对象",
+    "recordStart": "开始录音",
+    "saving": "保存中…",
+    "transcriptDone": "整理完成",
+    "transcriptFailed": "整理失败，可在咨询记录中重试",
+    "micDenied": "无法使用麦克风，请检查浏览器权限"
   },
   "merchant": {
     "spaceName": "小微店主的专属空间",
