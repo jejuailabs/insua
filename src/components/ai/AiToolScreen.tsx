@@ -38,13 +38,21 @@ export function AiToolScreen({
   const [menuName, setMenuName] = useState('')
   const [price, setPrice] = useState('')
   const [sizeLabel, setSizeLabel] = useState('')
+  const [ownerName, setOwnerName] = useState('')
+  const [postcardDate, setPostcardDate] = useState('')
   /** 피팅룸 2단계 — 1단계(스튜디오) 결과 URL 이 잡히면 옷 업로드 단계로 전환 */
   const [studioBase, setStudioBase] = useState<string | null>(null)
 
   const fittingStage: 'studio' | 'wear' = tool === 'fitting' && studioBase ? 'wear' : 'studio'
   const needsImage2 = tool === 'nail' || (tool === 'fitting' && fittingStage === 'wear')
   const canGenerate =
-    fittingStage === 'wear' ? Boolean(image2) : Boolean(image1) && (tool !== 'nail' || image2)
+    tool === 'postcard'
+      ? // 엽서는 사진이 없어도 만든다 — 대신 이름·날짜가 있어야 한다 (사용자 확정 사양)
+        // input[type=date] 는 비었거나 YYYY-MM-DD 둘 중 하나다
+        ownerName.trim().length > 0 && postcardDate.length === 10
+      : fittingStage === 'wear'
+        ? Boolean(image2)
+        : Boolean(image1) && (tool !== 'nail' || image2)
 
   function generate() {
     if (!canGenerate || pending) return
@@ -55,6 +63,10 @@ export function AiToolScreen({
       form.set('stage', fittingStage)
       form.set('sizeLabel', sizeLabel)
       if (fittingStage === 'wear' && studioBase) form.set('baseUrl', studioBase)
+    }
+    if (tool === 'postcard') {
+      form.set('ownerName', ownerName.trim())
+      form.set('date', postcardDate)
     }
     if (tool === 'menu-poster') {
       form.set('templateId', templateId)
@@ -97,6 +109,7 @@ export function AiToolScreen({
     fitting: { input1: t('inputPersonPhoto'), input2: t('inputClothing') },
     nail: { input1: t('inputHandPhoto'), input2: t('inputNailDesign') },
     pet: { input1: t('inputPetPhoto'), input2: t('inputPetAccessory') },
+    postcard: { input1: t('inputPostcardPhoto') },
   }
 
   return (
@@ -180,6 +193,31 @@ export function AiToolScreen({
               />
             </div>
           </>
+        )}
+
+        {tool === 'postcard' && (
+          <div className="mt-3 flex flex-col gap-2">
+            <p className="text-caption text-content-muted">{t('postcardPhotoHint')}</p>
+            <div className="grid grid-cols-2 gap-2">
+              <input
+                value={ownerName}
+                onChange={(e) => setOwnerName(e.target.value)}
+                placeholder={t('postcardName')}
+                className="min-h-11 rounded-chip border border-line bg-bg px-4 text-body text-content outline-none focus:border-accent"
+              />
+              <input
+                type="date"
+                value={postcardDate}
+                onChange={(e) => setPostcardDate(e.target.value)}
+                className="min-h-11 rounded-chip border border-line bg-bg px-4 text-body text-content outline-none focus:border-accent"
+              />
+            </div>
+            {ownerName.trim() && (
+              <p className="text-micro text-content-faint">
+                {t('postcardSealPreview', { name: ownerName.trim() })}
+              </p>
+            )}
+          </div>
         )}
 
         {tool === 'fitting' && fittingStage === 'studio' && (

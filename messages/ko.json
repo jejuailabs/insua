@@ -344,7 +344,13 @@
     "historyEmpty": "아직 생성한 결과가 없습니다",
     "addTemplate": "템플릿 추가",
     "templateName": "템플릿 이름",
-    "templateStyle": "스타일 설명 (영문 프롬프트)"
+    "templateStyle": "스타일 설명 (영문 프롬프트)",
+    "postcard": "AI 감성엽서",
+    "postcardDesc": "사진 한 장이 엽서가 됩니다 — 문구는 AI가 고릅니다",
+    "inputPostcardPhoto": "엽서로 만들 사진 (선택)",
+    "postcardPhotoHint": "사진을 올리면 그 사진으로, 올리지 않으면 AI가 어울리는 장면까지 만들어 드립니다.",
+    "postcardName": "낙관에 새길 이름",
+    "postcardSealPreview": "낙관: {name} Dream"
   },
   "consumer": {
     "brand": "LOCAL HERO",

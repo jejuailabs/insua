@@ -344,7 +344,13 @@
     "historyEmpty": "まだ生成履歴がありません",
     "addTemplate": "テンプレート追加",
     "templateName": "テンプレート名",
-    "templateStyle": "スタイル説明 (英語プロンプト)"
+    "templateStyle": "スタイル説明 (英語プロンプト)",
+    "postcard": "AI 感性ポストカード",
+    "postcardDesc": "一枚の写真がポストカードに — 文はAIが選びます",
+    "inputPostcardPhoto": "ポストカードにする写真(任意)",
+    "postcardPhotoHint": "写真をアップすればその写真で、しなければAIが似合う情景まで作ります。",
+    "postcardName": "落款に入れる名前",
+    "postcardSealPreview": "落款: {name} Dream"
   },
   "consumer": {
     "brand": "LOCAL HERO",

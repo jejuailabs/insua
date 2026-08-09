@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { requireSession } from '@/lib/auth/session'
 import { getAdminDb } from '@/lib/firebase/admin'
 import { uploadToStorage } from '@/lib/stores/data'
+import { pickPostcardCopy } from './openai'
 import { AI_TOOLS, DEFAULT_MENU_TEMPLATES, listMenuTemplates, type AiToolId } from './tools'
 
 type ToolResult =
@@ -50,7 +51,8 @@ export async function runAiTool(form: FormData): Promise<ToolResult> {
     const image1 =
       (await fileBuffer(form, 'image1')) ?? (await urlBuffer(form.get('baseUrl') as string | null))
     const image2 = await fileBuffer(form, 'image2')
-    if (!image1) return { ok: false, code: 'INVALID' }
+    // 감성엽서는 사진 없이 AI가 배경까지 만들 수 있다 (사용자 확정 사양)
+    if (!image1 && tool !== 'postcard') return { ok: false, code: 'INVALID' }
 
     let step = 'main'
     let size: '1024x1024' | '1024x1536' = '1024x1536'
@@ -109,6 +111,40 @@ export async function runAiTool(form: FormData): Promise<ToolResult> {
         `Virtual nail salon: apply the nail design from the second image onto the fingernails of the hand in the first image. ` +
         `Precise application on each visible nail, glossy salon finish, keep the hand's skin tone, pose and background unchanged. ` +
         `Close-up beauty photography, photorealistic, no text.`
+    } else if (tool === 'postcard') {
+      /**
+       * 감성엽서 — 20년차 인쇄물 디자이너 (사용자 확정 사양).
+       * 원 프롬프트의 단계별 질문(사진→날짜→이름)은 입력 필드가 대신 강제하므로,
+       * 여기서는 "문구 선정 → 즉시 생성"만 수행한다.
+       */
+      const ownerName = String(form.get('ownerName') ?? '')
+        .replace(/[^\p{L}\p{N} ]/gu, '')
+        .trim()
+      const dateRaw = String(form.get('date') ?? '').trim()
+      if (!ownerName || !/^\d{4}-\d{2}-\d{2}$/.test(dateRaw)) return { ok: false, code: 'INVALID' }
+      const dateLabel = dateRaw.replace(/-/g, '.')
+
+      // 사진을 직접 보고 문구를 고른다. 사진이 없으면 장면까지 함께 정한다.
+      const copy = await pickPostcardCopy(image1 ?? undefined)
+      step = 'postcard'
+
+      prompt =
+        `A refined emotional postcard designed by a print designer with 20 years of experience — ` +
+        `the quality of a page from a published essay book or a postcard sold in a design bookstore. ` +
+        (image1
+          ? `Use the provided photograph as the main visual, with subtle film-like color grading that suits its mood. `
+          : `Main visual: ${copy.scene}, photographed with a quiet, cinematic, film-like mood. `) +
+        `FULL BLEED — the image must extend to every edge. Absolutely no white border, no frame, ` +
+        `no polaroid border, no matting. Breathing room comes only from typographic whitespace inside the image. ` +
+        `Set this Korean line in elegant type, well balanced with the photo, with generous whitespace: "${copy.quote}". ` +
+        `Set the date "${dateLabel}" small and quiet in a serif face. ` +
+        `Add a single artist's seal (한국 낙관) reading the name "${ownerName}" with the word "Dream" beneath it. ` +
+        `Seal rules: its width must stay within 6-10% of the image's shorter side — present but never dominating; ` +
+        `place it at the bottom, bottom-right or bottom-left where it does not overlap the main subject; ` +
+        `the name "${ownerName}" must be typeset as ONE unbroken block on a single line — never split the name across lines; ` +
+        `"Dream" sits on its own line below the name, visually lighter than the name (smaller, thinner, serif lowercase). ` +
+        `Choose exactly one seal style: red ink stamp, handwritten signature, or minimal embossed stamp — do not mix them. ` +
+        `No watermark, no UI elements, no distorted text, no low resolution.`
     } else {
       // 펫 스튜디오 — 20년차 반려동물 사진작가 (+ 선택 악세사리 착장)
       step = image2 ? 'wear' : 'studio'
@@ -121,31 +157,49 @@ export async function runAiTool(form: FormData): Promise<ToolResult> {
         `Photorealistic, heartwarming, no text.`
     }
 
-    // gpt-image-2 (low) 호출 — edits 엔드포인트에 입력 이미지를 그대로 넘긴다
-    const apiForm = new FormData()
-    apiForm.append('model', 'gpt-image-2')
-    apiForm.append('quality', 'low')
-    apiForm.append('size', size)
-    apiForm.append('output_format', 'webp')
-    apiForm.append('prompt', prompt)
-    apiForm.append(
-      'image[]',
-      new Blob([new Uint8Array(image1.data)], { type: image1.mime }),
-      'input1.png',
-    )
-    if (image2) {
+    // gpt-image-2 (low) 호출.
+    // 입력 사진이 있으면 edits(사진을 그대로 넘김), 없으면 generations(백지에서 생성).
+    let res: Response
+    if (image1) {
+      const apiForm = new FormData()
+      apiForm.append('model', 'gpt-image-2')
+      apiForm.append('quality', 'low')
+      apiForm.append('size', size)
+      apiForm.append('output_format', 'webp')
+      apiForm.append('prompt', prompt)
       apiForm.append(
         'image[]',
-        new Blob([new Uint8Array(image2.data)], { type: image2.mime }),
-        'input2.png',
+        new Blob([new Uint8Array(image1.data)], { type: image1.mime }),
+        'input1.png',
       )
+      if (image2) {
+        apiForm.append(
+          'image[]',
+          new Blob([new Uint8Array(image2.data)], { type: image2.mime }),
+          'input2.png',
+        )
+      }
+      res = await fetch('https://api.openai.com/v1/images/edits', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${process.env.OPENAI_API_KEY}` },
+        body: apiForm,
+      })
+    } else {
+      res = await fetch('https://api.openai.com/v1/images/generations', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-image-2',
+          quality: 'low',
+          size,
+          output_format: 'webp',
+          prompt,
+        }),
+      })
     }
-
-    const res = await fetch('https://api.openai.com/v1/images/edits', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${process.env.OPENAI_API_KEY}` },
-      body: apiForm,
-    })
     if (!res.ok) {
       console.error('[ai-tools] generation failed:', res.status, (await res.text()).slice(0, 200))
       return { ok: false, code: 'FAILED' }

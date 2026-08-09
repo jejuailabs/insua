@@ -4,12 +4,12 @@ import { Timestamp } from 'firebase-admin/firestore'
 import { getAdminDb } from '@/lib/firebase/admin'
 
 /**
- * AI Tools (사용자 확정 사양, 2026-08-09) — 메뉴 포스터 / 가상 피팅룸 / 가상 네일룸 / 펫 스튜디오.
+ * AI Tools (사용자 확정 사양) — 메뉴 포스터 / 가상 피팅룸 / 가상 네일룸 / 펫 스튜디오 / 감성엽서.
  * 전부 gpt-image-2(low) 실호출. 결과는 aiJobs 에 **자동 저장**되어 저장 버튼을 누르지
  * 않아도 히스토리에서 다시 확인할 수 있다.
  */
 
-export const AI_TOOLS = ['menu-poster', 'fitting', 'nail', 'pet'] as const
+export const AI_TOOLS = ['menu-poster', 'fitting', 'nail', 'pet', 'postcard'] as const
 export type AiToolId = (typeof AI_TOOLS)[number]
 
 export type AiJobView = {

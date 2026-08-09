@@ -344,7 +344,13 @@
     "historyEmpty": "Nothing generated yet",
     "addTemplate": "Add template",
     "templateName": "Template name",
-    "templateStyle": "Style description (English prompt)"
+    "templateStyle": "Style description (English prompt)",
+    "postcard": "AI postcard",
+    "postcardDesc": "One photo becomes a postcard — AI picks the line",
+    "inputPostcardPhoto": "Photo for the postcard (optional)",
+    "postcardPhotoHint": "Upload a photo to use it, or leave it empty and AI will create a fitting scene too.",
+    "postcardName": "Name for the seal",
+    "postcardSealPreview": "Seal: {name} Dream"
   },
   "consumer": {
     "brand": "LOCAL HERO",

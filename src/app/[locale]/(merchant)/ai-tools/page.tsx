@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, Dog, Hand, ImageIcon, Music, Shirt } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Dog, Hand, ImageIcon, Mail, Music, Shirt } from 'lucide-react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { AdminPeekBanner } from '@/components/admin/AdminPeekBanner'
 import { requireRolePage } from '@/lib/auth/guards'
@@ -22,6 +22,12 @@ export default async function AiToolsPage({ params }: { params: Promise<{ locale
     { id: 'fitting', icon: Shirt, title: t('aiTools.fitting'), desc: t('aiTools.fittingDesc') },
     { id: 'nail', icon: Hand, title: t('aiTools.nail'), desc: t('aiTools.nailDesc') },
     { id: 'pet', icon: Dog, title: t('aiTools.pet'), desc: t('aiTools.petDesc') },
+    {
+      id: 'postcard',
+      icon: Mail,
+      title: t('aiTools.postcard'),
+      desc: t('aiTools.postcardDesc'),
+    },
   ]
 
   return (

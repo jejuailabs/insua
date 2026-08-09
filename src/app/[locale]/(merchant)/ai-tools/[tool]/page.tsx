@@ -34,6 +34,7 @@ export default async function AiToolPage({
     fitting: t('fitting'),
     nail: t('nail'),
     pet: t('pet'),
+    postcard: t('postcard'),
   }
 
   return (

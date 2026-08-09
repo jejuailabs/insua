@@ -344,7 +344,13 @@
     "historyEmpty": "还没有生成记录",
     "addTemplate": "添加模板",
     "templateName": "模板名称",
-    "templateStyle": "风格描述 (英文提示词)"
+    "templateStyle": "风格描述 (英文提示词)",
+    "postcard": "AI 感性明信片",
+    "postcardDesc": "一张照片变成明信片 — 文案由AI挑选",
+    "inputPostcardPhoto": "制作明信片的照片(可选)",
+    "postcardPhotoHint": "上传照片则使用该照片，不上传则由AI一并生成合适的场景。",
+    "postcardName": "落款姓名",
+    "postcardSealPreview": "落款：{name} Dream"
   },
   "consumer": {
     "brand": "LOCAL HERO",
