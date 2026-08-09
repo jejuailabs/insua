@@ -238,7 +238,16 @@
     "moveDown": "下へ",
     "toggleVisibility": "表示切替",
     "enterAnonymous": "匿名ルームに入る",
-    "viewLargeMap": "大きい地図を見る"
+    "viewLargeMap": "大きい地図を見る",
+    "landingFaq": "よくある質問",
+    "landingAbout": "紹介",
+    "landingMenu": "メニュー",
+    "landingMap": "アクセス",
+    "landingReviews": "レビュー",
+    "landingAtGlance": "ひと目で",
+    "landingSeoPending": "検索最適化された紹介文がまだありません",
+    "regenerateSeo": "紹介文を作り直す",
+    "seoRegenerated": "紹介文を作り直しました"
   },
   "anonymous": {
     "roomName": "店主はつらいよ",
@@ -480,5 +489,8 @@
     "loginNeeded": "レビューにはログインが必要です",
     "empty": "まだレビューがありません。最初の一件をどうぞ!",
     "rating": "評価"
+  },
+  "ai": {
+    "generatedNotice": "このページの紹介文と画像は AI が作成しました"
   }
 }

@@ -238,7 +238,16 @@
     "moveDown": "下移",
     "toggleVisibility": "切换显示",
     "enterAnonymous": "进入匿名房",
-    "viewLargeMap": "查看大地图"
+    "viewLargeMap": "查看大地图",
+    "landingFaq": "常见问题",
+    "landingAbout": "介绍",
+    "landingMenu": "菜单",
+    "landingMap": "到店路线",
+    "landingReviews": "评价",
+    "landingAtGlance": "一览",
+    "landingSeoPending": "尚无搜索优化简介",
+    "regenerateSeo": "重新生成简介",
+    "seoRegenerated": "已重新生成简介"
   },
   "anonymous": {
     "roomName": "当老板真不容易",
@@ -480,5 +489,8 @@
     "loginNeeded": "发表评价需要登录",
     "empty": "还没有评价, 来写第一条吧!",
     "rating": "评分"
+  },
+  "ai": {
+    "generatedNotice": "本页的介绍文字与图片由 AI 生成"
   }
 }

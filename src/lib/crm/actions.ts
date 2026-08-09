@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { generateHeroImage } from '@/lib/ai/openai'
+import { generateHeroImage, generateStoreSeoCopy } from '@/lib/ai/openai'
 import { requireSession } from '@/lib/auth/session'
 import { getAdminDb } from '@/lib/firebase/admin'
 import { uploadToStorage } from '@/lib/stores/data'
@@ -207,13 +207,31 @@ export async function generateHeroForContact(contactId: string): Promise<ActionR
     const ownerPhoto = await fetchImage(d.photoURL as string)
     const menuPhoto = draft.menuPhotoURL ? await fetchImage(draft.menuPhotoURL) : null
 
-    const heroBuffer = await generateHeroImage({
-      ownerPhoto,
-      menuPhoto,
-      storeName: draft.name,
-      tagline: draft.tagline || d.note || '',
-      category: draft.category,
-    })
+    // 히어로 이미지 + SEO 카피를 함께 만든다 (사용자 확정 사양).
+    // 카피 생성이 실패해도 카드 발행은 막지 않는다 — 나중에 재생성 버튼으로 채운다.
+    const [heroBuffer, seo] = await Promise.all([
+      generateHeroImage({
+        ownerPhoto,
+        menuPhoto,
+        storeName: draft.name,
+        tagline: draft.tagline || d.note || '',
+        category: draft.category,
+      }),
+      generateStoreSeoCopy({
+        storeName: draft.name,
+        category: draft.category,
+        subCategory: draft.subCategory,
+        address: draft.address,
+        tagline: draft.tagline || (d.note as string) || '',
+        menuName: draft.menuName,
+        menuPrice: draft.menuPrice,
+        hours: draft.hours,
+        ownerNote: (d.note as string) || '',
+      }).catch((error) => {
+        console.error('[crm] seo copy failed:', (error as Error).message)
+        return null
+      }),
+    ])
 
     const storeRef = d.storeId
       ? db.collection('stores').doc(d.storeId as string)
@@ -254,6 +272,7 @@ export async function generateHeroForContact(contactId: string): Promise<ActionR
             ]
           : [],
         heroImageURL,
+        ...(seo ? { seo } : {}),
         // AI 생성물 표기 의무 (docs/10 §7)
         aiGenerated: true,
         isPublic: true,

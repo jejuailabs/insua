@@ -12,6 +12,19 @@ import { findStore, STORES, type Store } from '@/lib/mock/store'
  * 목데이터가 뒤를 채운다. 실매장이 쌓이면 목데이터는 자연히 밀려난다.
  */
 
+/** AI가 발행한 랜딩 카피 (사용자 확정 사양) — SEO/AEO/GEO 용. */
+export type StoreSeo = {
+  metaTitle: string
+  metaDescription: string
+  keywords: string[]
+  longTailKeywords: string[]
+  headline: string
+  subheadline: string
+  sections: Array<{ heading: string; body: string }>
+  faq: Array<{ q: string; a: string }>
+  highlights: string[]
+}
+
 export type StoreDoc = Store & {
   ownerAgentId: string
   contactId: string | null
@@ -22,6 +35,7 @@ export type StoreDoc = Store & {
   createdAtMs: number
   lat?: number
   lng?: number
+  seo?: StoreSeo
 }
 
 function toStore(id: string, d: FirebaseFirestore.DocumentData): StoreDoc {
@@ -48,6 +62,7 @@ function toStore(id: string, d: FirebaseFirestore.DocumentData): StoreDoc {
     createdAtMs: d.createdAt?.toMillis?.() ?? 0,
     lat: typeof d.lat === 'number' ? d.lat : undefined,
     lng: typeof d.lng === 'number' ? d.lng : undefined,
+    seo: (d.seo as StoreSeo) ?? undefined,
   }
 }
 
@@ -155,7 +170,16 @@ export async function listHeroesByIds(ids: string[]): Promise<Hero[]> {
 }
 
 /** 랜딩 페이지용 단건 조회 — 실매장 우선, 목데이터 폴백. */
-export async function getStoreForLanding(storeId: string): Promise<Store | null> {
+export async function getStoreForLanding(storeId: string): Promise<
+  | (Store & {
+      seo?: StoreSeo
+      sns?: string
+      lat?: number
+      lng?: number
+      aiGenerated?: boolean
+    })
+  | null
+> {
   const doc = await getAdminDb().collection('stores').doc(storeId).get()
   if (doc.exists) {
     const d = doc.data()!
@@ -163,6 +187,20 @@ export async function getStoreForLanding(storeId: string): Promise<Store | null>
     return null
   }
   return findStore(storeId) ?? null
+}
+
+/** sitemap 용 — 공개된 실매장의 id·수정시각만. */
+export async function listPublishedStoreIds(): Promise<Array<{ id: string; updatedAt: Date }>> {
+  const snap = await getAdminDb()
+    .collection('stores')
+    .where('isPublic', '==', true)
+    .where('status', '==', 'published')
+    .limit(500)
+    .get()
+  return snap.docs.map((doc) => ({
+    id: doc.id,
+    updatedAt: doc.data().updatedAt?.toDate?.() ?? new Date(),
+  }))
 }
 
 /** 내 매장 화면용 — 설계사/업주가 만든 매장 + 목데이터 폴백. */

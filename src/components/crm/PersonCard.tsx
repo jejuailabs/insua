@@ -1,13 +1,14 @@
 'use client'
 
 // 이 lucide 버전에는 브랜드 아이콘(Instagram)이 없다. 인스타는 Camera 로 대신한다.
-import { Camera, Globe, MessageCircle, Phone, Sparkles } from 'lucide-react'
+import { Camera, Globe, MessageCircle, Phone, RefreshCw, Sparkles } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useState, useTransition } from 'react'
 import { TierBadge } from '@/components/ui/TierBadge'
 import { generateHeroForContact } from '@/lib/crm/actions'
+import { regenerateStoreSeo } from '@/lib/stores/seoActions'
 import { overdueDays, type Contact, type Tier } from '@/lib/crm/types'
 import { cn } from '@/lib/utils/cn'
 
@@ -41,6 +42,7 @@ export function PersonCard({
   onOpenLog?: () => void
 }) {
   const t = useTranslations('crm')
+  const tMerchant = useTranslations('merchant')
   const router = useRouter()
   const locale = useLocale()
   const overdue = overdueDays(contact)
@@ -60,6 +62,16 @@ export function PersonCard({
       setToast(result.ok ? t('heroCardDone') : t('heroCardFailed'))
       setTimeout(() => setToast(null), 2200)
       if (result.ok) router.refresh()
+    })
+  }
+
+  /** 랜딩 소개글(SEO 카피)만 다시 발행 — 매장 정보가 바뀌었을 때. */
+  function handleSeo() {
+    if (!contact.storeId) return
+    startTransition(async () => {
+      const result = await regenerateStoreSeo(contact.storeId!)
+      setToast(result.ok ? tMerchant('seoRegenerated') : t('heroCardFailed'))
+      setTimeout(() => setToast(null), 2200)
     })
   }
 
@@ -164,6 +176,22 @@ export function PersonCard({
                   : contact.storeId
                     ? t('viewHeroCard')
                     : t('makeHeroCard')}
+              </button>
+            )}
+
+            {/* 이미 매장이 있으면 랜딩 소개글만 다시 뽑을 수 있다 (사용자 확정 사양) */}
+            {contact.storeId && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleSeo()
+                }}
+                disabled={pending}
+                className="flex items-center justify-center gap-1 rounded-chip border border-line px-2 py-1.5 text-center text-micro text-content-muted disabled:opacity-60"
+              >
+                <RefreshCw size={12} aria-hidden />
+                {tMerchant('regenerateSeo')}
               </button>
             )}
 

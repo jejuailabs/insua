@@ -154,6 +154,32 @@ const PATTERNS: { type: Redaction['type']; re: RegExp; replace: string }[] = [
 AI가 만든 이미지·음원·텍스트는 화면에 **`AI 생성` 배지**를 붙인다.
 `post.aiGeneratedImageURL` 이 있으면 자동으로 표시된다. 이건 옵션이 아니다.
 
+## 7.2 랜딩 SEO/AEO/GEO 카피 발행 (사용자 확정 사양) ✅ 구현됨
+
+히어로 카드를 만들 때 이미지와 **함께** 랜딩 카피를 발행한다
+(`generateStoreSeoCopy`, gpt-4.1-mini, JSON 강제). 카피 실패가 카드 발행을 막지는 않는다 —
+나중에 CRM 카드의 [소개글 다시 만들기]로 채운다 (`regenerateStoreSeo`).
+
+발행물 규격:
+
+| 필드                            | 규격                                    | 쓰이는 곳                        |
+| ------------------------------- | --------------------------------------- | -------------------------------- |
+| `metaTitle`                     | 25~35자                                 | `<title>`                        |
+| `metaDescription`               | 70~90자                                 | meta description · OG · JSON-LD  |
+| `keywords` / `longTailKeywords` | 핵심 2~3개 / 롱테일 4~5개               | meta keywords                    |
+| `headline` / `subheadline`      | 첫 화면 문장                            | 히어로 아래 · 히어로 부제        |
+| `sections`                      | 3개 (소제목 15자 + **서술형** 120~200자) | 매장 소개                        |
+| `faq`                           | 4개 (질문 그대로 + 60~120자 단답)       | FAQ 섹션 + `FAQPage` JSON-LD     |
+| `highlights`                    | 5개 (20자 이내 사실 조각)               | 한눈에 보기 칩                   |
+
+- **SEO** — 메타 규격 + 키워드 + `sitemap.ts` / `robots.ts` + canonical.
+- **AEO** — FAQ 를 화면과 `FAQPage` 구조화 데이터 양쪽에 낸다. 답은 인용 가능한 단답형.
+- **GEO** — 문단마다 상호·지역·업종을 명시해, 잘라 인용해도 주어가 살아 있게 한다.
+- **환각 방지** — 주어진 사실만 쓰게 못박는다. 수상·연혁·원산지처럼 입력에 없는 정보 생성 금지.
+  과장 표현("최고", "1위")과 이모지도 금지.
+- 구조화 데이터는 `Restaurant`/`LocalBusiness` + `FAQPage` 를 한 `@graph` 로 낸다
+  (주소·전화·영업시간·메뉴·평점·좌표 포함).
+
 ## 7.5 음식 사진 원본 충실성 원칙 (메뉴 포스터)
 
 손님이 실제로 받는 음식과 다른 이미지를 만들면 **허위·과장 광고**가 된다.

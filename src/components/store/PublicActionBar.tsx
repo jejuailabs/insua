@@ -28,7 +28,7 @@ export function PublicActionBar({ store }: { store: Store }) {
   return (
     <>
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-surface pb-[env(safe-area-inset-bottom)]">
-        <div className="mx-auto flex max-w-md gap-2 px-4 py-3">
+        <div className="mx-auto flex max-w-md gap-2 px-4 py-3 lg:max-w-3xl">
           <a
             href={`tel:${store.phone}`}
             className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-chip bg-accent-strong text-label text-accent-on"

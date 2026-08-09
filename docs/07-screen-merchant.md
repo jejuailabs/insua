@@ -194,9 +194,21 @@ const MENU_SECTION_KEY: Record<StoreCategory, string> = {
 
 ## B-4. 공개 페이지 `/s/[storeId]`
 
+**앱 화면이 아니라 검색·공유로 바로 들어오는 단독 랜딩페이지다** (사용자 확정 사양).
+앱 레일이 없으므로 나갈 길과 목차를 페이지가 직접 준다.
+
 - 비로그인 접근 가능. `store.isPublic === true` 이고 `status === 'published'` 일 때만.
-- 서버 렌더 + ISR (`revalidate: 300`).
-- 메타데이터: `title = store.name`, `description = store.tagline`, OG 이미지 = `heroImageURL`.
+- 서버 렌더 + ISR (`revalidate: 600`).
+- **상단 바(`LandingNav`, sticky)** — 뒤로(히스토리 없으면 홈) · LOCAL HERO 로고(홈) ·
+  섹션 목차(소개/메뉴/오시는 길/FAQ/후기) · 공유.
+  검색결과에서 바로 들어온 방문자는 뒤로 갈 곳이 없다 — 그때 홈으로 보내는 게 이 버튼의 핵심이다.
+- **섹션 흐름** — 히어로 → AI 헤드라인 → 한눈에 보기(칩) → 매장 소개(소제목+서술형 3섹션) →
+  메뉴 → 오시는 길(큰 지도) → FAQ → 방문 후기 → AI 생성 고지. 컨테이너 `max-w-3xl`.
+- 메타데이터는 AI 카피(`store.seo`)를 우선 쓰고 없으면 매장 필드로 폴백한다:
+  title/description/keywords/canonical/OG/Twitter (`docs/10 §7.2`).
+- **JSON-LD** — `Restaurant`(또는 `LocalBusiness`) + `FAQPage` 를 `@graph` 하나로.
+- 색인: `src/app/sitemap.ts` 가 공개 매장 × 4로케일 URL 을 싣고, `robots.ts` 가
+  개인 화면(`/admin` `/crm` `/me` `/saved` …)을 막는다.
 - 하단에 `ComposerSheet` 대신 `[전화하기] [길찾기] [공유]` 액션 바.
 - **연결된 `contact.consent.portrait !== true` 면 사장님 사진을 쓰지 않고**
   매장 대표 이미지로 대체한다. 동의 없는 인물 사진 공개는 금지.
