@@ -64,9 +64,15 @@ export async function runAiTool(form: FormData): Promise<ToolResult> {
       const menuName = String(form.get('menuName') ?? '').trim()
       const price = String(form.get('price') ?? '').trim()
       step = template.id
+      // 원본 충실성 원칙 — 음식 사진은 "포토샵 보정" 수준까지만 (허위·과장 광고 방지)
       prompt =
         `A beautiful printable menu poster designed by a food-branding designer with 20 years of experience, for a small local shop. ` +
-        `Use the provided dish photo as the hero image, re-plated and re-lit to look appetizing and professional. ` +
+        `Use the provided dish photo as the hero image. ` +
+        `Photo integrity rule — retouch the dish photo only as a professional photo editor would: ` +
+        `exposure, white balance, color vibrance, contrast, sharpness, and cleaning up background clutter. ` +
+        `Never add, remove, enlarge or replace any food, ingredient, garnish or tableware, and never change the portion size or plating — ` +
+        `the dish must stay truthful to what customers are actually served. ` +
+        `All creative decoration (frames, patterns, illustrations, typography) goes around the photo, never inside the dish itself. ` +
         `Style: ${template.style}. Vertical poster composition with tasteful typography hierarchy. ` +
         (menuName
           ? `The poster prominently features the menu name "${menuName}"${price ? ` and the price "${price}원"` : ''} in Korean. `
