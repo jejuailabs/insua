@@ -4,7 +4,6 @@ import { revalidatePath } from 'next/cache'
 import { requireSession } from '@/lib/auth/session'
 import { getAdminDb } from '@/lib/firebase/admin'
 import { uploadToStorage } from '@/lib/stores/data'
-import { pickPostcardCopy } from './openai'
 import { AI_TOOLS, DEFAULT_MENU_TEMPLATES, listMenuTemplates, type AiToolId } from './tools'
 
 type ToolResult =
@@ -115,7 +114,7 @@ export async function runAiTool(form: FormData): Promise<ToolResult> {
       /**
        * 감성엽서 — 20년차 인쇄물 디자이너 (사용자 확정 사양).
        * 원 프롬프트의 단계별 질문(사진→날짜→이름)은 입력 필드가 대신 강제하므로,
-       * 여기서는 "문구 선정 → 즉시 생성"만 수행한다.
+       * 문구 선정도 gpt-image-2 가 직접 한다 — 별도 모델 호출 없이 한 번에 끝낸다.
        */
       const ownerName = String(form.get('ownerName') ?? '')
         .replace(/[^\p{L}\p{N} ]/gu, '')
@@ -124,19 +123,20 @@ export async function runAiTool(form: FormData): Promise<ToolResult> {
       if (!ownerName || !/^\d{4}-\d{2}-\d{2}$/.test(dateRaw)) return { ok: false, code: 'INVALID' }
       const dateLabel = dateRaw.replace(/-/g, '.')
 
-      // 사진을 직접 보고 문구를 고른다. 사진이 없으면 장면까지 함께 정한다.
-      const copy = await pickPostcardCopy(image1 ?? undefined)
       step = 'postcard'
 
+      // 문구 선정까지 이미지 모델이 한다 (사용자 확정 사양) — 별도 모델 호출 없이 한 번에.
       prompt =
         `A refined emotional postcard designed by a print designer with 20 years of experience — ` +
         `the quality of a page from a published essay book or a postcard sold in a design bookstore. ` +
         (image1
           ? `Use the provided photograph as the main visual, with subtle film-like color grading that suits its mood. `
-          : `Main visual: ${copy.scene}, photographed with a quiet, cinematic, film-like mood. `) +
+          : `Invent a quiet, cinematic, film-like scene that works beautifully as a postcard. `) +
+        `Read the mood of the visual — subject, color, season, time of day, emotion — and choose ONE fitting ` +
+        `Korean line yourself: 20-40 characters including spaces, no clichés, no self-help platitudes, no emoji. ` +
+        `Set that line in elegant type, well balanced with the photo, with generous whitespace. ` +
         `FULL BLEED — the image must extend to every edge. Absolutely no white border, no frame, ` +
         `no polaroid border, no matting. Breathing room comes only from typographic whitespace inside the image. ` +
-        `Set this Korean line in elegant type, well balanced with the photo, with generous whitespace: "${copy.quote}". ` +
         `Set the date "${dateLabel}" small and quiet in a serif face. ` +
         `Add a single artist's seal (한국 낙관) reading the name "${ownerName}" with the word "Dream" beneath it. ` +
         `Seal rules: its width must stay within 6-10% of the image's shorter side — present but never dominating; ` +
