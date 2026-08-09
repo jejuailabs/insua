@@ -169,21 +169,24 @@ export default async function MerchantHomePage({
           <SectionHeader title={t('aiTools.section')} />
           <ul className="mt-3 grid grid-cols-3 gap-2">
             {[
-              { icon: ImageIcon, label: t('aiTools.menuPoster') },
-              { icon: Music, label: t('aiTools.themeSong') },
+              { icon: ImageIcon, label: t('aiTools.menuPoster'), href: '/ai-tools/menu-poster' },
+              { icon: Music, label: t('aiTools.themeSong'), href: '/ai-tools' },
               {
                 icon: Wand2,
                 label: t('aiTools.virtualStudio'),
                 sub: t('aiTools.virtualStudioSub'),
+                href: '/ai-tools',
               },
-            ].map(({ icon: Icon, label, sub }) => (
-              <li
-                key={label}
-                className="flex flex-col items-center justify-center gap-1.5 rounded-inner border border-line bg-surface-2 px-2 py-4 text-center"
-              >
-                <Icon size={20} aria-hidden className="text-accent-strong" />
-                <span className="text-label text-content">{label}</span>
-                {sub && <span className="text-micro text-content-muted">{sub}</span>}
+            ].map(({ icon: Icon, label, sub, href }) => (
+              <li key={label}>
+                <Link
+                  href={href}
+                  className="flex flex-col items-center justify-center gap-1.5 rounded-inner border border-line bg-surface-2 px-2 py-4 text-center hover:border-accent"
+                >
+                  <Icon size={20} aria-hidden className="text-accent-strong" />
+                  <span className="text-label text-content">{label}</span>
+                  {sub && <span className="text-micro text-content-muted">{sub}</span>}
+                </Link>
               </li>
             ))}
           </ul>
@@ -230,7 +233,7 @@ async function QuickActions() {
     { icon: HomeIcon, label: t('merchant.quick.realty') },
     { icon: Landmark, label: t('merchant.quick.support') },
     { icon: ShoppingCart, label: t('merchant.quick.groupbuy') },
-    { icon: Sparkles, label: t('merchant.quick.aitools') },
+    { icon: Sparkles, label: t('merchant.quick.aitools'), href: '/ai-tools' },
     { icon: Share2, label: t('merchant.quick.share') },
   ]
 

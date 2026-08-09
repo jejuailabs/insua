@@ -16,11 +16,13 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { Composer, type DraftPost } from './Composer'
 import { StoreHeroCard } from './StoreHeroCard'
+import { createFeedPost } from '@/lib/feed/actions'
+import { createAnonymousPost } from '@/lib/merchant/actions'
 import { MENU_SECTION_KEY, type ModuleId, type Store } from '@/lib/mock/store'
 import { cn } from '@/lib/utils/cn'
 
 type ModuleState = { id: ModuleId; visible: boolean }
-type Post = DraftPost & { id: number; minutesAgo: number }
+export type NewsPost = { id: string; text: string; imageUrl: string | null; minutesAgo: number }
 
 /**
  * 내 매장 화면 (ref-01, docs/07 B).
@@ -28,7 +30,7 @@ type Post = DraftPost & { id: number; minutesAgo: number }
  * - 컴포저: 텍스트·사진·익명 게시 → 소식 섹션에 즉시 반영
  * - 편집 화면과 공개 화면(/s/[id])은 같은 데이터를 다른 컴포넌트가 렌더한다 (B 원칙)
  */
-export function StoreScreen({ stores }: { stores: Store[] }) {
+export function StoreScreen({ stores, news = [] }: { stores: Store[]; news?: NewsPost[] }) {
   const t = useTranslations()
   const router = useRouter()
   const locale = useLocale()
@@ -40,7 +42,6 @@ export function StoreScreen({ stores }: { stores: Store[] }) {
     { id: 'about', visible: true },
     { id: 'news', visible: true },
   ])
-  const [posts, setPosts] = useState<Post[]>([])
 
   const store = stores[index]!
 
@@ -59,8 +60,18 @@ export function StoreScreen({ stores }: { stores: Store[] }) {
     setModules((list) => list.map((m) => (m.id === id ? { ...m, visible: !m.visible } : m)))
   }
 
+  /** 게시 — 실명은 공개 피드(posts), 익명은 익명방(anonymousPosts)으로 (사용자 확정 사양). */
   function addPost(draft: DraftPost) {
-    setPosts((list) => [{ ...draft, id: Date.now(), minutesAgo: 0 }, ...list])
+    if (draft.anonymous) {
+      void createAnonymousPost(draft.text).then(() => router.refresh())
+      return
+    }
+    const form = new FormData()
+    form.set('body', draft.text)
+    form.set('storeId', store.id)
+    form.set('authorName', store.name)
+    if (draft.file) form.set('photo', draft.file)
+    void createFeedPost(form).then(() => router.refresh())
   }
 
   const sectionTitle: Record<ModuleId, string> = {
@@ -159,7 +170,7 @@ export function StoreScreen({ stores }: { stores: Store[] }) {
 
               {mod.id === 'menu' && <MenuGrid store={store} />}
               {mod.id === 'about' && <AboutSection store={store} />}
-              {mod.id === 'news' && <NewsList posts={posts} />}
+              {mod.id === 'news' && <NewsList posts={news} />}
             </section>
           )
         })}
@@ -207,7 +218,7 @@ function AboutSection({ store }: { store: Store }) {
   )
 }
 
-function NewsList({ posts }: { posts: Post[] }) {
+function NewsList({ posts }: { posts: NewsPost[] }) {
   const t = useTranslations()
   if (!posts.length) {
     // 제품 철학 문구 그대로 (docs/07 B-7). 바꾸지 말 것.
@@ -219,14 +230,12 @@ function NewsList({ posts }: { posts: Post[] }) {
         <li key={post.id} className="rounded-inner border border-line bg-surface p-3">
           {post.imageUrl && (
             <div className="relative mb-2 aspect-[2/1] overflow-hidden rounded-inner">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={post.imageUrl} alt="" className="h-full w-full object-cover" />
+              <Image src={post.imageUrl} alt="" fill sizes="480px" className="object-cover" />
             </div>
           )}
           {post.text && <p className="text-body text-content">{post.text}</p>}
           <p className="mt-1.5 text-micro text-content-muted">
-            {post.anonymous ? t('anonymous.author') : t('merchant.myStore')} ·{' '}
-            {t('common.minutesAgo', { n: post.minutesAgo })}
+            {t('merchant.myStore')} · {t('common.minutesAgo', { n: post.minutesAgo })}
           </p>
         </li>
       ))}

@@ -280,7 +280,39 @@
     "virtualStudio": "Virtual studio",
     "virtualStudioSub": "Apparel · Hair · Nail · Pet",
     "freeWithAgent": "Free to use if you have an assigned planner.",
-    "paidWithoutAgent": "Assign a planner to switch to free."
+    "paidWithoutAgent": "Assign a planner to switch to free.",
+    "menuPosterDesc": "One dish photo into a wall-worthy poster",
+    "fitting": "Virtual fitting room",
+    "fittingDesc": "Studio-retouch a portrait, then try on clothes",
+    "nail": "Virtual nail room",
+    "nailDesc": "Apply nail designs onto a hand photo",
+    "pet": "Pet studio",
+    "petDesc": "Studio pet shots + accessory try-on",
+    "inputMenuPhoto": "Menu photo",
+    "inputPersonPhoto": "Person photo",
+    "inputClothing": "Clothing photo",
+    "inputHandPhoto": "Hand photo (nails visible)",
+    "inputNailDesign": "Nail design",
+    "inputPetPhoto": "Pet photo",
+    "inputPetAccessory": "Accessory / apparel (optional)",
+    "templates": "Templates",
+    "posterMenuName": "Menu name (shown on poster)",
+    "posterPrice": "Price (optional)",
+    "sizePlaceholder": "Size (e.g. KR women 66, 77)",
+    "stageStudio": "Step 1 · Studio retouch",
+    "stageWear": "Step 2 · Try on",
+    "generate": "Generate",
+    "generating": "Generating… (up to 30s)",
+    "failed": "Generation failed. Please retry.",
+    "resultTitle": "Result",
+    "aiBadge": "AI generated",
+    "download": "Save",
+    "history": "History",
+    "historyHint": "Every result is kept automatically, even without saving.",
+    "historyEmpty": "Nothing generated yet",
+    "addTemplate": "Add template",
+    "templateName": "Template name",
+    "templateStyle": "Style description (English prompt)"
   },
   "consumer": {
     "brand": "LOCAL HERO",
@@ -355,7 +387,9 @@
     "viewAgent": "Agent screen",
     "viewMerchant": "Merchant screen",
     "viewConsumer": "Consumer screen",
-    "backToConsole": "Console"
+    "backToConsole": "Console",
+    "grantAdmin": "Grant admin",
+    "revokeAdmin": "Revoke admin"
   },
   "format": {
     "currency": "₩{amount}",
@@ -376,5 +410,13 @@
     "inquiryKakao": "KakaoTalk",
     "soldBy": "Seller",
     "empty": "No products yet"
+  },
+  "feed": {
+    "liveSection": "Live local feed",
+    "write": "Post an update",
+    "writeHint": "Photos and updates appear on the main feed in real time",
+    "placeholder": "Share local news, products, or food finds",
+    "post": "Post",
+    "posted": "Posted"
   }
 }

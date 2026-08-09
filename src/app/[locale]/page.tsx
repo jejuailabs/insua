@@ -2,11 +2,13 @@ import { Bell } from 'lucide-react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { AuthLauncher } from '@/components/auth/AuthLauncher'
 import { consumerRail } from '@/components/home/consumerRail'
+import { LiveFeed } from '@/components/feed/LiveFeed'
 import { FeedShowcase } from '@/components/home/FeedShowcase'
 import { RadiusChips } from '@/components/home/RadiusChips'
 import { SettingsButton } from '@/components/layout/SettingsButton'
 import { SideRail } from '@/components/layout/SideRail'
 import { getSession } from '@/lib/auth/session'
+import { listFeedPosts } from '@/lib/feed/data'
 import { getMyConsumerProfile } from '@/lib/consumer/actions'
 import { listHeroes } from '@/lib/stores/data'
 
@@ -26,6 +28,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const session = await getSession()
   const profile = session ? await getMyConsumerProfile() : null
   const heroes = await listHeroes()
+  const feedPosts = await listFeedPosts()
   const t = await getTranslations()
 
   return (
@@ -60,6 +63,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               initialSavedIds={profile?.savedStoreIds ?? []}
             />
           </div>
+
+          <LiveFeed posts={feedPosts} />
         </main>
       </div>
 

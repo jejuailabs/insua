@@ -280,7 +280,39 @@
     "virtualStudio": "가상 스튜디오",
     "virtualStudioSub": "의류 · 헤어 · 네일 · 펫",
     "freeWithAgent": "담당 설계사가 있으면 무료로 이용할 수 있습니다.",
-    "paidWithoutAgent": "담당 설계사를 지정하면 무료로 전환됩니다."
+    "paidWithoutAgent": "담당 설계사를 지정하면 무료로 전환됩니다.",
+    "menuPosterDesc": "메뉴 사진 한 장으로 걸어두고 싶은 포스터를",
+    "fitting": "가상 피팅룸",
+    "fittingDesc": "스튜디오 인물 보정 후 옷을 입혀보세요",
+    "nail": "가상 네일룸",
+    "nailDesc": "손 사진에 네일 디자인을 얹어봅니다",
+    "pet": "펫 스튜디오",
+    "petDesc": "반려동물 스튜디오 촬영 + 악세사리 착장",
+    "inputMenuPhoto": "메뉴 사진",
+    "inputPersonPhoto": "인물 사진",
+    "inputClothing": "옷 사진",
+    "inputHandPhoto": "손 사진 (손톱이 잘 보이게)",
+    "inputNailDesign": "네일 디자인",
+    "inputPetPhoto": "반려동물 사진",
+    "inputPetAccessory": "악세사리·어패럴 (선택)",
+    "templates": "템플릿",
+    "posterMenuName": "메뉴명 (포스터에 표기)",
+    "posterPrice": "가격 (선택)",
+    "sizePlaceholder": "사이즈 (예: 여성복 66, 77)",
+    "stageStudio": "1단계 · 스튜디오 보정",
+    "stageWear": "2단계 · 옷 입히기",
+    "generate": "생성하기",
+    "generating": "생성 중… (최대 30초)",
+    "failed": "생성에 실패했습니다. 다시 시도해 주세요.",
+    "resultTitle": "결과",
+    "aiBadge": "AI 생성",
+    "download": "저장하기",
+    "history": "생성 내역",
+    "historyHint": "저장을 누르지 않아도 모든 결과가 자동으로 남습니다.",
+    "historyEmpty": "아직 생성한 결과가 없습니다",
+    "addTemplate": "템플릿 추가",
+    "templateName": "템플릿 이름",
+    "templateStyle": "스타일 설명 (영문 프롬프트)"
   },
   "consumer": {
     "brand": "LOCAL HERO",
@@ -355,7 +387,9 @@
     "viewAgent": "설계사 화면",
     "viewMerchant": "소상공인 화면",
     "viewConsumer": "일반인 화면",
-    "backToConsole": "콘솔로"
+    "backToConsole": "콘솔로",
+    "grantAdmin": "관리자 지정",
+    "revokeAdmin": "관리자 해제"
   },
   "format": {
     "currency": "{amount}원",
@@ -376,5 +410,13 @@
     "inquiryKakao": "카카오톡 문의",
     "soldBy": "판매",
     "empty": "등록된 상품이 없습니다"
+  },
+  "feed": {
+    "liveSection": "실시간 로컬 소식",
+    "write": "소식 올리기",
+    "writeHint": "사진과 소식이 메인 피드에 실시간으로 올라갑니다",
+    "placeholder": "동네 소식, 상품, 맛집 이야기를 올려보세요",
+    "post": "올리기",
+    "posted": "올렸습니다"
   }
 }

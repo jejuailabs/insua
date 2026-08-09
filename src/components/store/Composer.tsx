@@ -6,7 +6,7 @@ import { useRef, useState } from 'react'
 import { Modal } from '@/components/ui/Modal'
 import { cn } from '@/lib/utils/cn'
 
-export type DraftPost = { text: string; imageUrl?: string; anonymous: boolean }
+export type DraftPost = { text: string; imageUrl?: string; file?: File | null; anonymous: boolean }
 
 /**
  * 하단 컴포저 (ref-01, docs/07 B-5·B-6).
@@ -19,6 +19,7 @@ export function Composer({ onPost }: { onPost: (draft: DraftPost) => void }) {
   const [text, setText] = useState('')
   const [anonymous, setAnonymous] = useState(false)
   const [imageUrl, setImageUrl] = useState<string | null>(null)
+  const [imageFile, setImageFile] = useState<File | null>(null)
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [toast, setToast] = useState<string | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -31,9 +32,10 @@ export function Composer({ onPost }: { onPost: (draft: DraftPost) => void }) {
 
   function submit() {
     if (!text.trim() && !imageUrl) return
-    onPost({ text: text.trim(), imageUrl: imageUrl ?? undefined, anonymous })
+    onPost({ text: text.trim(), imageUrl: imageUrl ?? undefined, file: imageFile, anonymous })
     setText('')
     setImageUrl(null)
+    setImageFile(null)
     setAnonymous(false)
     setConfirmOpen(false)
     showToast(t('merchant.posted'))
@@ -48,8 +50,8 @@ export function Composer({ onPost }: { onPost: (draft: DraftPost) => void }) {
 
   function pickPhoto(file: File | undefined) {
     if (!file) return
-    // Storage 업로드는 실데이터 단계(M5 후반). 지금은 로컬 미리보기로 흐름만 잇는다.
     setImageUrl(URL.createObjectURL(file))
+    setImageFile(file)
   }
 
   if (!open) {

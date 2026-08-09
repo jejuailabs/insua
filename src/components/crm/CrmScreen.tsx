@@ -18,6 +18,7 @@ import { useRouter } from 'next/navigation'
 import { useMemo, useState } from 'react'
 import { NewContactForm } from './NewContactForm'
 import { PersonCard } from './PersonCard'
+import { FeedPostButton } from '@/components/feed/FeedPostButton'
 import { Modal } from '@/components/ui/Modal'
 import { overdueDays, TIERS, type Contact, type Tier } from '@/lib/crm/types'
 import { cn } from '@/lib/utils/cn'
@@ -131,8 +132,12 @@ export function CrmScreen({ contacts }: { contacts: Contact[] }) {
     <>
       <header className="flex items-center justify-between">
         <h1 className="text-display text-content">{t('crm.title')}</h1>
-        <span className="grid h-10 w-10 place-items-center rounded-pill text-content-muted">
-          <Bell size={20} aria-hidden />
+        <span className="flex items-center gap-1">
+          {/* 피드 글쓰기 — 설계사 소식이 메인 실시간 피드로 (사용자 확정 사양) */}
+          <FeedPostButton />
+          <span className="grid h-10 w-10 place-items-center rounded-pill text-content-muted">
+            <Bell size={20} aria-hidden />
+          </span>
         </span>
       </header>
 

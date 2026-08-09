@@ -280,7 +280,39 @@
     "virtualStudio": "虚拟工作室",
     "virtualStudioSub": "服装 · 美发 · 美甲 · 宠物",
     "freeWithAgent": "有专属规划师即可免费使用。",
-    "paidWithoutAgent": "指定专属规划师后即可免费。"
+    "paidWithoutAgent": "指定专属规划师后即可免费。",
+    "menuPosterDesc": "一张菜品照片变成值得挂墙的海报",
+    "fitting": "虚拟试衣间",
+    "fittingDesc": "棚拍级人像修图后试穿衣服",
+    "nail": "虚拟美甲房",
+    "nailDesc": "在手部照片上试戴美甲",
+    "pet": "宠物摄影棚",
+    "petDesc": "宠物棚拍 + 配饰试戴",
+    "inputMenuPhoto": "菜品照片",
+    "inputPersonPhoto": "人物照片",
+    "inputClothing": "服装照片",
+    "inputHandPhoto": "手部照片 (指甲清晰)",
+    "inputNailDesign": "美甲设计",
+    "inputPetPhoto": "宠物照片",
+    "inputPetAccessory": "配饰·服装 (可选)",
+    "templates": "模板",
+    "posterMenuName": "菜名 (显示在海报上)",
+    "posterPrice": "价格 (可选)",
+    "sizePlaceholder": "尺码 (如 女装66, 77)",
+    "stageStudio": "第1步 · 棚拍修图",
+    "stageWear": "第2步 · 试穿",
+    "generate": "生成",
+    "generating": "生成中… (最多30秒)",
+    "failed": "生成失败, 请重试。",
+    "resultTitle": "结果",
+    "aiBadge": "AI 生成",
+    "download": "保存",
+    "history": "生成记录",
+    "historyHint": "即使不点保存, 所有结果也会自动保留。",
+    "historyEmpty": "还没有生成记录",
+    "addTemplate": "添加模板",
+    "templateName": "模板名称",
+    "templateStyle": "风格描述 (英文提示词)"
   },
   "consumer": {
     "brand": "LOCAL HERO",
@@ -355,7 +387,9 @@
     "viewAgent": "设计师页面",
     "viewMerchant": "商户页面",
     "viewConsumer": "消费者页面",
-    "backToConsole": "控制台"
+    "backToConsole": "控制台",
+    "grantAdmin": "指定管理员",
+    "revokeAdmin": "解除管理员"
   },
   "format": {
     "currency": "₩{amount}",
@@ -376,5 +410,13 @@
     "inquiryKakao": "KakaoTalk 咨询",
     "soldBy": "卖家",
     "empty": "暂无商品"
+  },
+  "feed": {
+    "liveSection": "实时本地动态",
+    "write": "发布动态",
+    "writeHint": "照片和动态会实时出现在主页信息流",
+    "placeholder": "分享本地消息、商品或美食",
+    "post": "发布",
+    "posted": "已发布"
   }
 }

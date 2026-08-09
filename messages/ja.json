@@ -280,7 +280,39 @@
     "virtualStudio": "バーチャルスタジオ",
     "virtualStudioSub": "アパレル · ヘア · ネイル · ペット",
     "freeWithAgent": "担当プランナーがいれば無料で使えます。",
-    "paidWithoutAgent": "担当プランナーを指定すると無料になります。"
+    "paidWithoutAgent": "担当プランナーを指定すると無料になります。",
+    "menuPosterDesc": "料理写真1枚を飾りたくなるポスターに",
+    "fitting": "バーチャル試着室",
+    "fittingDesc": "スタジオ加工した人物に服を試着",
+    "nail": "バーチャルネイルルーム",
+    "nailDesc": "手の写真にネイルデザインを装着",
+    "pet": "ペットスタジオ",
+    "petDesc": "ペットのスタジオ撮影 + 小物試着",
+    "inputMenuPhoto": "メニュー写真",
+    "inputPersonPhoto": "人物写真",
+    "inputClothing": "服の写真",
+    "inputHandPhoto": "手の写真 (爪が見えるように)",
+    "inputNailDesign": "ネイルデザイン",
+    "inputPetPhoto": "ペットの写真",
+    "inputPetAccessory": "小物·アパレル (任意)",
+    "templates": "テンプレート",
+    "posterMenuName": "メニュー名 (ポスターに表示)",
+    "posterPrice": "価格 (任意)",
+    "sizePlaceholder": "サイズ (例: レディース66, 77)",
+    "stageStudio": "Step1 · スタジオ加工",
+    "stageWear": "Step2 · 試着",
+    "generate": "生成する",
+    "generating": "生成中… (最大30秒)",
+    "failed": "生成に失敗しました。再試行してください。",
+    "resultTitle": "結果",
+    "aiBadge": "AI 生成",
+    "download": "保存",
+    "history": "生成履歴",
+    "historyHint": "保存を押さなくても結果は自動で残ります。",
+    "historyEmpty": "まだ生成履歴がありません",
+    "addTemplate": "テンプレート追加",
+    "templateName": "テンプレート名",
+    "templateStyle": "スタイル説明 (英語プロンプト)"
   },
   "consumer": {
     "brand": "LOCAL HERO",
@@ -355,7 +387,9 @@
     "viewAgent": "プランナー画面",
     "viewMerchant": "事業者画面",
     "viewConsumer": "一般画面",
-    "backToConsole": "コンソールへ"
+    "backToConsole": "コンソールへ",
+    "grantAdmin": "管理者に指定",
+    "revokeAdmin": "管理者を解除"
   },
   "format": {
     "currency": "₩{amount}",
@@ -376,5 +410,13 @@
     "inquiryKakao": "カカオトークで問い合わせ",
     "soldBy": "販売者",
     "empty": "商品がまだありません"
+  },
+  "feed": {
+    "liveSection": "リアルタイム地元フィード",
+    "write": "投稿する",
+    "writeHint": "写真と投稿がメインフィードにリアルタイムで表示されます",
+    "placeholder": "地元の話題や商品、グルメを投稿しましょう",
+    "post": "投稿",
+    "posted": "投稿しました"
   }
 }
