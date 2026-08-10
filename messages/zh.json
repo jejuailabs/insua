@@ -208,7 +208,8 @@
     "deleteContact": "删除客户卡",
     "deleteConfirm": "确认删除",
     "deleteWarning": "咨询记录也会一并删除且无法恢复。由该客户生成的公开页面将转为非公开。",
-    "editShort": "修改"
+    "editShort": "修改",
+    "remakeHeroCard": "重新生成主角卡"
   },
   "merchant": {
     "spaceName": "小微店主的专属空间",

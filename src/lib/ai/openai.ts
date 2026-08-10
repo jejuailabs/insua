@@ -38,18 +38,23 @@ export async function generateHeroImage(input: {
   form.append('quality', 'low')
   form.append('size', '1024x1536')
   form.append('output_format', 'webp')
-  // 사장 얼굴과 대표 메뉴가 화면을 지배해야 한다 (사용자 확정 사양) —
-  // 얼굴은 밝고 신뢰가는 미소로 또렷하게, 메뉴는 전경에 크게.
+  // 사용자 지적 반영: 전체가 어둡고 얼굴이 너무 컸다.
+  // → 밝고 화사한 조명, 얼굴 비율 축소, 음식이 주인공으로 먹음직스럽게.
   form.append(
     'prompt',
-    `Vertical hero portrait for a local "${input.category}" shop called "${input.storeName}" (${input.tagline}) in Jeju, Korea. ` +
-      `THE TWO DOMINANT SUBJECTS: (1) the owner's face from the first provided photo — bright, warm, trustworthy smile, ` +
-      `looking straight at the camera, face large, sharp and well-lit in the upper half of the frame; ` +
+    `Vertical hero shot for a local "${input.category}" shop called "${input.storeName}" (${input.tagline}) in Jeju, Korea. ` +
+      `LIGHTING IS EVERYTHING: bright, airy, high-key daylight — like a sunlit food magazine cover. ` +
+      `The whole frame is luminous; the owner's face and the dish are the brightest, most vivid parts of the image. ` +
+      `Absolutely no dark, moody, dim or heavy cinematic grading. No deep shadows on the face or the food. ` +
+      `THE HERO OF THE FRAME IS THE FOOD: ` +
       (input.menuPhoto
-        ? `(2) the signature dish from the second provided photo — held proudly in the foreground at chest level, large, appetizing, in crisp focus. `
-        : `(2) their signature product presented proudly in the foreground, large and in crisp focus. `) +
-      `Waist-up composition, the face and the dish together fill most of the frame. ` +
-      `Background: their shop interior, softly blurred, warm natural light, cinematic amber grading. ` +
+        ? `the signature dish from the second provided photo, held forward in the foreground — large, glistening, ` +
+          `steaming, in crisp focus with vivid natural colors, styled to look irresistibly appetizing. `
+        : `their signature product held forward in the foreground — large, in crisp focus, styled to look irresistibly appetizing. `) +
+      `The owner (from the first provided photo) stands behind it with a warm, genuine, trustworthy smile — ` +
+      `their face clearly visible and brightly lit, but modest in size: roughly a quarter of the frame height, ` +
+      `never crowding out the dish. Waist-up composition with breathing room. ` +
+      `Background: their shop interior, softly blurred, filled with warm natural light. ` +
       `Keep the owner's identity faithful to the photo. Photorealistic. ` +
       `No text, no logo, no watermark, no lettering anywhere in the image.`,
   )

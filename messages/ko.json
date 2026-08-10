@@ -208,7 +208,8 @@
     "deleteContact": "고객카드 삭제",
     "deleteConfirm": "삭제합니다",
     "deleteWarning": "상담로그까지 함께 지워지고 되돌릴 수 없습니다. 이 고객으로 만든 공개 페이지가 있으면 비공개로 바뀝니다.",
-    "editShort": "수정"
+    "editShort": "수정",
+    "remakeHeroCard": "히어로 다시 만들기"
   },
   "merchant": {
     "spaceName": "소상공인들만의 공간",

@@ -208,7 +208,8 @@
     "deleteContact": "顧客カード削除",
     "deleteConfirm": "削除する",
     "deleteWarning": "相談ログも一緒に削除され、元に戻せません。この顧客から作った公開ページは非公開になります。",
-    "editShort": "編集"
+    "editShort": "編集",
+    "remakeHeroCard": "ヒーロー再生成"
   },
   "merchant": {
     "spaceName": "個人店主だけの空間",

@@ -208,7 +208,8 @@
     "deleteContact": "Delete customer",
     "deleteConfirm": "Delete",
     "deleteWarning": "Consultation logs are deleted too and cannot be restored. Any public page made from this customer becomes private.",
-    "editShort": "Edit"
+    "editShort": "Edit",
+    "remakeHeroCard": "Remake hero"
   },
   "merchant": {
     "spaceName": "A space just for local owners",

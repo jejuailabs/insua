@@ -77,6 +77,17 @@ export function PersonCard({
     })
   }
 
+  /** 히어로 이미지 재생성 — 프롬프트가 개선됐을 때 기존 카드도 다시 뽑는다 (사용자 지적). */
+  function handleRemakeHero() {
+    if (!contact.storeId || pending) return
+    startTransition(async () => {
+      const result = await generateHeroForContact(contact.id)
+      setToast(result.ok ? t('heroCardDone') : t('heroCardFailed'))
+      setTimeout(() => setToast(null), 2200)
+      if (result.ok) router.refresh()
+    })
+  }
+
   return (
     <article
       className={cn(
@@ -115,48 +126,70 @@ export function PersonCard({
           )}
         </div>
 
-        <div className="flex min-w-0 flex-1 gap-3">
-          <div className="min-w-0 flex-1">
-            <p className="flex items-center gap-2">
-              <span className="truncate text-subtitle text-content">{contact.name}</span>
-              <TierBadge tier={contact.tier} />
+        {/* 정보는 한 컬럼으로 폭 전체를 쓴다 — 좁은 화면에서 이름·전화가 잘리지 않는다 (사용자 지적) */}
+        <div className="min-w-0 flex-1">
+          <p className="flex items-center gap-1.5">
+            <span className="truncate text-subtitle text-content">{contact.name}</span>
+            <TierBadge tier={contact.tier} />
+          </p>
+          {contact.company && (
+            <p className="mt-0.5 truncate text-body text-content">{contact.company}</p>
+          )}
+          {contact.position && (
+            <p className="truncate text-caption text-content-muted">{contact.position}</p>
+          )}
+          {contact.phone && (
+            <a
+              href={`tel:${contact.phone}`}
+              onClick={(e) => e.stopPropagation()}
+              className="tabular mt-1 flex items-center gap-1.5 text-label text-content"
+            >
+              <Phone size={13} aria-hidden className="text-content-muted" />
+              {contact.phone}
+            </a>
+          )}
+          {contact.website && (
+            <p className="mt-0.5 flex items-center gap-1.5 truncate text-caption text-content-muted">
+              <Globe size={13} aria-hidden />
+              {contact.website}
             </p>
-            {contact.company && (
-              <p className="mt-0.5 truncate text-body text-content">{contact.company}</p>
-            )}
-            {contact.position && (
-              <p className="truncate text-caption text-content-muted">{contact.position}</p>
-            )}
-            {contact.phone && (
-              <a
-                href={`tel:${contact.phone}`}
-                onClick={(e) => e.stopPropagation()}
-                className="tabular mt-1 flex items-center gap-1.5 text-label text-content"
-              >
-                <Phone size={13} aria-hidden className="text-content-muted" />
-                {contact.phone}
-              </a>
-            )}
-            {contact.website && (
-              <p className="mt-0.5 flex items-center gap-1.5 truncate text-caption text-content-muted">
-                <Globe size={13} aria-hidden />
-                {contact.website}
-              </p>
-            )}
-            <p className="mt-1.5 flex items-center gap-1.5 text-content-muted">
-              {contact.consent.dataSharing && <Camera size={15} aria-hidden />}
-              {contact.consent.recording && <MessageCircle size={15} aria-hidden />}
-            </p>
-          </div>
+          )}
+          <p className="mt-1.5 flex items-center gap-1.5 text-content-muted">
+            {contact.consent.dataSharing && <Camera size={15} aria-hidden />}
+            {contact.consent.recording && <MessageCircle size={15} aria-hidden />}
+          </p>
+        </div>
+      </div>
 
-          <div className="flex w-28 shrink-0 flex-col justify-between gap-1.5">
-            <div>
-              <p className="text-caption text-content-muted">{t('note')}</p>
-              <p className="mt-0.5 line-clamp-2 text-label text-content">{contact.note}</p>
-            </div>
+      {/* 특이사항 — 한 줄로 폭 전체 */}
+      {contact.note && (
+        <p className="mt-2.5 truncate text-caption text-content">
+          <span className="text-content-muted">{t('note')}</span>
+          <span className="mx-1.5 text-content-faint">·</span>
+          {contact.note}
+        </p>
+      )}
 
-            {/* 히어로 카드 — 있으면 보기, 없으면 버튼 하나로 생성 (동의 시) */}
-            {contact.hasStoreDraft && (
+      {/* 액션 — 세로로 짓누르던 우측 컬럼 대신 하단 가로 배치 */}
+      <div className="mt-3 flex flex-col gap-1.5">
+        {contact.hasStoreDraft && !contact.storeId && (
+          <button
+            type="button"
+            disabled={pending}
+            onClick={(e) => {
+              e.stopPropagation()
+              handleHeroCard()
+            }}
+            className="flex min-h-10 items-center justify-center gap-1.5 rounded-chip bg-accent-strong text-label text-accent-on disabled:opacity-60"
+          >
+            <Sparkles size={14} aria-hidden />
+            {pending ? t('form.generating') : t('makeHeroCard')}
+          </button>
+        )}
+
+        <div className="grid grid-cols-2 gap-1.5">
+          {contact.storeId && (
+            <>
               <button
                 type="button"
                 disabled={pending}
@@ -164,65 +197,64 @@ export function PersonCard({
                   e.stopPropagation()
                   handleHeroCard()
                 }}
-                className={cn(
-                  'flex items-center justify-center gap-1 rounded-chip px-2 py-1.5 text-center text-micro',
-                  contact.storeId
-                    ? 'bg-accent-soft text-accent-strong'
-                    : 'bg-accent-strong text-accent-on',
-                  pending && 'opacity-60',
-                )}
+                className="col-span-2 flex min-h-10 items-center justify-center gap-1.5 rounded-chip bg-accent-soft text-label text-accent-strong disabled:opacity-60"
               >
-                <Sparkles size={12} aria-hidden />
-                {pending
-                  ? t('form.generating')
-                  : contact.storeId
-                    ? t('viewHeroCard')
-                    : t('makeHeroCard')}
+                <Sparkles size={14} aria-hidden />
+                {t('viewHeroCard')}
               </button>
-            )}
-
-            {/* 이미 매장이 있으면 랜딩 소개글만 다시 뽑을 수 있다 (사용자 확정 사양) */}
-            {contact.storeId && (
               <button
                 type="button"
+                disabled={pending}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleRemakeHero()
+                }}
+                className="flex min-h-9 items-center justify-center gap-1 rounded-chip border border-line text-micro text-content-muted disabled:opacity-60"
+              >
+                <Sparkles size={12} aria-hidden />
+                {pending ? t('form.generating') : t('remakeHeroCard')}
+              </button>
+              <button
+                type="button"
+                disabled={pending}
                 onClick={(e) => {
                   e.stopPropagation()
                   handleSeo()
                 }}
-                disabled={pending}
-                className="flex items-center justify-center gap-1 rounded-chip border border-line px-2 py-1.5 text-center text-micro text-content-muted disabled:opacity-60"
+                className="flex min-h-9 items-center justify-center gap-1 rounded-chip border border-line text-micro text-content-muted disabled:opacity-60"
               >
                 <RefreshCw size={12} aria-hidden />
                 {tMerchant('regenerateSeo')}
               </button>
+            </>
+          )}
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              onEdit?.()
+            }}
+            className="flex min-h-9 items-center justify-center gap-1 rounded-chip border border-line text-micro text-content-muted"
+          >
+            <Pencil size={12} aria-hidden />
+            {t('editShort')}
+          </button>
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              onOpenLog?.()
+            }}
+            className={cn(
+              'flex min-h-9 items-center justify-center rounded-chip border text-micro',
+              TIER_TEXT[contact.tier],
+              // 매장 없는 카드는 버튼이 2개(수정·상담로그)뿐이라 그대로 한 줄을 채운다
             )}
-
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation()
-                onEdit?.()
-              }}
-              className="flex items-center justify-center gap-1 rounded-chip border border-line px-2 py-1.5 text-center text-micro text-content-muted"
-            >
-              <Pencil size={12} aria-hidden />
-              {t('editShort')}
-            </button>
-
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation()
-                onOpenLog?.()
-              }}
-              className={cn(
-                'rounded-chip border px-3 py-1.5 text-center text-label',
-                TIER_TEXT[contact.tier],
-              )}
-            >
-              {t('consultLog')}
-            </button>
-          </div>
+          >
+            {t('consultLog')}
+          </button>
         </div>
       </div>
 
