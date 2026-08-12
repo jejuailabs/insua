@@ -262,10 +262,11 @@
 
 **작업**
 
-1. `docs/10` AI 어댑터 + MockAdapter + `unavailable` UI
-2. AI 툴 게이트(`canUseAiTools`)
-3. 에러 바운더리, 404/500 페이지
-4. 로딩 스켈레톤 전면 적용
+1. ~~`docs/10` AI 어댑터 + MockAdapter + `unavailable` UI~~
+   → **무효.** AI 를 실제로 붙였다(`lib/ai/openai.ts`). MockAdapter 는 필요 없어졌다.
+2. [x] AI 툴 게이트(`canUseAiTools`) — `src/lib/ai/gate.ts`. 화면 연결은 아직.
+3. [x] 에러 바운더리, 404 페이지
+4. [x] 로딩 경계
 5. Vercel 배포 + 환경변수 등록 + Firebase 승인된 도메인 추가
    → **배포 자체는 M1 시점에 선행 완료**. 아래 "남은 배포 작업" 참조.
 6. Lighthouse 점검 (모바일 기준 Performance/Accessibility)
@@ -273,10 +274,28 @@
 
 **DoD**
 
-- [ ] 프로덕션 배포에서 구글 로그인이 동작한다
-- [ ] AI 툴이 가짜 결과를 만들지 않고 "준비 중"을 표시한다
+- [ ] 프로덕션 배포에서 구글 로그인이 동작한다 — **Firebase 승인 도메인 등록 대기**
+- [~] AI 툴이 가짜 결과를 만들지 않는다 — 실제 호출로 바뀌어 이 항목의 전제가 사라졌다.
+      대신 **`canUseAiTools` 게이트를 화면에 연결**하는 게 남았다.
 - [ ] Accessibility 점수 90 이상
 - [ ] 모든 화면이 8개 테마 조합에서 깨지지 않는다
+
+**에러·404·로딩에서 확인한 것**
+
+- `[locale]/[...rest]/page.tsx` 없이는 Next 기본 404(영문 하드코딩)가 뜬다.
+  `[locale]/not-found.tsx` 는 `notFound()` 가 locale 컨텍스트 안에서 불릴 때만 렌더된다.
+- ★ **`loading.tsx` 를 `[locale]` 에 두면 없는 주소가 404 가 아니라 200 으로 나간다.**
+  locale 전체에 Suspense 경계가 걸려 응답이 먼저 스트리밍되고 상태 코드가 굳기 때문이다.
+  실측: 경계 있으면 `/ko/nope` → 200, 없으면 404. 이 제품은 SEO/AEO/GEO 가 명시 기능이라
+  없는 페이지가 200 으로 색인되면 안 된다.
+  → 스피너(사용자 성능 피드백)와 정상 404 를 **둘 다** 지키려고 로딩 경계를
+  `(agent)` `(consumer)` `(merchant)` `admin` `events` `heroes` `market` `s` 로 내렸다.
+  `RouteSpinner` 를 각 세그먼트 `loading.tsx` 가 re-export 한다.
+  **다시 `[locale]/loading.tsx` 로 올리지 말 것.**
+- 검증: `/ko /en /ja /zh` 의 없는 주소가 전부 404 + 해당 언어 문구.
+  정상 경로(`/ko` `/market` `/heroes` `/events` `/kitchen-sink`) 회귀 없음.
+- `global-error.tsx` 는 i18n 프로바이더가 없는 지점이라 문구가 하드코딩된다.
+  번역 계층 자체가 존재하지 않아 불가피한 예외다 (CLAUDE.md §3-3).
 
 ---
 

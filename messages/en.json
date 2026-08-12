@@ -564,5 +564,15 @@
     "wide": "Area-wide",
     "pickStore": "Store to use the coupon at",
     "getCoupon": "Get {rate}% coupon"
+  },
+  "errorPage": {
+    "title": "This screen did not load",
+    "body": "It may be temporary. Try again.",
+    "home": "Go home"
+  },
+  "notFound": {
+    "title": "That address does not exist",
+    "body": "The page may have moved or been removed.",
+    "home": "Go home"
   }
 }

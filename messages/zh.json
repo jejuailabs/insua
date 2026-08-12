@@ -564,5 +564,15 @@
     "wide": "全区域",
     "pickStore": "使用优惠券的店铺",
     "getCoupon": "领取{rate}%优惠券"
+  },
+  "errorPage": {
+    "title": "页面未能加载",
+    "body": "可能是暂时的问题，请重试。",
+    "home": "回首页"
+  },
+  "notFound": {
+    "title": "该地址不存在",
+    "body": "页面可能已移动或被删除。",
+    "home": "回首页"
   }
 }
