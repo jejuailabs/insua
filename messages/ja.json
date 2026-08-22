@@ -470,11 +470,13 @@
     "deleteUser": "会員削除",
     "deleteUserTitle": "この会員を削除しますか?",
     "deleteUserWarning": "アカウントが完全に削除されます。同じ Google アカウントで最初から登録し直せます。",
-    "deleteUserKeepsContent": "この会員が登録した商品・投稿・顧客カードは一緒に削除されません。必要ならコンテンツ管理で個別に処理してください。",
+    "deleteUserKeepsContent": "顧客カードやクーポンなどの個人情報はアカウントと一緒に削除されます。登録した商品・投稿・店舗は削除せず非表示にし、コンテンツ管理で戻せます。",
     "deleteUserConfirm": "削除する",
     "deleteUserDone": "削除しました",
     "deleteUserFailed": "削除できませんでした",
-    "deleteUserSelf": "自分自身は削除できません"
+    "deleteUserSelf": "自分自身は削除できません",
+    "deleteUserLastAdmin": "最後の管理者は削除できません。先に別の管理者を指定してください。",
+    "deleteUserDoneDetail": "削除しました。個人情報 {removed} 件を削除、公開コンテンツ {hidden} 件を非表示。"
   },
   "format": {
     "currency": "₩{amount}",

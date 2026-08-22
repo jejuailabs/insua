@@ -54,10 +54,28 @@ export function UserTable({ users }: { users: AdminUserRow[] }) {
     startTransition(async () => {
       const result = await adminDeleteUser(user.uid)
       setBusyUid(null)
+
+      if (!result.ok) {
+        // 왜 막혔는지 말해준다. '실패했습니다' 만 띄우면 원인을 알 수 없다 (docs/04 §9)
+        const reason =
+          result.code === 'SELF'
+            ? 'admin.deleteUserSelf'
+            : result.code === 'LAST_ADMIN'
+              ? 'admin.deleteUserLastAdmin'
+              : 'admin.deleteUserFailed'
+        setToast(t(reason))
+        setTimeout(() => setToast(null), 4000)
+        return
+      }
+
       setPendingDelete(null)
-      setToast(result.ok ? t('admin.deleteUserDone') : t('admin.deleteUserFailed'))
-      setTimeout(() => setToast(null), 2400)
-      if (result.ok) router.refresh()
+      // 무엇이 지워지고 무엇이 숨겨졌는지 숫자로 보여준다 — 관리자가 결과를 확인할 수 있어야 한다
+      const s = result.summary
+      const removed = s.contacts + s.couponIssues
+      const hidden = s.posts + s.products + s.reviews + s.boardPosts + s.events + s.stores
+      setToast(t('admin.deleteUserDoneDetail', { removed, hidden }))
+      setTimeout(() => setToast(null), 5000)
+      router.refresh()
     })
   }
 

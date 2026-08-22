@@ -470,11 +470,13 @@
     "deleteUser": "Delete member",
     "deleteUserTitle": "Delete this member?",
     "deleteUserWarning": "The account is removed completely. The same Google account can sign up again from scratch.",
-    "deleteUserKeepsContent": "Their products, posts and contacts are not deleted. Handle those separately in content management.",
+    "deleteUserKeepsContent": "Personal data such as contacts and coupons is deleted with the account. Their products, posts and stores are hidden rather than deleted, and can be restored in content management.",
     "deleteUserConfirm": "Delete",
     "deleteUserDone": "Deleted",
     "deleteUserFailed": "Could not delete",
-    "deleteUserSelf": "You cannot delete yourself"
+    "deleteUserSelf": "You cannot delete yourself",
+    "deleteUserLastAdmin": "You cannot delete the last admin. Appoint another admin first.",
+    "deleteUserDoneDetail": "Deleted. {removed} personal records removed, {hidden} public items hidden."
   },
   "format": {
     "currency": "₩{amount}",

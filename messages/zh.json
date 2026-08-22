@@ -470,11 +470,13 @@
     "deleteUser": "删除会员",
     "deleteUserTitle": "要删除该会员吗？",
     "deleteUserWarning": "账号将被彻底删除。同一个 Google 账号可以重新注册。",
-    "deleteUserKeepsContent": "该会员发布的商品、帖子和客户卡不会一并删除。如有需要请在内容管理中另行处理。",
+    "deleteUserKeepsContent": "客户卡、优惠券等个人信息会一并删除。其发布的商品、帖子和店铺不会删除，仅作隐藏，可在内容管理中恢复。",
     "deleteUserConfirm": "删除",
     "deleteUserDone": "已删除",
     "deleteUserFailed": "删除失败",
-    "deleteUserSelf": "无法删除自己"
+    "deleteUserSelf": "无法删除自己",
+    "deleteUserLastAdmin": "无法删除最后一位管理员。请先指定其他管理员。",
+    "deleteUserDoneDetail": "已删除。个人信息 {removed} 条已删除，公开内容 {hidden} 条已隐藏。"
   },
   "format": {
     "currency": "₩{amount}",
