@@ -466,7 +466,15 @@
       "delete": "已删除"
     },
     "contentBoard": "论坛",
-    "contentEvents": "活动"
+    "contentEvents": "活动",
+    "deleteUser": "删除会员",
+    "deleteUserTitle": "要删除该会员吗？",
+    "deleteUserWarning": "账号将被彻底删除。同一个 Google 账号可以重新注册。",
+    "deleteUserKeepsContent": "该会员发布的商品、帖子和客户卡不会一并删除。如有需要请在内容管理中另行处理。",
+    "deleteUserConfirm": "删除",
+    "deleteUserDone": "已删除",
+    "deleteUserFailed": "删除失败",
+    "deleteUserSelf": "无法删除自己"
   },
   "format": {
     "currency": "₩{amount}",

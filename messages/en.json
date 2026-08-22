@@ -466,7 +466,15 @@
       "delete": "Deleted."
     },
     "contentBoard": "Boards",
-    "contentEvents": "Events"
+    "contentEvents": "Events",
+    "deleteUser": "Delete member",
+    "deleteUserTitle": "Delete this member?",
+    "deleteUserWarning": "The account is removed completely. The same Google account can sign up again from scratch.",
+    "deleteUserKeepsContent": "Their products, posts and contacts are not deleted. Handle those separately in content management.",
+    "deleteUserConfirm": "Delete",
+    "deleteUserDone": "Deleted",
+    "deleteUserFailed": "Could not delete",
+    "deleteUserSelf": "You cannot delete yourself"
   },
   "format": {
     "currency": "₩{amount}",

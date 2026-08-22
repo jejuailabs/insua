@@ -466,7 +466,15 @@
       "delete": "삭제했습니다"
     },
     "contentBoard": "게시판",
-    "contentEvents": "이벤트"
+    "contentEvents": "이벤트",
+    "deleteUser": "회원 삭제",
+    "deleteUserTitle": "이 회원을 삭제할까요?",
+    "deleteUserWarning": "계정이 완전히 지워집니다. 같은 구글 계정으로 처음처럼 다시 가입할 수 있게 됩니다.",
+    "deleteUserKeepsContent": "이 회원이 올린 상품·게시물·고객카드는 함께 지워지지 않습니다. 필요하면 콘텐츠 관리에서 따로 처리하세요.",
+    "deleteUserConfirm": "삭제합니다",
+    "deleteUserDone": "삭제했습니다",
+    "deleteUserFailed": "삭제하지 못했습니다",
+    "deleteUserSelf": "자기 자신은 삭제할 수 없습니다"
   },
   "format": {
     "currency": "{amount}원",

@@ -1,11 +1,12 @@
 'use client'
 
-import { ShieldCheck } from 'lucide-react'
+import { ShieldCheck, Trash2 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { useState, useTransition } from 'react'
-import { adminSetAdmin, adminSetRole } from '@/lib/admin/actions'
+import { adminDeleteUser, adminSetAdmin, adminSetRole } from '@/lib/admin/actions'
 import type { AdminUserRow } from '@/lib/admin/data'
+import { Modal } from '@/components/ui/Modal'
 import { ROLES, type Role } from '@/types/user'
 import { cn } from '@/lib/utils/cn'
 
@@ -16,6 +17,8 @@ export function UserTable({ users }: { users: AdminUserRow[] }) {
   const [pending, startTransition] = useTransition()
   const [busyUid, setBusyUid] = useState<string | null>(null)
   const [toast, setToast] = useState<string | null>(null)
+  // 삭제는 되돌릴 수 없다 — 확인 다이얼로그를 거치지 않고는 실행되지 않는다 (docs/09 §4)
+  const [pendingDelete, setPendingDelete] = useState<AdminUserRow | null>(null)
 
   function changeRole(uid: string, value: string) {
     const role = value === '' ? null : (value as Role)
@@ -42,6 +45,19 @@ export function UserTable({ users }: { users: AdminUserRow[] }) {
         setTimeout(() => setToast(null), 2000)
         router.refresh()
       }
+    })
+  }
+
+  /** 회원 삭제 — Auth 계정까지 지워 같은 지메일로 새로 가입할 수 있게 한다. */
+  function deleteUser(user: AdminUserRow) {
+    setBusyUid(user.uid)
+    startTransition(async () => {
+      const result = await adminDeleteUser(user.uid)
+      setBusyUid(null)
+      setPendingDelete(null)
+      setToast(result.ok ? t('admin.deleteUserDone') : t('admin.deleteUserFailed'))
+      setTimeout(() => setToast(null), 2400)
+      if (result.ok) router.refresh()
     })
   }
 
@@ -109,10 +125,49 @@ export function UserTable({ users }: { users: AdminUserRow[] }) {
                 <ShieldCheck size={12} aria-hidden />
                 {user.isAdmin ? t('admin.revokeAdmin') : t('admin.grantAdmin')}
               </button>
+
+              {/* 회원 삭제 — 파괴적이라 아웃라인. 채운 배경은 확인창 안에서만 (docs/09 §4) */}
+              <button
+                type="button"
+                disabled={pending}
+                onClick={() => setPendingDelete(user)}
+                className="flex items-center gap-1 rounded-chip border border-danger px-2.5 py-1 text-micro text-danger"
+              >
+                <Trash2 size={12} aria-hidden />
+                {t('admin.deleteUser')}
+              </button>
             </div>
           </li>
         ))}
       </ul>
+
+      <Modal
+        open={pendingDelete !== null}
+        onClose={() => setPendingDelete(null)}
+        title={t('admin.deleteUserTitle')}
+        description={pendingDelete?.email ?? undefined}
+      >
+        <p className="text-body text-content">{t('admin.deleteUserWarning')}</p>
+        <p className="mt-2 text-caption text-content-muted">{t('admin.deleteUserKeepsContent')}</p>
+
+        <div className="mt-5 flex justify-end gap-2">
+          <button
+            type="button"
+            onClick={() => setPendingDelete(null)}
+            className="min-h-11 rounded-chip border border-line px-4 py-2 text-label text-content-muted"
+          >
+            {t('common.cancel')}
+          </button>
+          <button
+            type="button"
+            disabled={pending}
+            onClick={() => pendingDelete && deleteUser(pendingDelete)}
+            className="min-h-11 rounded-chip bg-danger px-4 py-2 text-label text-white disabled:opacity-60"
+          >
+            {t('admin.deleteUserConfirm')}
+          </button>
+        </div>
+      </Modal>
 
       {toast && (
         <p
